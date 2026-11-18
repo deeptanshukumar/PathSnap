@@ -1,29 +1,49 @@
 # Project state
 
-## Target and plan
-Team PT-088: Chiranth R (PES1UG24AM354), Darshan S Govekar (PES1UG24AM355), Daruru Bhuvan Sai (PES1UG24AM356), Deeptanshu Kumar (PES1UG24AM357). Confirm final spelling before submission.
+Team PT-088: Chiranth R (PES1UG24AM354), Darshan S Govekar (PES1UG24AM355), Daruru Bhuvan Sai (PES1UG24AM356), Deeptanshu Kumar (PES1UG24AM357). Deadline: **18 November 2026, 15:00 IST**, as specified by the team.
 
-Hard deadline supplied by team: 18 November 2026, 15:00 IST. Faculty email lists later evaluation; use the team's earlier deadline.
+## Implemented and verified
 
-1. Inspect rules, raw formats, geographic calculations and label ambiguity.
-2. Implement and verify modular loading, candidate features, reference alignment and grouped experiments.
-3. Execute five-model comparison, TPE tuning and classifier/HMM comparison.
-4. Integrate server, Mac UI and Folium maps; exercise all ten development trips.
-5. Produce evidence-backed PDF, presentation and viva preparation. Publish source and required artifacts after checking repository contents.
+| Milestone | Implementation and evidence |
+|---|---|
+| Requirements and data audit | Five organiser PDFs read; 80 training / 10 development trips. Inventory, missing-value/time-gap/network checks and raw hashes in `artifacts/inventory.json`. |
+| Portable prediction | Strict loading, local metre geometry, spatial indexing, eight directed candidates and 13 route-independent features. Prediction does not read references. |
+| Five-model comparison | Logistic, Gaussian NB, decision tree, random forest and histogram boosting; identical three whole-trip folds, seed 357. See `model_comparison.json/.csv` and `folds.json`. |
+| Bayesian tuning | Twelve TPE trials, four startup/eight adaptive, training-trip CV only. Tuned boosting CV candidate Macro F1 0.9290. Trial distributions and scores retained. |
+| Sequential decoding | Directed routing, partial-edge positions, log-space Viterbi, explicit resets and road bridges, including same-arc loops. Decoder search uses development trips only. |
+| API and UI | Real cross-origin browser interaction; all ten development and all ten reserved trips succeeded over actual HTTP. API maps omit reference geometry. |
+| Correctness checks | 12 tests passed: geometry, candidate lookup, grouping, brute-force Viterbi equivalence, reference separation, same-arc loops, API validation/CORS and evaluation-mode isolation. |
+| Deliverables | 18-page PDF and 11-slide editable PPTX generated from measured results, visually inspected, and structurally validated. Folium maps, genuine browser screenshots, viva guide and source generators are included. |
 
-## Verified exploration
-- All five official PDFs read. AI assistance is allowed subject to truthful attribution and team understanding; cross-team sharing and fabricated experiments are prohibited.
-- 80 training trips / 208,417 GPS observations; 10 student-test trips / 19,160 GPS observations.
-- Four headerless text files per trip; route lengths differ from GPS counts.
-- No nonfinite GPS values or non-increasing timestamps in this package. Training maximum gap 153,064 s; student-test maximum gap 210 s.
-- Weakly disconnected road networks and 13 training / 1 development reference-route endpoint breaks exist.
-- Initial geometry/alignment probes ran on four real trips. Training trip 00000054 has severe GPS/reference disagreement; preserve and quantify this limitation.
-- Repository exists at github.com/deeptanshukumar/PathSnap and was private at initial inspection.
+Python 3.12.16 / NumPy 2.3.5 / SciPy 1.16.3 / scikit-learn 1.7.2 on Linux CPU were exercised. `.venv` is isolated. macOS ML execution and physical Mac-to-Linux networking have not been executed here. Kaggle was authorised but not needed for the measured workload.
 
-## Current milestone
-Research and required baseline plan recorded; isolated Python 3.12 environment installation underway. No trained-model result claimed yet.
+## Measured results
 
-## External dependencies
-- Ten reserved evaluator trips have not been supplied. Do not generate replacement evaluation trips or relabel development trips.
-- Chiranth's Mac is not controlled here. Two-laptop operation and receiving-laptop evidence must be verified with the team.
-- Bhuvan's novelty is pending; keep extension points modular.
+| Metric | Development classifier | Development HMM/bridge | Reserved classifier | Reserved HMM/bridge |
+|---|---:|---:|---:|---:|
+| Pooled proxy pointwise accuracy | 87.46% | 85.42% | 88.44% | 77.78% |
+| Mean length-weighted route overlap F1 | 0.9339 | 0.9570 | 0.9160 | 0.9250 |
+| Mean direct arc continuity | 0.7432 | 0.9961 | 0.7604 | 0.9976 |
+| Mean ordered route LCS F1 | 0.7332 | 0.8012 | 0.7630 | 0.7547 |
+
+Bridge metrics include intermediate routed arcs. HMM-state direct continuity before bridges is 0.8822 on development and 0.8440 on reserved data. Pointwise labels are inferred by monotone reference alignment, not officially supplied per-GPS labels. Better continuity does not imply better pointwise or sequence accuracy.
+
+## Final-evaluation boundary
+
+The initial package omitted reserved trips. The user later supplied `evaluator_test.zip`. Commit **a61ce50** froze the predictor/scorer before archive access; `artifacts/evaluation_freeze.json` records weights, settings and source hashes. All ten reserved trips (19,674 observations) ran through the unchanged evaluation-mode API. Results/request IDs are in `evaluator_results.json/.csv`; archive SHA256 and IDs are in `evaluator_manifest.json`.
+
+No evaluator results selected or modified features, labels convention, model weights/family, decoder parameters, thresholds or search space. Report/UI authoring can be updated without changing the frozen predictor/scorer.
+
+## Current demonstration
+
+- API: port 8000, evaluation mode, ignored local `data/evaluator_test/`.
+- Static UI: port 8010. Chiranth's Mac serves `ui/` using Python 3 and connects to this laptop's LAN IP on port 8000.
+- Public repository: https://github.com/deeptanshukumar/PathSnap. Raw data and caches remain ignored. Final verification details are in `artifacts/verification.json`.
+
+## Team steps still open
+
+1. Verify Chiranth's physical Mac connection. Browser evidence proves local cross-origin operation only.
+2. Capture the actual receiving-terminal log as `reports/evidence/api_terminal.png`, then regenerate the report. GNOME denied automated native-window capture; no terminal image was fabricated.
+3. Review the report and practise `docs/VIVA.md`, retaining the AI disclosure. Bhuvan's novelty remains pending and must not use reserved results for selection.
+
+See `docs/DECISIONS.md` for important choices and the corrected same-arc-loop metric history. Keep the source, results and concise state here; do not add overlapping context files.

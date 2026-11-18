@@ -1,0 +1,34 @@
+{
+  "tests": {
+    "command": "python -m pytest -q",
+    "result": "12 passed; one dependency deprecation warning"
+  },
+  "live_http": {
+    "development_trips": 10,
+    "reserved_trips": 10,
+    "reference_exposure_checks": "passed",
+    "cors_preflight": "passed"
+  },
+  "predictor_freeze": "a61ce50 verified before reserved evaluation",
+  "report": {
+    "pages": 18,
+    "visual_review": "All pages inspected; final changed pages re-rendered and reviewed"
+  },
+  "presentation": {
+    "slides": 11,
+    "native_charts": 5,
+    "native_tables": 4,
+    "validation": "package, layout, embedded chart workbooks and first-party import passed",
+    "visual_review": "All slides inspected; final PPTX also rendered with LibreOffice",
+    "powerpoint_or_keynote_opened": false
+  },
+  "two_physical_laptops_verified": false,
+  "receiving_terminal_screenshot_captured": false,
+  "artifact_sha256": {
+    "reports/PathSnap_Technical_Report.pdf": "6af9b9e41c1a42d19f4911715ed9f0e223e9f6f0eba56d85a964727d30a82064",
+    "reports/PathSnap_Presentation_Final.pptx": "4957e7c00ba3ff9d2001a3c364208f202661a62fccb6bc146e1e45e33f66d5a6",
+    "artifacts/models/final.joblib": "cf4cc8e003c02cf577f4df365971756f4ccfc1c79c64824f30b1197bf6457ca0"
+  },
+  "public_repository": "https://github.com/deeptanshukumar/PathSnap",
+  "linux_lan_health": "HTTP 200, evaluation mode, ten trips"
+}

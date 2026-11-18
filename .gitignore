@@ -17,3 +17,4 @@ node_modules/
 artifacts/*_oof.npz
 artifacts/prediction_*.npz
 !reports/evidence/api_smoke.json
+.chart-data-*/

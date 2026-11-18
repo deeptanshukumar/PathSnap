@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-18T06:36:42.480903+00:00",
+  "created_utc": "2026-11-18T06:40:10.369955+00:00",
   "sha256": {
     "artifacts/models/final.joblib": "cf4cc8e003c02cf577f4df365971756f4ccfc1c79c64824f30b1197bf6457ca0",
     "configs/baseline.json": "cab8021ab00937653583aa47ef878e2a2fd3af0a289e09651252466b92b52266",
@@ -18,7 +18,7 @@
     "pathsnap/pipeline.py": "c41100ed0be2016a6ecdd0d149b3ed6e4b1c791843d17ecc0cb43e62a327a495",
     "pathsnap/prepare.py": "a2b8c2ad338748fa09d37ed90be26801abab5ac617efd1355aa7d1f611c4b23b",
     "pathsnap/reference.py": "5bd87ed3179859cc5d48449343248fe94cb345e4b293e2fcb204892f040cf15e",
-    "pathsnap/reporting.py": "f8fd85f09eab3bde4aee92882750442978d54adb7ada30d1ef45b4d2ca73f354"
+    "pathsnap/reporting.py": "6469328026396c7d3a7845b02bff7e1978527f28745f01879a817fbd8897868e"
   },
   "notes": "Original decoder search retained in decoder_initial.json and decoder_search.json. Final route assembly includes directed loops for backwards projection on the same arc. All pointwise predictions are unchanged by that reconstruction correction."
 }
