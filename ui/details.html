@@ -114,6 +114,26 @@
     .note{font-size:12px;color:var(--ink-3);margin:12px 0 0;line-height:1.6}
     .empty{padding:28px;text-align:center;color:var(--ink-3);font-size:13px}
 
+
+    .compare .cmpgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:start;margin-bottom:18px}
+    .compare figure{margin:0}
+    .compare figcaption{font-size:12px;color:var(--ink-3);margin-bottom:8px}
+    svg.dots{width:100%;min-width:520px;height:auto;display:block}
+    svg.dots .tick{font:11px var(--mono);fill:var(--ink-3)}
+    svg.dots .lab{font:13px var(--sans);fill:var(--ink-2)}
+    svg.dots .lab.strong{fill:var(--ink);font-weight:600}
+    svg.dots .val{font:12px var(--mono);fill:var(--ink)}
+    svg.dots g:hover rect{fill:var(--sunk)}
+    .compare .facts{display:flex;flex-direction:column;gap:12px;font-size:13px;color:var(--ink-2)}
+    .compare .facts div{display:flex;flex-direction:column;gap:2px}
+    .compare .facts b{font-weight:600;color:var(--ink);font-size:13px}
+    table.cmp td{white-space:nowrap}
+    table.cmp td:first-child{font-family:var(--sans);white-space:normal;min-width:220px}
+    table.cmp td small{display:block;font:11px var(--mono);color:var(--ink-3);margin-top:2px}
+    table.cmp .sd{color:var(--ink-3);font-size:12px}
+    table.cmp tr.win td{background:var(--route-wash)}
+    table.cmp tr.win td:first-child{box-shadow:inset 3px 0 0 var(--route);font-weight:600}
+    @media (max-width:980px){.compare .cmpgrid{grid-template-columns:1fr}}
     @media (max-width:1180px){.pipe{grid-template-columns:repeat(3,minmax(0,1fr))}.st:nth-child(3){border-right:0}.st:nth-child(-n+3){border-bottom:1px solid var(--line)}}
     @media (max-width:980px){.two{grid-template-columns:1fr}}
     @media (max-width:640px){
@@ -175,6 +195,30 @@
       <p class="sub">Match these request IDs with the PATHSNAP lines in Laptop 1’s terminal.</p>
       <div class="tablewrap" id="log"><div class="empty">No requests yet.</div></div>
     </div>
+  </section>
+
+  <section class="panel card compare" aria-labelledby="cmpH">
+    <h2 id="cmpH">Model comparison</h2>
+    <p class="sub">Recorded experiment results, not computed live: <span class="mono">artifacts/model_comparison.csv</span>, <span class="mono">selection.json</span> and <span class="mono">tuning.json</span>. Five model families were trained on the same three trip-grouped cross-validation folds of the 80 training trips, then evaluated once on the ten student-test trips.</p>
+    <div class="cmpgrid">
+      <figure>
+        <figcaption>Cross-validated candidate macro F1 · dot = mean, whisker = ± 1 SD over 3 folds</figcaption>
+        <div class="tablewrap"><svg class="dots" viewBox="0 0 720 214" role="img" aria-label="Cross-validated candidate macro F1 per model with plus or minus one standard deviation across three folds"><line x1="210.0" y1="18" x2="210.0" y2="208" stroke="var(--line)" stroke-width="1"/><text x="210.0" y="13" text-anchor="middle" class="tick">0.82</text><line x1="356.7" y1="18" x2="356.7" y2="208" stroke="var(--line)" stroke-width="1"/><text x="356.7" y="13" text-anchor="middle" class="tick">0.86</text><line x1="503.3" y1="18" x2="503.3" y2="208" stroke="var(--line)" stroke-width="1"/><text x="503.3" y="13" text-anchor="middle" class="tick">0.90</text><line x1="650.0" y1="18" x2="650.0" y2="208" stroke="var(--line)" stroke-width="1"/><text x="650.0" y="13" text-anchor="middle" class="tick">0.94</text><g><title>Hist gradient boosting, tuned: CV macro F1 0.9290 ± 0.0092 (3 folds)</title><rect x="0" y="26.0" width="720" height="30" fill="transparent"/><text x="196" y="45.0" text-anchor="end" class="lab strong">Hist gradient boosting, tuned</text><line x1="576.0" y1="41.0" x2="643.4" y2="41.0" stroke="var(--route)" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="609.7" cy="41.0" r="5" fill="var(--route)" stroke="var(--surface)" stroke-width="2"/><text x="653.4" y="45.0" class="val">0.929</text></g><g><title>Hist gradient boosting: CV macro F1 0.9278 ± 0.0104 (3 folds)</title><rect x="0" y="56.0" width="720" height="30" fill="transparent"/><text x="196" y="75.0" text-anchor="end" class="lab">Hist gradient boosting</text><line x1="567.0" y1="71.0" x2="643.6" y2="71.0" stroke="var(--route)" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="605.3" cy="71.0" r="5" fill="var(--route)" stroke="var(--surface)" stroke-width="2"/><text x="653.6" y="75.0" class="val">0.928</text></g><g><title>Random forest: CV macro F1 0.9260 ± 0.0105 (3 folds)</title><rect x="0" y="86.0" width="720" height="30" fill="transparent"/><text x="196" y="105.0" text-anchor="end" class="lab">Random forest</text><line x1="560.3" y1="101.0" x2="637.0" y2="101.0" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="598.7" cy="101.0" r="5" fill="var(--ink-2)" stroke="var(--surface)" stroke-width="2"/><text x="647.0" y="105.0" class="val">0.926</text></g><g><title>Decision tree: CV macro F1 0.9211 ± 0.0119 (3 folds)</title><rect x="0" y="116.0" width="720" height="30" fill="transparent"/><text x="196" y="135.0" text-anchor="end" class="lab">Decision tree</text><line x1="537.0" y1="131.0" x2="624.4" y2="131.0" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="580.7" cy="131.0" r="5" fill="var(--ink-2)" stroke="var(--surface)" stroke-width="2"/><text x="634.4" y="135.0" class="val">0.921</text></g><g><title>Logistic regression: CV macro F1 0.8913 ± 0.0047 (3 folds)</title><rect x="0" y="146.0" width="720" height="30" fill="transparent"/><text x="196" y="165.0" text-anchor="end" class="lab">Logistic regression</text><line x1="454.3" y1="161.0" x2="488.8" y2="161.0" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="471.5" cy="161.0" r="5" fill="var(--ink-2)" stroke="var(--surface)" stroke-width="2"/><text x="498.8" y="165.0" class="val">0.891</text></g><g><title>Gaussian Naive Bayes: CV macro F1 0.8363 ± 0.0060 (3 folds)</title><rect x="0" y="176.0" width="720" height="30" fill="transparent"/><text x="196" y="195.0" text-anchor="end" class="lab">Gaussian Naive Bayes</text><line x1="247.8" y1="191.0" x2="292.0" y2="191.0" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="269.9" cy="191.0" r="5" fill="var(--ink-2)" stroke="var(--surface)" stroke-width="2"/><text x="302.0" y="195.0" class="val">0.836</text></g></svg></div>
+      </figure>
+      <div class="facts">
+        <div><b>Selection rule</b><span>Highest mean grouped-CV candidate macro F1. Student-test trips were not used to choose (hist gradient boosting won).</span></div>
+        <div><b>Bayesian tuning</b><span>12 Optuna TPE trials (4 random, 8 adaptive), 70 s. CV macro F1 0.9278 → 0.9290. Student-test top-1 87.63% → 87.46% (slightly lower; the tuned model was kept on its CV score).</span></div>
+        <div><b>Best parameters</b><span class="mono">learning_rate 0.0413 · max_leaf_nodes 18 · l2 0.343 · min_samples_leaf 60</span></div>
+        <div><b>Candidates per point</b><span>Up to 8 directed road segments within 100 m. Student-test candidate miss rate 0.36%: the reference road was outside the candidate set for that share of points.</span></div>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table class="cmp">
+        <thead><tr><th>Model</th><th>Family</th><th>CV macro F1</th><th>Student-test top-1 (proxy)</th><th>Student-test macro F1</th><th>Log loss</th><th>Inference (10 trips)</th><th>Fit</th></tr></thead>
+        <tbody><tr><td>Logistic regression<small>C=1.0, max_iter=800</small></td><td>Linear</td><td>0.8913 <span class="sd">± 0.0047</span></td><td>82.48%</td><td>0.8879</td><td>0.155</td><td>0.06 s</td><td>0.5 s</td></tr><tr><td>Gaussian Naive Bayes<small>var_smoothing=1e-07</small></td><td>Probabilistic</td><td>0.8363 <span class="sd">± 0.0060</span></td><td>83.46%</td><td>0.8207</td><td>0.563</td><td>0.11 s</td><td>0.1 s</td></tr><tr><td>Decision tree<small>max_depth=10, min_samples_leaf=20</small></td><td>Tree</td><td>0.9211 <span class="sd">± 0.0119</span></td><td>87.44%</td><td>0.9214</td><td>0.113</td><td>0.05 s</td><td>5.0 s</td></tr><tr><td>Random forest<small>max_depth=14, min_samples_leaf=8, n_estimators=80</small></td><td>Bagged ensemble</td><td>0.9260 <span class="sd">± 0.0105</span></td><td>87.57%</td><td>0.9246</td><td>0.092</td><td>0.63 s</td><td>24.3 s</td></tr><tr><td>Hist gradient boosting<small>l2_regularization=1.0, learning_rate=0.1, max_iter=120, max_leaf_nodes=15, min_samples_leaf=30</small></td><td>Boosting</td><td>0.9278 <span class="sd">± 0.0104</span></td><td>87.63%</td><td>0.9269</td><td>0.089</td><td>0.88 s</td><td>1.9 s</td></tr><tr class="win"><td>Hist gradient boosting, tuned<small>learning_rate=0.0413, max_leaf_nodes=18, l2_regularization=0.343, min_samples_leaf=60</small></td><td>Boosting</td><td>0.9290 <span class="sd">± 0.0092</span></td><td>87.46%</td><td>0.9260</td><td>0.090</td><td>0.84 s</td><td>2.0 s</td></tr></tbody>
+      </table>
+    </div>
+    <p class="note">Top-1 is classifier-only (no Viterbi) against proxy labels inferred from the ordered reference route. The highlighted row is the model the API serves.</p>
   </section>
 </main>
 
