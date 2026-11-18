@@ -116,6 +116,11 @@
 
 
     .chosen h2{font-size:18px}
+    table.cmp.txt th,table.cmp.txt td{text-align:left;font-family:var(--sans);white-space:normal;vertical-align:top}
+    table.cmp.txt td:first-child{min-width:150px}
+    table.cmp.txt td.na{font-family:var(--sans);font-size:13px}
+    .splits{margin-bottom:22px}
+    .splits .evh:first-child{margin-top:18px}
     .chosen .evh{font-size:15px;font-weight:600;margin:28px 0 6px}
     .chosen > .sub,.chosen > .note,.chosen > .tablewrap{max-width:none}
     .flow{display:flex;flex-direction:column;gap:14px}
@@ -143,6 +148,10 @@
     table.cmp td{white-space:nowrap}
     table.cmp td:first-child{font-family:var(--sans);white-space:normal}
     table.cmp td.mut{color:var(--ink-3)}
+    table.cmp .sd{color:var(--ink-3);font-size:12px}
+    table.cmp td small{display:block;font:11px var(--mono);color:var(--ink-3);margin-top:2px}
+    table.cmp tr.win td{background:var(--route-wash)}
+    table.cmp tr.win td:first-child{box-shadow:inset 3px 0 0 var(--route);font-weight:600}
     .bar{display:inline-block;width:64px;height:6px;border-radius:3px;background:var(--line);margin-right:8px;vertical-align:middle;overflow:hidden}
     .bar span{display:block;height:100%;background:var(--route);border-radius:3px}
     details{margin-top:12px;font-size:13px;color:var(--ink-2)}
@@ -215,6 +224,29 @@
     <h2 id="cmpH">How the final model was chosen</h2>
     <p class="sub">Recorded results from <span class="mono">artifacts/</span> (<span class="mono">model_comparison.json</span>, <span class="mono">selection.json</span>, <span class="mono">bayesian_trials.csv</span>, <span class="mono">tuning.json</span>). Static: nothing here is computed live. Each step feeds the next.</p>
 
+    <div class="splits">
+      <h3 class="evh">Data splits</h3>
+      <p class="sub">The dataset has 100 trips. Every split is by whole trip, so no trip appears in two sets.</p>
+      <div class="tablewrap"><table class="cmp txt">
+        <thead><tr><th>Split</th><th>Trips</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td>Training</td><td>80</td><td>Fitting models, cross-validation and Bayesian tuning</td></tr>
+          <tr><td>Validation</td><td class="na">no separate set</td><td>A rotation inside the 80 training trips: 3 folds, each fitted on 53–54 trips and validated on 26–27 unseen trips</td></tr>
+          <tr><td>Student test</td><td>10</td><td>Development: comparing models and tuning the decoder</td></tr>
+          <tr><td>Evaluator test</td><td>10</td><td>Final evaluation only. It chose nothing.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Cross-validation is <span class="mono">StratifiedGroupKFold</span>, seed 357, and the code checks that no trip lands on both sides. A training row is one (GPS point, candidate arc) pair, labelled 1 if that arc is the reference arc: 255,024 rows, 36,942 positive (14%), from every 5th GPS point after a label-quality filter.</p>
+
+      <h3 class="evh">Performance on every split</h3>
+      <p class="sub">The three F1 columns are candidate-level macro F1 (the selection metric). Student-test top-1 and evaluator top-1 are classifier-only against proxy labels.</p>
+      <div class="tablewrap"><table class="cmp">
+        <thead><tr><th>Model</th><th>Train F1</th><th>Validation F1 (3-fold CV)</th><th>Student-test F1</th><th>Student-test top-1</th><th>Evaluator top-1</th></tr></thead>
+        <tbody><tr><td>Logistic regression</td><td>0.8920</td><td>0.8913 <span class="sd">± 0.0047</span></td><td>0.8879</td><td>82.48%</td><td>83.69%</td></tr><tr><td>Gaussian Naive Bayes</td><td>0.8357</td><td>0.8363 <span class="sd">± 0.0060</span></td><td>0.8207</td><td>83.46%</td><td>85.38%</td></tr><tr><td>Decision tree</td><td>0.9370</td><td>0.9211 <span class="sd">± 0.0119</span></td><td>0.9214</td><td>87.44%</td><td>86.93%</td></tr><tr><td>Random forest</td><td>0.9469</td><td>0.9260 <span class="sd">± 0.0105</span></td><td>0.9246</td><td>87.57%</td><td>88.07%</td></tr><tr><td>Hist gradient boosting</td><td>0.9400</td><td>0.9278 <span class="sd">± 0.0104</span></td><td>0.9269</td><td>87.63%</td><td>87.95%</td></tr><tr class="win"><td>Hist gradient boosting, tuned<small>served</small></td><td class="na">—</td><td>0.9290 <span class="sd">± 0.0092</span></td><td>0.9260</td><td>87.46%</td><td>88.44%</td></tr></tbody>
+      </table></div>
+      <p class="note">Boosting is chosen on validation F1 alone (0.9278, then 0.9290 tuned). Its train-to-validation drop is small (0.940 to 0.928); random forest drops more (0.947 to 0.926) and the decision tree too (0.937 to 0.921). The top three are within about one CV standard deviation, so the margin is small. The tuned model has no recorded train F1 because only CV and held-out scores were kept for it.</p>
+    </div>
+
     <div class="flow">
       <article class="step panel">
         <div class="sh"><span class="no">1</span><div><h3>Cross-validation of all 5 models</h3><p>Same 13 features, same labels, same 3 trip-grouped folds of the 80 training trips. Gives each model a fair score so they can be compared.</p></div></div>
@@ -255,6 +287,23 @@
       </table>
     </div>
     <p class="note">Top-1 values are pooled over observations against proxy labels inferred from the ordered reference route; route F1, precision, recall and continuity are means over the ten trips against the reference route itself. The Viterbi decoder settings were tuned on development data with the boosting model and are shared by every family. Viterbi top-1 is below classifier top-1 for all models because the decoder optimises route continuity, not pointwise agreement.</p>
+
+    <h3 class="evh">Metrics and why</h3>
+    <div class="tablewrap"><table class="cmp txt">
+      <thead><tr><th>Metric</th><th>What it shows</th><th>Why it is used</th></tr></thead>
+      <tbody>
+        <tr class="win"><td>Candidate macro F1<small>selection metric</small></td><td>Precision and recall averaged over the match and non-match classes</td><td>Only about 14% of candidates are matches, so accuracy would reward saying "no match". Macro F1 weighs both classes equally.</td></tr>
+        <tr><td>Accuracy, precision, recall, confusion matrix</td><td>Candidate classification quality</td><td>Required by the guidelines; the confusion matrices are in the report as diagnostics.</td></tr>
+        <tr><td>Log loss</td><td>Quality of the probabilities</td><td>The decoder uses the scores as emissions, so they must be calibrated, not just ranked. Naive Bayes ranks acceptably but has log loss 0.56.</td></tr>
+        <tr><td>Top-1 accuracy (proxy)</td><td>Per GPS point, whether the highest-scoring candidate is the reference arc</td><td>Matches the real task. It is a proxy because the route file is an ordered arc list, so per-point labels are inferred by alignment.</td></tr>
+        <tr><td>Candidate miss rate</td><td>How often the true arc is not among the 8 candidates (0.36% on student test)</td><td>It caps the accuracy any model can reach.</td></tr>
+        <tr><td>Route continuity</td><td>Whether consecutive predicted arcs connect</td><td>A pointwise-accurate answer can still be an impossible route. Classifier-only is about 0.74; Viterbi with bridging reaches about 0.996.</td></tr>
+        <tr><td>Route overlap F1, precision, recall</td><td>Length-weighted overlap of the predicted and reference routes</td><td>A sequence-level check that does not depend on the inferred per-point labels.</td></tr>
+        <tr><td>Ordered-route LCS F1</td><td>Longest common subsequence of arcs, in order</td><td>Checks route order, not only which arcs were used.</td></tr>
+        <tr><td>Training and inference time</td><td>Computational cost</td><td>Required by the guidelines and weighed in the choice.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Every pointwise metric is a proxy against labels inferred from the reference route.</p>
   </section>
 </main>
 
