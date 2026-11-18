@@ -264,7 +264,7 @@
 <script>
 (() => {
   const $ = id => document.getElementById(id);
-  const state = { api: '', mode: null, health: null, trip: null, busy: false, history: [], running: null, timer: null, lastAction: null, layers: {} };
+  const state = { api: '', mode: null, health: null, trip: null, busy: false, history: [], failures: [], running: null, timer: null, lastAction: null, layers: {} };
   const channel = 'BroadcastChannel' in window ? new BroadcastChannel('pathsnap') : null;
   const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
@@ -282,7 +282,7 @@
 
   // ---------- shared session with the model-trace tab ----------
   function publish(type, extra = {}) {
-    const session = { api: state.api, mode: state.mode, health: state.health, history: state.history.slice(0, 30), running: state.running, updated: Date.now() };
+    const session = { api: state.api, mode: state.mode, health: state.health, history: state.history.slice(0, 30), failures: state.failures.slice(0, 30), running: state.running, updated: Date.now() };
     store.set('pathsnapSession', JSON.stringify(session));
     if (channel) channel.postMessage({ type, session, ...extra });
   }
@@ -390,6 +390,17 @@
     markDone();
   }
 
+  // Re-read what the server actually serves; the page may predate a server restart or mode change.
+  async function syncTrips() {
+    const health = await fetchJson('/health', {}, 12000);
+    const data = await fetchJson('/trips', {}, 12000);
+    state.mode = data.mode; state.health = health; state.trip = null;
+    renderTrips(data.trips); setModeBadge(data.mode);
+    $('modelLine').textContent = data.notice + ' · ' + health.model.replaceAll('_', ' ') + (health.tuned ? ', Bayesian tuned' : '');
+    $('idleText').textContent = 'Choose one of the ' + data.trips.length + ' trips, then reconstruct its route.';
+    return data;
+  }
+
   async function connect() {
     if (state.busy) return;
     const raw = $('apiUrl').value.trim().replace(/\/+$/, '');
@@ -400,14 +411,9 @@
     $('connectLabel').textContent = 'Connecting…';
     setStatus('busy', 'Connecting', url.host);
     try {
-      const health = await fetchJson('/health', {}, 12000);
-      const data = await fetchJson('/trips', {}, 12000);
-      state.mode = data.mode; state.health = health; state.trip = null;
-      renderTrips(data.trips); setModeBadge(data.mode);
+      await syncTrips();
       setStatus('ready', 'Connected', url.host);
       $('serverHost').textContent = url.host; $('serverForm').hidden = true; $('serverDone').hidden = false;
-      $('modelLine').textContent = data.notice + ' · ' + health.model.replaceAll('_', ' ') + (health.tuned ? ', Bayesian tuned' : '');
-      $('idleText').textContent = 'Choose one of the ' + data.trips.length + ' trips, then reconstruct its route.';
       store.set('pathsnapApi', state.api);
       message('');
       publish('connected');
@@ -474,9 +480,18 @@
       if (window.innerWidth < 900) document.querySelector('.stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (error) {
       stopClock(); state.running = null;
-      veil('vError'); $('errorText').textContent = error.message;
+      let text = error.message;
+      if (error.status === 404) {
+        // The server does not serve this trip: our list is stale. Reload it so the next choice is valid.
+        try {
+          const data = await syncTrips();
+          text = `Trip ${trip} is not served by this API, which is now in ${data.mode} mode. The trip list has been reloaded; choose a trip again.`;
+        } catch { /* keep the original message */ }
+      }
+      state.failures.unshift({ trip_id: trip, status: error.status || null, message: text, received_at: new Date().toISOString() });
+      veil('vError'); $('errorText').textContent = text;
       setStatus('error', 'Last request failed', new URL(state.api).host);
-      publish('error', { message: error.message, trip_id: trip });
+      publish('error', { message: text, trip_id: trip });
     } finally {
       state.busy = false; lock(false); updateRun();
     }

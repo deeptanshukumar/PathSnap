@@ -388,11 +388,16 @@
         return h('tr', {}, h('td', { style: 'font-family:var(--sans)', text: name }), vals.map(x => typeof x !== 'number' ? h('td', { class: 'na', text: '—' }) : h('td', { class: nums.length > 1 && Math.abs(x - best) < 1e-9 ? 'best' : null, text: pct(x) })));
       })))));
   }
-  function renderLog(history) {
-    if (!history || !history.length) { $('log').replaceChildren(h('div', { class: 'empty', text: 'No requests yet.' })); return; }
+  function renderLog(history, failures) {
+    const rows = [...(history || []).map(r => ({ ...r, ok: true })), ...(failures || []).map(r => ({ ...r, ok: false }))]
+      .sort((x, y) => new Date(y.received_at) - new Date(x.received_at));
+    if (!rows.length) { $('log').replaceChildren(h('div', { class: 'empty', text: 'No requests yet.' })); return; }
+    const time = r => new Date(r.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     $('log').replaceChildren(h('table', {},
-      h('thead', {}, h('tr', {}, h('th', { text: 'Time' }), h('th', { text: 'Trip' }), h('th', { text: 'Request' }), h('th', { text: 'Viterbi acc.' }), h('th', { text: 'Server' }))),
-      h('tbody', {}, history.map(r => h('tr', {}, h('td', { text: new Date(r.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) }), h('td', { text: r.trip_id }), h('td', { text: r.request_id }), h('td', { text: r.metrics ? pct(r.metrics.hmm.proxy_top1_accuracy) : '—' }), h('td', { text: secs(r.seconds) }))))));
+      h('thead', {}, h('tr', {}, h('th', { text: 'Time' }), h('th', { text: 'Trip' }), h('th', { text: 'Request' }), h('th', { text: 'Result' }), h('th', { text: 'Server' }))),
+      h('tbody', {}, rows.map(r => r.ok
+        ? h('tr', {}, h('td', { text: time(r) }), h('td', { text: r.trip_id }), h('td', { text: r.request_id }), h('td', { text: r.metrics ? 'Viterbi ' + pct(r.metrics.hmm.proxy_top1_accuracy) : '—' }), h('td', { text: secs(r.seconds) }))
+        : h('tr', { title: r.message }, h('td', { text: time(r) }), h('td', { text: r.trip_id }), h('td', { class: 'na', text: '—' }), h('td', { style: 'color:var(--reset)', text: 'Failed' + (r.status ? ' · ' + r.status : '') + (r.status === 404 ? ' trip not served' : '') }), h('td', { class: 'na', text: '—' }))))));
   }
 
   // ---------- session sync ----------
@@ -431,7 +436,7 @@
   function apply(event, session) {
     S.session = session;
     setMode(session.mode);
-    renderLog(session.history);
+    renderLog(session.history, session.failures);
     if (session.running) {
       setLive('busy', 'Laptop 1 is matching trip ' + session.running.trip_id);
       $('title').textContent = 'Matching trip ' + session.running.trip_id + '…';
