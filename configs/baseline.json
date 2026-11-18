@@ -1,0 +1,16 @@
+{
+  "seed": 357,
+  "candidate_count": 8,
+  "candidate_radius_m": 100.0,
+  "index_spacing_m": 30.0,
+  "training_stride": 5,
+  "training_label_max_distance_m": 75.0,
+  "cv_folds": 3,
+  "bayesian_trials": 12,
+  "decoder": {
+    "beta_m": 25.0,
+    "max_speed_mps": 55.0,
+    "gap_reset_s": 60.0,
+    "routing_slack_m": 100.0
+  }
+}

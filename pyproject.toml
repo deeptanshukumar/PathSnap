@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pathsnap"
+version = "0.1.0"
+description = "Trip-grouped candidate learning and directed HMM map matching"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy==2.3.5", "scipy==1.16.3", "scikit-learn==1.7.2",
+  "optuna>=4.6,<5", "fastapi>=0.115,<1", "uvicorn>=0.30,<1",
+  "folium>=0.19,<1", "matplotlib>=3.9,<4", "joblib>=1.4,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "httpx>=0.27,<1"]
+report = ["reportlab>=4,<5", "python-pptx>=1,<2"]
+
+[project.scripts]
+pathsnap = "pathsnap.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pathsnap*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
