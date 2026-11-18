@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from pathsnap.data import Trip, load_trip
-from pathsnap.decoder import DecoderConfig, decode, emission_probabilities, reconstruct_route, viterbi
+from pathsnap.decoder import Decoded, DecoderConfig, decode, emission_probabilities, reconstruct_route, viterbi
 from pathsnap.experiments import grouped_folds
 from pathsnap.features import generate_candidates
 from pathsnap.geometry import LocalProjection, RoadNetwork, project_segments
@@ -111,6 +111,14 @@ def test_trip_group_folds_never_overlap():
         assert not set(groups[train]) & set(groups[validation])
         all_validation.extend(validation)
     assert sorted(all_validation) == list(range(90))
+
+
+def test_same_arc_backward_motion_preserves_required_network_loop():
+    trip = Trip("00000001", np.array([[.0008, 0., 0.], [.0002, 0., 10.]]),
+                np.array([[0., 0.], [.001, 0.]]), np.array([[0, 1], [1, 0]]))
+    network = RoadNetwork(trip)
+    decoded = Decoded(np.array([0, 0]), np.array([0, 0]), np.array([True, False]), {})
+    assert reconstruct_route(network, decoded, DecoderConfig()) == [[0, 1, 0]]
 
 
 def test_loader_rejects_fractional_arc_node_ids(tmp_path):

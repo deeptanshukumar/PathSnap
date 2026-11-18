@@ -98,9 +98,9 @@ class RoadNetwork:
         result[result > limit_m] = np.inf
         return result
 
-    def bridge(self, left: int, right: int, limit_m: float) -> list[int] | None:
+    def bridge(self, left: int, right: int, limit_m: float, *, same_arc_loop: bool = False) -> list[int] | None:
         """Intermediate arcs only. None marks an actual break, never a straight connector."""
-        if left == right:
+        if left == right and not same_arc_loop:
             return []
         source, target = int(self.trip.arcs[left, 1]), int(self.trip.arcs[right, 0])
         if source == target:

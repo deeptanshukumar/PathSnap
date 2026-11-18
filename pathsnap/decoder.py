@@ -121,9 +121,24 @@ def reconstruct_route(network: RoadNetwork, decoded: Decoded, config: DecoderCon
         left, right = int(decoded.arc_ids[i - 1]), int(decoded.arc_ids[i])
         if decoded.break_before[i]:
             pieces.append([right])
-        elif left != right:
+        else:
+            # Recompute the exact segment projections used for the states.
+            # Equal arc IDs can still require a real network loop between them.
+            left_point = network.gps[i - 1]
+            right_point = network.gps[i]
+            vector = network.vectors[left]
+            denominator = float(np.dot(vector, vector))
+            if left == right and denominator > 0:
+                left_fraction = float(np.clip(np.dot(left_point - network.starts[left], vector) / denominator, 0, 1))
+                right_fraction = float(np.clip(np.dot(right_point - network.starts[left], vector) / denominator, 0, 1))
+                same_arc_loop = (right_fraction - left_fraction) * network.lengths[left] < -3.0
+            else:
+                same_arc_loop = False
+            if left == right and not same_arc_loop:
+                continue
             dt = network.trip.track[i, 2] - network.trip.track[i - 1, 2]
-            bridge = network.bridge(left, right, config.max_speed_mps * dt + config.routing_slack_m)
+            bridge = network.bridge(left, right, config.max_speed_mps * dt + config.routing_slack_m,
+                                    same_arc_loop=same_arc_loop)
             if bridge is None:
                 pieces.append([right])
             else:
