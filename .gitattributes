@@ -1,0 +1,6 @@
+*.pdf binary
+*.pptx binary
+*.png binary
+*.jpg binary
+*.joblib binary
+reports/maps/*.html linguist-generated=true -whitespace

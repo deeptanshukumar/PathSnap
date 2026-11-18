@@ -1,0 +1,111 @@
+Decoder search: 00000000
+Decoder search: 00000007
+Decoder search: 00000009
+Decoder search: 00000040
+Decoder search: 00000052
+Decoder search: 00000056
+Decoder search: 00000065
+Decoder search: 00000076
+Decoder search: 00000077
+Decoder search: 00000091
+{
+  "chosen": {
+    "normalize_transition_rows": false,
+    "beta_m": 25.0,
+    "trips": [
+      {
+        "trip": "00000000",
+        "observations": 2503,
+        "correct": 2381,
+        "proxy_top1_accuracy": 0.9512584898122254
+      },
+      {
+        "trip": "00000007",
+        "observations": 1354,
+        "correct": 1149,
+        "proxy_top1_accuracy": 0.8485967503692762
+      },
+      {
+        "trip": "00000009",
+        "observations": 1049,
+        "correct": 947,
+        "proxy_top1_accuracy": 0.9027645376549094
+      },
+      {
+        "trip": "00000040",
+        "observations": 2995,
+        "correct": 2681,
+        "proxy_top1_accuracy": 0.8951585976627713
+      },
+      {
+        "trip": "00000052",
+        "observations": 262,
+        "correct": 261,
+        "proxy_top1_accuracy": 0.9961832061068703
+      },
+      {
+        "trip": "00000056",
+        "observations": 3958,
+        "correct": 3613,
+        "proxy_top1_accuracy": 0.9128347650328449
+      },
+      {
+        "trip": "00000065",
+        "observations": 768,
+        "correct": 659,
+        "proxy_top1_accuracy": 0.8580729166666666
+      },
+      {
+        "trip": "00000076",
+        "observations": 1486,
+        "correct": 1395,
+        "proxy_top1_accuracy": 0.9387617765814267
+      },
+      {
+        "trip": "00000077",
+        "observations": 3911,
+        "correct": 2519,
+        "proxy_top1_accuracy": 0.6440807977499361
+      },
+      {
+        "trip": "00000091",
+        "observations": 874,
+        "correct": 762,
+        "proxy_top1_accuracy": 0.8718535469107551
+      }
+    ],
+    "development_proxy_top1_accuracy": 0.8542275574112735
+  },
+  "all_scores": [
+    [
+      true,
+      5.0,
+      0.8393528183716075
+    ],
+    [
+      true,
+      25.0,
+      0.8474425887265136
+    ],
+    [
+      true,
+      100.0,
+      0.8436847599164927
+    ],
+    [
+      false,
+      5.0,
+      0.8378914405010438
+    ],
+    [
+      false,
+      25.0,
+      0.8542275574112735
+    ],
+    [
+      false,
+      100.0,
+      0.8526096033402922
+    ]
+  ]
+}

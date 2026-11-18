@@ -1,0 +1,23 @@
+Training logistic
+logistic: CV Macro F1=0.8913; dev Top-1=0.8248
+Training gaussian_nb
+gaussian_nb: CV Macro F1=0.8363; dev Top-1=0.8346
+Training decision_tree
+decision_tree: CV Macro F1=0.9211; dev Top-1=0.8744
+Training random_forest
+random_forest: CV Macro F1=0.9260; dev Top-1=0.8757
+Training hist_gradient_boosting
+hist_gradient_boosting: CV Macro F1=0.9278; dev Top-1=0.8763
+TPE trial 0: 0.9280
+TPE trial 1: 0.9282
+TPE trial 2: 0.9267
+TPE trial 3: 0.9269
+TPE trial 4: 0.9280
+TPE trial 5: 0.9290
+TPE trial 6: 0.9285
+TPE trial 7: 0.9284
+TPE trial 8: 0.9263
+TPE trial 9: 0.9286
+TPE trial 10: 0.9285
+TPE trial 11: 0.9288
+Final artifact: hist_gradient_boosting, tuned=True

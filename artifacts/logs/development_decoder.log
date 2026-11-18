@@ -1,0 +1,10 @@
+Decoded 00000000: classifier=0.9485 HMM=0.9513 resets=4 time=0.72s
+Decoded 00000007: classifier=0.9284 HMM=0.8486 resets=0 time=0.37s
+Decoded 00000009: classifier=0.8751 HMM=0.9028 resets=2 time=0.47s
+Decoded 00000040: classifier=0.9306 HMM=0.8952 resets=10 time=0.96s
+Decoded 00000052: classifier=0.9656 HMM=0.9962 resets=0 time=0.12s
+Decoded 00000056: classifier=0.9012 HMM=0.9128 resets=7 time=1.81s
+Decoded 00000065: classifier=0.9036 HMM=0.8581 resets=4 time=0.34s
+Decoded 00000076: classifier=0.9092 HMM=0.9388 resets=0 time=1.08s
+Decoded 00000077: classifier=0.7141 HMM=0.6441 resets=10 time=1.28s
+Decoded 00000091: classifier=0.8730 HMM=0.8719 resets=1 time=0.36s
