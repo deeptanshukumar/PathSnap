@@ -57,3 +57,7 @@ See `docs/DECISIONS.md` for important choices and the corrected same-arc-loop me
 ## Deliverables audit and viva study guide
 
 Latest code at `3d05683` was checked against all five organiser PDFs. `docs/DELIVERABLES_AUDIT.md` records complete, partial and missing items. Core predictor/scorer hashes still match; 13 local tests pass. The live API still needs restart for the new trace endpoints, and genuine two-laptop/terminal evidence plus current report screenshots remain open. `reports/PathSnap_Viva_Study_Guide.pdf` adds 154 short Q&As, required-question coverage, model metrics and Chiranth's full report-only reserved comparison. It is rehearsal material, separate from the single technical submission report.
+
+## Repository documentation cleanup
+
+README now describes the project, current UI/trace endpoints, measured results and portable server/UI setup without teammate-specific instructions. The personal handoff was removed at the user's request; its required setup and trace guidance is covered in README, and the audit link was updated. No predictor, experiment results or runtime configuration changed.

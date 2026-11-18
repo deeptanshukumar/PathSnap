@@ -8,7 +8,7 @@ Audited `main` at `3d05683` against all five organiser PDFs. **Core software and
 |---|---|---|
 | Public GitHub repository and complete source | Present | Public repository; processing, training, tuning, decoder, API, UI, maps and generators tracked. |
 | Saved final model and inference configuration | Present | `artifacts/models/final.joblib`, `final_model.json`, `configs/baseline.json`; model/features/decoder/scorer still match pre-evaluation freeze. |
-| Portable installation and two-laptop instructions | Present | `README.md`, pinned core versions, dependency snapshot, `docs/CHIRANTH_HANDOFF.md`. |
+| Portable installation and two-laptop instructions | Present | `README.md` server/UI setup, pinned core versions and dependency snapshot. |
 | Consolidated technical PDF | Present, needs final refresh | `reports/PathSnap_Technical_Report.pdf`, 18 pages. Keep this as the single submission report. The separate study guide is for rehearsal. |
 | Raw formats, preprocessing, missing values and timestamps | Present | `data.py`, `prepare.py`, `inventory.json`; report Sections 2-2.1. |
 | Geographic extent, network connectivity, isolated nodes and anomalies | Present | Per-trip inventory plus EDA figures; 90 development/training records. |
