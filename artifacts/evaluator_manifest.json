@@ -1,0 +1,18 @@
+{
+  "archive_sha256": "a425b35e6e6f8d3a919690c5df3a9a7df2f7c2de7343a01c50ccd6ecb45178a7",
+  "trip_ids": [
+    "00000015",
+    "00000017",
+    "00000023",
+    "00000030",
+    "00000049",
+    "00000059",
+    "00000067",
+    "00000073",
+    "00000087",
+    "00000094"
+  ],
+  "trip_count": 10,
+  "use": "final evaluation only, after evaluation_freeze.json",
+  "reference_files": "server-side scoring only"
+}

@@ -1,0 +1,1475 @@
+[
+  {
+    "name": "logistic",
+    "family": "Linear",
+    "parameters": {
+      "C": 1.0,
+      "max_iter": 800
+    },
+    "cv_candidate_macro_f1": 0.8913317578896809,
+    "cv_candidate_macro_f1_std": 0.004691349758174649,
+    "cv_folds": [
+      {
+        "fold": 0,
+        "training_seconds": 0.5006292100006249,
+        "candidate_accuracy": 0.9463266844039802,
+        "candidate_macro_f1": 0.8905053702147362,
+        "candidate_precision": 0.8168937919100151,
+        "candidate_recall": 0.8078074866310161,
+        "candidate_log_loss": 0.1478310314416927,
+        "candidate_confusion_matrix": [
+          [
+            53980,
+            1693
+          ],
+          [
+            1797,
+            7553
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "training_seconds": 0.256668729998637,
+        "candidate_accuracy": 0.95102416974777,
+        "candidate_macro_f1": 0.8974459127328358,
+        "candidate_precision": 0.7999538532533457,
+        "candidate_recall": 0.848091976516634,
+        "candidate_log_loss": 0.1396691638200537,
+        "candidate_confusion_matrix": [
+          [
+            76282,
+            2601
+          ],
+          [
+            1863,
+            10401
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "training_seconds": 0.27354240799468243,
+        "candidate_accuracy": 0.9405082242499039,
+        "candidate_macro_f1": 0.8860439907214708,
+        "candidate_precision": 0.8110635495554824,
+        "candidate_recall": 0.8034968684759917,
+        "candidate_log_loss": 0.16581802238831733,
+        "candidate_confusion_matrix": [
+          [
+            80657,
+            2869
+          ],
+          [
+            3012,
+            12316
+          ]
+        ]
+      }
+    ],
+    "oof": {
+      "candidate_accuracy": 0.9457502039023779,
+      "candidate_macro_f1": 0.8911138626500907,
+      "candidate_precision": 0.808644778671226,
+      "candidate_recall": 0.8193925613123274,
+      "candidate_log_loss": 0.1518861645073183,
+      "candidate_confusion_matrix": [
+        [
+          210919,
+          7163
+        ],
+        [
+          6672,
+          30270
+        ]
+      ]
+    },
+    "full_fit_seconds": 0.5088166799978353,
+    "training": {
+      "candidate_accuracy": 0.9461736934563022,
+      "candidate_macro_f1": 0.8920023896473108,
+      "candidate_precision": 0.8098225010009342,
+      "candidate_recall": 0.8212874235287748,
+      "candidate_log_loss": 0.1506104014469113,
+      "candidate_confusion_matrix": [
+        [
+          210957,
+          7125
+        ],
+        [
+          6602,
+          30340
+        ]
+      ]
+    },
+    "student_test": {
+      "summary": {
+        "candidate_accuracy": 0.9433519919968842,
+        "candidate_macro_f1": 0.8878586250436019,
+        "candidate_precision": 0.7956537156172433,
+        "candidate_recall": 0.8227437012204704,
+        "candidate_log_loss": 0.15453810273085822,
+        "candidate_confusion_matrix": [
+          [
+            107824,
+            4034
+          ],
+          [
+            3384,
+            15707
+          ]
+        ],
+        "proxy_top1_accuracy": 0.8248434237995824,
+        "proxy_candidate_miss_rate": 0.00360125260960334,
+        "observation_proxy_log_loss": 0.6647570398828516,
+        "mean_trip_proxy_arc_macro_f1": 0.6744869700193812,
+        "mean_trip_route_length_f1": 0.8975967304739882,
+        "mean_trip_ordered_route_lcs_f1": 0.6761650237545853,
+        "mean_trip_direct_arc_continuity": 0.6369006868640812,
+        "model_inference_seconds": 0.06347713501600083,
+        "observations": 19160
+      },
+      "trips": [
+        {
+          "trip": "00000000",
+          "observations": 2503,
+          "model_inference_seconds": 0.0061655340032302774,
+          "proxy_candidate_miss_rate": 0.001997602876548142,
+          "observation_proxy_log_loss": 0.35534136624115176,
+          "proxy_label_distance_p95_m": 16.63183407528428,
+          "proxy_top1_accuracy": 0.9272872552936476,
+          "proxy_arc_macro_f1": 0.7042494916255672,
+          "route_length_precision": 0.9038857506511457,
+          "route_length_recall": 0.9955288912407427,
+          "route_length_f1": 0.9474965174089242,
+          "ordered_route_lcs_f1": 0.6991525423728814,
+          "direct_arc_continuity": 0.6027397260273972,
+          "predicted_sequence_arcs": 293
+        },
+        {
+          "trip": "00000007",
+          "observations": 1354,
+          "model_inference_seconds": 0.0051060520054306835,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.31599290711711864,
+          "proxy_label_distance_p95_m": 26.13818899835199,
+          "proxy_top1_accuracy": 0.9091580502215657,
+          "proxy_arc_macro_f1": 0.8874350473616888,
+          "route_length_precision": 0.9788857647899282,
+          "route_length_recall": 0.9903932686524013,
+          "route_length_f1": 0.984605894607971,
+          "ordered_route_lcs_f1": 0.7090909090909091,
+          "direct_arc_continuity": 0.9466019417475728,
+          "predicted_sequence_arcs": 207
+        },
+        {
+          "trip": "00000009",
+          "observations": 1049,
+          "model_inference_seconds": 0.005690675003279466,
+          "proxy_candidate_miss_rate": 0.0219256434699714,
+          "observation_proxy_log_loss": 1.2421519111670831,
+          "proxy_label_distance_p95_m": 18.13437349665391,
+          "proxy_top1_accuracy": 0.7702573879885606,
+          "proxy_arc_macro_f1": 0.6235755654105483,
+          "route_length_precision": 0.8152575455561875,
+          "route_length_recall": 0.9007461282332525,
+          "route_length_f1": 0.8558723840620245,
+          "ordered_route_lcs_f1": 0.7588652482269503,
+          "direct_arc_continuity": 0.6081730769230769,
+          "predicted_sequence_arcs": 417
+        },
+        {
+          "trip": "00000040",
+          "observations": 2995,
+          "model_inference_seconds": 0.006831253995187581,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.3423827325674745,
+          "proxy_label_distance_p95_m": 14.92251128071368,
+          "proxy_top1_accuracy": 0.9068447412353923,
+          "proxy_arc_macro_f1": 0.7720834781099813,
+          "route_length_precision": 0.9196182760679307,
+          "route_length_recall": 0.9927216983057436,
+          "route_length_f1": 0.95477271724151,
+          "ordered_route_lcs_f1": 0.7438231469440832,
+          "direct_arc_continuity": 0.7211328976034859,
+          "predicted_sequence_arcs": 460
+        },
+        {
+          "trip": "00000052",
+          "observations": 262,
+          "model_inference_seconds": 0.0043904350022785366,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.3461554822805773,
+          "proxy_label_distance_p95_m": 12.641000438375205,
+          "proxy_top1_accuracy": 0.9083969465648855,
+          "proxy_arc_macro_f1": 0.7057385022598314,
+          "route_length_precision": 0.8769085177858001,
+          "route_length_recall": 0.9388371121353608,
+          "route_length_f1": 0.906816733443733,
+          "ordered_route_lcs_f1": 0.7796610169491526,
+          "direct_arc_continuity": 0.654320987654321,
+          "predicted_sequence_arcs": 82
+        },
+        {
+          "trip": "00000056",
+          "observations": 3958,
+          "model_inference_seconds": 0.009200360997056123,
+          "proxy_candidate_miss_rate": 0.004800404244567963,
+          "observation_proxy_log_loss": 0.7147497128136224,
+          "proxy_label_distance_p95_m": 14.493732399527993,
+          "proxy_top1_accuracy": 0.8284487114704396,
+          "proxy_arc_macro_f1": 0.67492598442987,
+          "route_length_precision": 0.8341354841465289,
+          "route_length_recall": 0.9484957269155324,
+          "route_length_f1": 0.8876473579863258,
+          "ordered_route_lcs_f1": 0.7605939876856211,
+          "direct_arc_continuity": 0.6228253305497564,
+          "predicted_sequence_arcs": 1438
+        },
+        {
+          "trip": "00000065",
+          "observations": 768,
+          "model_inference_seconds": 0.005068146005214658,
+          "proxy_candidate_miss_rate": 0.0013020833333333333,
+          "observation_proxy_log_loss": 0.5427882463660806,
+          "proxy_label_distance_p95_m": 11.7516849178371,
+          "proxy_top1_accuracy": 0.8528645833333334,
+          "proxy_arc_macro_f1": 0.6292412658114678,
+          "route_length_precision": 0.8413866456726681,
+          "route_length_recall": 0.9569249598318259,
+          "route_length_f1": 0.8954442374156613,
+          "ordered_route_lcs_f1": 0.6909090909090909,
+          "direct_arc_continuity": 0.5543478260869565,
+          "predicted_sequence_arcs": 185
+        },
+        {
+          "trip": "00000076",
+          "observations": 1486,
+          "model_inference_seconds": 0.006001570000080392,
+          "proxy_candidate_miss_rate": 0.007402422611036339,
+          "observation_proxy_log_loss": 0.7877416545680187,
+          "proxy_label_distance_p95_m": 18.65275460555969,
+          "proxy_top1_accuracy": 0.8095558546433378,
+          "proxy_arc_macro_f1": 0.5424172286933013,
+          "route_length_precision": 0.8069234882609726,
+          "route_length_recall": 0.9329773526772565,
+          "route_length_f1": 0.8653841899229788,
+          "ordered_route_lcs_f1": 0.6926952141057935,
+          "direct_arc_continuity": 0.4821002386634845,
+          "predicted_sequence_arcs": 420
+        },
+        {
+          "trip": "00000077",
+          "observations": 3911,
+          "model_inference_seconds": 0.0095212439991883,
+          "proxy_candidate_miss_rate": 0.0025568908207619537,
+          "observation_proxy_log_loss": 1.0346567132976205,
+          "proxy_label_distance_p95_m": 18.42401964052835,
+          "proxy_top1_accuracy": 0.6747634875990796,
+          "proxy_arc_macro_f1": 0.5493664876332811,
+          "route_length_precision": 0.6700485469609554,
+          "route_length_recall": 0.9800515050720556,
+          "route_length_f1": 0.7959300238932313,
+          "ordered_route_lcs_f1": 0.2862340812613705,
+          "direct_arc_continuity": 0.6391304347826087,
+          "predicted_sequence_arcs": 1381
+        },
+        {
+          "trip": "00000091",
+          "observations": 874,
+          "model_inference_seconds": 0.005501864005054813,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.6148254371685954,
+          "proxy_label_distance_p95_m": 12.481327572462536,
+          "proxy_top1_accuracy": 0.816933638443936,
+          "proxy_arc_macro_f1": 0.6558366488582744,
+          "route_length_precision": 0.8145807730706802,
+          "route_length_recall": 0.9615796729779041,
+          "route_length_f1": 0.881997248757523,
+          "ordered_route_lcs_f1": 0.640625,
+          "direct_arc_continuity": 0.5376344086021505,
+          "predicted_sequence_arcs": 280
+        }
+      ]
+    }
+  },
+  {
+    "name": "gaussian_nb",
+    "family": "Probabilistic",
+    "parameters": {
+      "var_smoothing": 1e-07
+    },
+    "cv_candidate_macro_f1": 0.8363304501044543,
+    "cv_candidate_macro_f1_std": 0.006034522522059807,
+    "cv_folds": [
+      {
+        "fold": 0,
+        "training_seconds": 0.11545992299943464,
+        "candidate_accuracy": 0.9013887393691463,
+        "candidate_macro_f1": 0.829433163365211,
+        "candidate_precision": 0.6093005952380952,
+        "candidate_recall": 0.8758288770053476,
+        "candidate_log_loss": 0.5101683625716048,
+        "candidate_confusion_matrix": [
+          [
+            50422,
+            5251
+          ],
+          [
+            1161,
+            8189
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "training_seconds": 0.09853161100181751,
+        "candidate_accuracy": 0.9153565120080749,
+        "candidate_macro_f1": 0.8441315375956431,
+        "candidate_precision": 0.6317100005790723,
+        "candidate_recall": 0.8895140247879973,
+        "candidate_log_loss": 0.3751588490132877,
+        "candidate_confusion_matrix": [
+          [
+            72523,
+            6360
+          ],
+          [
+            1355,
+            10909
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "training_seconds": 0.09470434600370936,
+        "candidate_accuracy": 0.9046776053573957,
+        "candidate_macro_f1": 0.8354266493525085,
+        "candidate_precision": 0.6521828771712799,
+        "candidate_recall": 0.8254827766179541,
+        "candidate_log_loss": 0.5374014675640622,
+        "candidate_confusion_matrix": [
+          [
+            76778,
+            6748
+          ],
+          [
+            2675,
+            12653
+          ]
+        ]
+      }
+    ],
+    "oof": {
+      "candidate_accuracy": 0.9076557500470543,
+      "candidate_macro_f1": 0.8368988771821887,
+      "candidate_precision": 0.6336260227499501,
+      "candidate_recall": 0.8594824319203075,
+      "candidate_log_loss": 0.47247147611630824,
+      "candidate_confusion_matrix": [
+        [
+          199723,
+          18359
+        ],
+        [
+          5191,
+          31751
+        ]
+      ]
+    },
+    "full_fit_seconds": 0.1454016080024303,
+    "training": {
+      "candidate_accuracy": 0.9062362758014932,
+      "candidate_macro_f1": 0.8357250768627699,
+      "candidate_precision": 0.6277400886239756,
+      "candidate_recall": 0.8666558388825727,
+      "candidate_log_loss": 0.4561238293470427,
+      "candidate_confusion_matrix": [
+        [
+          199096,
+          18986
+        ],
+        [
+          4926,
+          32016
+        ]
+      ]
+    },
+    "student_test": {
+      "summary": {
+        "candidate_accuracy": 0.8932637897196618,
+        "candidate_macro_f1": 0.8207385667100946,
+        "candidate_precision": 0.5895120072813834,
+        "candidate_recall": 0.8820910376617255,
+        "candidate_log_loss": 0.5633742197219117,
+        "candidate_confusion_matrix": [
+          [
+            100132,
+            11726
+          ],
+          [
+            2251,
+            16840
+          ]
+        ],
+        "proxy_top1_accuracy": 0.8346033402922756,
+        "proxy_candidate_miss_rate": 0.00360125260960334,
+        "observation_proxy_log_loss": 0.9448040800133602,
+        "mean_trip_proxy_arc_macro_f1": 0.7315854455284974,
+        "mean_trip_route_length_f1": 0.9042095063449356,
+        "mean_trip_ordered_route_lcs_f1": 0.6816331592279029,
+        "mean_trip_direct_arc_continuity": 0.6837101368639502,
+        "model_inference_seconds": 0.10764609501347877,
+        "observations": 19160
+      },
+      "trips": [
+        {
+          "trip": "00000000",
+          "observations": 2503,
+          "model_inference_seconds": 0.010602907001157291,
+          "proxy_candidate_miss_rate": 0.001997602876548142,
+          "observation_proxy_log_loss": 0.7345657156174086,
+          "proxy_label_distance_p95_m": 16.63183407528428,
+          "proxy_top1_accuracy": 0.8649620455453456,
+          "proxy_arc_macro_f1": 0.7240312379168995,
+          "route_length_precision": 0.7805111670921825,
+          "route_length_recall": 0.9946695054006255,
+          "route_length_f1": 0.8746722725873881,
+          "ordered_route_lcs_f1": 0.5380875202593193,
+          "direct_arc_continuity": 0.7368421052631579,
+          "predicted_sequence_arcs": 438
+        },
+        {
+          "trip": "00000007",
+          "observations": 1354,
+          "model_inference_seconds": 0.008080533996690065,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.6813602442940403,
+          "proxy_label_distance_p95_m": 26.13818899835199,
+          "proxy_top1_accuracy": 0.9054652880354506,
+          "proxy_arc_macro_f1": 0.8939020227710743,
+          "route_length_precision": 0.9792419820985031,
+          "route_length_recall": 0.9901517414141771,
+          "route_length_f1": 0.9846666436118154,
+          "ordered_route_lcs_f1": 0.7048192771084337,
+          "direct_arc_continuity": 0.9519230769230769,
+          "predicted_sequence_arcs": 209
+        },
+        {
+          "trip": "00000009",
+          "observations": 1049,
+          "model_inference_seconds": 0.00842816799558932,
+          "proxy_candidate_miss_rate": 0.0219256434699714,
+          "observation_proxy_log_loss": 1.4226589766790758,
+          "proxy_label_distance_p95_m": 18.13437349665391,
+          "proxy_top1_accuracy": 0.8217349857006673,
+          "proxy_arc_macro_f1": 0.720730251277566,
+          "route_length_precision": 0.8479552932933089,
+          "route_length_recall": 0.9188371057823106,
+          "route_length_f1": 0.8819743484634123,
+          "ordered_route_lcs_f1": 0.7934272300469484,
+          "direct_arc_continuity": 0.6635071090047393,
+          "predicted_sequence_arcs": 423
+        },
+        {
+          "trip": "00000040",
+          "observations": 2995,
+          "model_inference_seconds": 0.012190015004307497,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.5996643581182002,
+          "proxy_label_distance_p95_m": 14.92251128071368,
+          "proxy_top1_accuracy": 0.9031719532554258,
+          "proxy_arc_macro_f1": 0.7963751042189039,
+          "route_length_precision": 0.8794562962818753,
+          "route_length_recall": 0.9952151195655559,
+          "route_length_f1": 0.9337617202225256,
+          "ordered_route_lcs_f1": 0.73989898989899,
+          "direct_arc_continuity": 0.7199170124481328,
+          "predicted_sequence_arcs": 483
+        },
+        {
+          "trip": "00000052",
+          "observations": 262,
+          "model_inference_seconds": 0.005581509998592082,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.3982443528286519,
+          "proxy_label_distance_p95_m": 12.641000438375205,
+          "proxy_top1_accuracy": 0.9236641221374046,
+          "proxy_arc_macro_f1": 0.7620725937003058,
+          "route_length_precision": 0.8834013653272038,
+          "route_length_recall": 0.9557198126601786,
+          "route_length_f1": 0.9181387256909219,
+          "ordered_route_lcs_f1": 0.8176795580110497,
+          "direct_arc_continuity": 0.7294117647058823,
+          "predicted_sequence_arcs": 86
+        },
+        {
+          "trip": "00000056",
+          "observations": 3958,
+          "model_inference_seconds": 0.01853948500502156,
+          "proxy_candidate_miss_rate": 0.004800404244567963,
+          "observation_proxy_log_loss": 0.9152400802326932,
+          "proxy_label_distance_p95_m": 14.493732399527993,
+          "proxy_top1_accuracy": 0.8630621526023244,
+          "proxy_arc_macro_f1": 0.76595011762079,
+          "route_length_precision": 0.8519489384137248,
+          "route_length_recall": 0.9581203259570719,
+          "route_length_f1": 0.9019208387646813,
+          "ordered_route_lcs_f1": 0.7888848791050163,
+          "direct_arc_continuity": 0.6592950932964755,
+          "predicted_sequence_arcs": 1448
+        },
+        {
+          "trip": "00000065",
+          "observations": 768,
+          "model_inference_seconds": 0.007560131001810078,
+          "proxy_candidate_miss_rate": 0.0013020833333333333,
+          "observation_proxy_log_loss": 0.7352712933202835,
+          "proxy_label_distance_p95_m": 11.7516849178371,
+          "proxy_top1_accuracy": 0.859375,
+          "proxy_arc_macro_f1": 0.6579488287354142,
+          "route_length_precision": 0.8646369389917266,
+          "route_length_recall": 0.9620999718482105,
+          "route_length_f1": 0.9107684524536911,
+          "ordered_route_lcs_f1": 0.7065868263473054,
+          "direct_arc_continuity": 0.5957446808510638,
+          "predicted_sequence_arcs": 189
+        },
+        {
+          "trip": "00000076",
+          "observations": 1486,
+          "model_inference_seconds": 0.01008554500003811,
+          "proxy_candidate_miss_rate": 0.007402422611036339,
+          "observation_proxy_log_loss": 0.9469668030125842,
+          "proxy_label_distance_p95_m": 18.65275460555969,
+          "proxy_top1_accuracy": 0.8714670255720054,
+          "proxy_arc_macro_f1": 0.6800315948936607,
+          "route_length_precision": 0.8598162332072453,
+          "route_length_recall": 0.9628055499951705,
+          "route_length_f1": 0.9084011273620779,
+          "ordered_route_lcs_f1": 0.775,
+          "direct_arc_continuity": 0.5764705882352941,
+          "predicted_sequence_arcs": 426
+        },
+        {
+          "trip": "00000077",
+          "observations": 3911,
+          "model_inference_seconds": 0.018439393003063742,
+          "proxy_candidate_miss_rate": 0.0025568908207619537,
+          "observation_proxy_log_loss": 1.4358181040567595,
+          "proxy_label_distance_p95_m": 18.42401964052835,
+          "proxy_top1_accuracy": 0.6890820761953464,
+          "proxy_arc_macro_f1": 0.610608822125066,
+          "route_length_precision": 0.7066465990897983,
+          "route_length_recall": 0.9884960794845868,
+          "route_length_f1": 0.8241399400890965,
+          "ordered_route_lcs_f1": 0.2916419679905157,
+          "direct_arc_continuity": 0.616361071932299,
+          "predicted_sequence_arcs": 1419
+        },
+        {
+          "trip": "00000091",
+          "observations": 874,
+          "model_inference_seconds": 0.008138407007209025,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.8451676332681327,
+          "proxy_label_distance_p95_m": 12.481327572462536,
+          "proxy_top1_accuracy": 0.8295194508009154,
+          "proxy_arc_macro_f1": 0.7042038820252934,
+          "route_length_precision": 0.8443382365045369,
+          "route_length_recall": 0.9719265265411466,
+          "route_length_f1": 0.9036509942037462,
+          "ordered_route_lcs_f1": 0.6603053435114504,
+          "direct_arc_continuity": 0.5876288659793815,
+          "predicted_sequence_arcs": 292
+        }
+      ]
+    }
+  },
+  {
+    "name": "decision_tree",
+    "family": "Tree",
+    "parameters": {
+      "max_depth": 10,
+      "min_samples_leaf": 20
+    },
+    "cv_candidate_macro_f1": 0.9211045553142329,
+    "cv_candidate_macro_f1_std": 0.011915463950978136,
+    "cv_folds": [
+      {
+        "fold": 0,
+        "training_seconds": 3.43479219499568,
+        "candidate_accuracy": 0.9646586592436522,
+        "candidate_macro_f1": 0.9270840623405208,
+        "candidate_precision": 0.891951978657181,
+        "candidate_recall": 0.8581818181818182,
+        "candidate_log_loss": 0.1439650784634795,
+        "candidate_confusion_matrix": [
+          [
+            54701,
+            972
+          ],
+          [
+            1326,
+            8024
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "training_seconds": 2.9619963000004645,
+        "candidate_accuracy": 0.9681393792445171,
+        "candidate_macro_f1": 0.9317585382227043,
+        "candidate_precision": 0.8795004865390853,
+        "candidate_recall": 0.8843770384866275,
+        "candidate_log_loss": 0.13268799820960409,
+        "candidate_confusion_matrix": [
+          [
+            77397,
+            1486
+          ],
+          [
+            1418,
+            10846
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "training_seconds": 2.8828605960006826,
+        "candidate_accuracy": 0.9507758917191009,
+        "candidate_macro_f1": 0.9044710653794732,
+        "candidate_precision": 0.8558019317099714,
+        "candidate_recall": 0.8208507306889353,
+        "candidate_log_loss": 0.2353017440316219,
+        "candidate_confusion_matrix": [
+          [
+            81406,
+            2120
+          ],
+          [
+            2746,
+            12582
+          ]
+        ]
+      }
+    ],
+    "oof": {
+      "candidate_accuracy": 0.9605213626952758,
+      "candidate_macro_f1": 0.9194971879841778,
+      "candidate_precision": 0.8729392173189009,
+      "candidate_recall": 0.8513886633100536,
+      "candidate_log_loss": 0.17533907739759225,
+      "candidate_confusion_matrix": [
+        [
+          213504,
+          4578
+        ],
+        [
+          5490,
+          31452
+        ]
+      ]
+    },
+    "full_fit_seconds": 4.986215463999542,
+    "training": {
+      "candidate_accuracy": 0.9691205533596838,
+      "candidate_macro_f1": 0.9369537420579093,
+      "candidate_precision": 0.9045961972105454,
+      "candidate_recall": 0.8795950408748849,
+      "candidate_log_loss": 0.07783916063159582,
+      "candidate_confusion_matrix": [
+        [
+          214655,
+          3427
+        ],
+        [
+          4448,
+          32494
+        ]
+      ]
+    },
+    "student_test": {
+      "summary": {
+        "candidate_accuracy": 0.9609924474413704,
+        "candidate_macro_f1": 0.9214202616139526,
+        "candidate_precision": 0.8693148803549733,
+        "candidate_recall": 0.8620292284322456,
+        "candidate_log_loss": 0.11315263536942406,
+        "candidate_confusion_matrix": [
+          [
+            109384,
+            2474
+          ],
+          [
+            2634,
+            16457
+          ]
+        ],
+        "proxy_top1_accuracy": 0.8744258872651357,
+        "proxy_candidate_miss_rate": 0.00360125260960334,
+        "observation_proxy_log_loss": 0.5169203486511422,
+        "mean_trip_proxy_arc_macro_f1": 0.8108602685113663,
+        "mean_trip_route_length_f1": 0.9321860872844541,
+        "mean_trip_ordered_route_lcs_f1": 0.7232210046989138,
+        "mean_trip_direct_arc_continuity": 0.7340236769524645,
+        "model_inference_seconds": 0.049237230989092495,
+        "observations": 19160
+      },
+      "trips": [
+        {
+          "trip": "00000000",
+          "observations": 2503,
+          "model_inference_seconds": 0.0047804389978409745,
+          "proxy_candidate_miss_rate": 0.001997602876548142,
+          "observation_proxy_log_loss": 0.24165128474224568,
+          "proxy_label_distance_p95_m": 16.63183407528428,
+          "proxy_top1_accuracy": 0.9492608869356772,
+          "proxy_arc_macro_f1": 0.8182528980860084,
+          "route_length_precision": 0.9680976040892459,
+          "route_length_recall": 0.9983192647524922,
+          "route_length_f1": 0.9829761976078828,
+          "ordered_route_lcs_f1": 0.7445887445887446,
+          "direct_arc_continuity": 0.6808510638297872,
+          "predicted_sequence_arcs": 283
+        },
+        {
+          "trip": "00000007",
+          "observations": 1354,
+          "model_inference_seconds": 0.004089829002623446,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.17211187110239917,
+          "proxy_label_distance_p95_m": 26.13818899835199,
+          "proxy_top1_accuracy": 0.9276218611521418,
+          "proxy_arc_macro_f1": 0.9635282539682539,
+          "route_length_precision": 0.9808495670943439,
+          "route_length_recall": 0.9930249569298568,
+          "route_length_f1": 0.9868997114697932,
+          "ordered_route_lcs_f1": 0.7076023391812866,
+          "direct_arc_continuity": 0.9770642201834863,
+          "predicted_sequence_arcs": 219
+        },
+        {
+          "trip": "00000009",
+          "observations": 1049,
+          "model_inference_seconds": 0.004349672002717853,
+          "proxy_candidate_miss_rate": 0.0219256434699714,
+          "observation_proxy_log_loss": 1.1062344388614296,
+          "proxy_label_distance_p95_m": 18.13437349665391,
+          "proxy_top1_accuracy": 0.8751191611058151,
+          "proxy_arc_macro_f1": 0.8126742409637147,
+          "route_length_precision": 0.8668906917382557,
+          "route_length_recall": 0.9443857667078129,
+          "route_length_f1": 0.9039804241385225,
+          "ordered_route_lcs_f1": 0.8271889400921659,
+          "direct_arc_continuity": 0.723744292237443,
+          "predicted_sequence_arcs": 439
+        },
+        {
+          "trip": "00000040",
+          "observations": 2995,
+          "model_inference_seconds": 0.005459538995637558,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.21052416894127984,
+          "proxy_label_distance_p95_m": 14.92251128071368,
+          "proxy_top1_accuracy": 0.9318864774624374,
+          "proxy_arc_macro_f1": 0.8522843416619014,
+          "route_length_precision": 0.9173510596407515,
+          "route_length_recall": 0.9953122970089366,
+          "route_length_f1": 0.9547428063179517,
+          "ordered_route_lcs_f1": 0.7412060301507538,
+          "direct_arc_continuity": 0.7613168724279835,
+          "predicted_sequence_arcs": 487
+        },
+        {
+          "trip": "00000052",
+          "observations": 262,
+          "model_inference_seconds": 0.003238440003769938,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.088729188167305,
+          "proxy_label_distance_p95_m": 12.641000438375205,
+          "proxy_top1_accuracy": 0.9770992366412213,
+          "proxy_arc_macro_f1": 0.8930652680652681,
+          "route_length_precision": 0.9428680841293023,
+          "route_length_recall": 0.9713419597379311,
+          "route_length_f1": 0.9568932474748071,
+          "ordered_route_lcs_f1": 0.88268156424581,
+          "direct_arc_continuity": 0.8313253012048193,
+          "predicted_sequence_arcs": 84
+        },
+        {
+          "trip": "00000056",
+          "observations": 3958,
+          "model_inference_seconds": 0.006964221996895503,
+          "proxy_candidate_miss_rate": 0.004800404244567963,
+          "observation_proxy_log_loss": 0.5906352172615066,
+          "proxy_label_distance_p95_m": 14.493732399527993,
+          "proxy_top1_accuracy": 0.898433552299141,
+          "proxy_arc_macro_f1": 0.8330950138595397,
+          "route_length_precision": 0.8667645047483485,
+          "route_length_recall": 0.9651869110422664,
+          "route_length_f1": 0.9133318140733458,
+          "ordered_route_lcs_f1": 0.8105187319884726,
+          "direct_arc_continuity": 0.7038567493112947,
+          "predicted_sequence_arcs": 1453
+        },
+        {
+          "trip": "00000065",
+          "observations": 768,
+          "model_inference_seconds": 0.0046077929946477525,
+          "proxy_candidate_miss_rate": 0.0013020833333333333,
+          "observation_proxy_log_loss": 0.5095471504343716,
+          "proxy_label_distance_p95_m": 11.7516849178371,
+          "proxy_top1_accuracy": 0.8893229166666666,
+          "proxy_arc_macro_f1": 0.7391767068212356,
+          "route_length_precision": 0.8593827235980175,
+          "route_length_recall": 0.9740343079824098,
+          "route_length_f1": 0.9131236833229052,
+          "ordered_route_lcs_f1": 0.7325581395348837,
+          "direct_arc_continuity": 0.6919191919191919,
+          "predicted_sequence_arcs": 199
+        },
+        {
+          "trip": "00000076",
+          "observations": 1486,
+          "model_inference_seconds": 0.0047295359981944785,
+          "proxy_candidate_miss_rate": 0.007402422611036339,
+          "observation_proxy_log_loss": 0.5397742561701246,
+          "proxy_label_distance_p95_m": 18.65275460555969,
+          "proxy_top1_accuracy": 0.9037685060565276,
+          "proxy_arc_macro_f1": 0.728003208351638,
+          "route_length_precision": 0.8699614550341099,
+          "route_length_recall": 0.970986482717112,
+          "route_length_f1": 0.9177020121002286,
+          "ordered_route_lcs_f1": 0.7838827838827839,
+          "direct_arc_continuity": 0.6238738738738738,
+          "predicted_sequence_arcs": 445
+        },
+        {
+          "trip": "00000077",
+          "observations": 3911,
+          "model_inference_seconds": 0.0067919749999418855,
+          "proxy_candidate_miss_rate": 0.0025568908207619537,
+          "observation_proxy_log_loss": 0.853176273570926,
+          "proxy_label_distance_p95_m": 18.42401964052835,
+          "proxy_top1_accuracy": 0.717207875223728,
+          "proxy_arc_macro_f1": 0.6809818552968396,
+          "route_length_precision": 0.7401755565132389,
+          "route_length_recall": 0.9957351054674302,
+          "route_length_f1": 0.8491436823000873,
+          "ordered_route_lcs_f1": 0.3239524702939337,
+          "direct_arc_continuity": 0.7225563909774436,
+          "predicted_sequence_arcs": 1331
+        },
+        {
+          "trip": "00000091",
+          "observations": 874,
+          "model_inference_seconds": 0.004225785996823106,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.43953207010234574,
+          "proxy_label_distance_p95_m": 12.481327572462536,
+          "proxy_top1_accuracy": 0.8810068649885584,
+          "proxy_arc_macro_f1": 0.7875408980392641,
+          "route_length_precision": 0.9088478613775502,
+          "route_length_recall": 0.9799643656457239,
+          "route_length_f1": 0.9430672940390165,
+          "ordered_route_lcs_f1": 0.678030303030303,
+          "direct_arc_continuity": 0.6237288135593221,
+          "predicted_sequence_arcs": 296
+        }
+      ]
+    }
+  },
+  {
+    "name": "random_forest",
+    "family": "Bagged ensemble",
+    "parameters": {
+      "n_estimators": 80,
+      "max_depth": 14,
+      "min_samples_leaf": 8
+    },
+    "cv_candidate_macro_f1": 0.9260007044805499,
+    "cv_candidate_macro_f1_std": 0.010464103544153513,
+    "cv_folds": [
+      {
+        "fold": 0,
+        "training_seconds": 15.476890732999891,
+        "candidate_accuracy": 0.9656275471756148,
+        "candidate_macro_f1": 0.9275609251926985,
+        "candidate_precision": 0.9167154738198431,
+        "candidate_recall": 0.8370053475935829,
+        "candidate_log_loss": 0.08894592451409125,
+        "candidate_confusion_matrix": [
+          [
+            54962,
+            711
+          ],
+          [
+            1524,
+            7826
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "training_seconds": 13.18530309300695,
+        "candidate_accuracy": 0.971661162737117,
+        "candidate_macro_f1": 0.9379650234161775,
+        "candidate_precision": 0.9134705731613565,
+        "candidate_recall": 0.871983039791259,
+        "candidate_log_loss": 0.08045763315672053,
+        "candidate_confusion_matrix": [
+          [
+            77870,
+            1013
+          ],
+          [
+            1570,
+            10694
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "training_seconds": 12.603408741000749,
+        "candidate_accuracy": 0.9561575657029558,
+        "candidate_macro_f1": 0.9124761648327739,
+        "candidate_precision": 0.9015339663988312,
+        "candidate_recall": 0.8051931106471816,
+        "candidate_log_loss": 0.1137529029813224,
+        "candidate_confusion_matrix": [
+          [
+            82178,
+            1348
+          ],
+          [
+            2986,
+            12342
+          ]
+        ]
+      }
+    ],
+    "oof": {
+      "candidate_accuracy": 0.9641131815044859,
+      "candidate_macro_f1": 0.9250169292432042,
+      "candidate_precision": 0.9094713266929922,
+      "candidate_recall": 0.8354176817714255,
+      "candidate_log_loss": 0.09552799818970373,
+      "candidate_confusion_matrix": [
+        [
+          215010,
+          3072
+        ],
+        [
+          6080,
+          30862
+        ]
+      ]
+    },
+    "full_fit_seconds": 24.325769546994707,
+    "training": {
+      "candidate_accuracy": 0.974351433590564,
+      "candidate_macro_f1": 0.9469383631423955,
+      "candidate_precision": 0.9370597199459444,
+      "candidate_recall": 0.8821937090574414,
+      "candidate_log_loss": 0.06784892698209702,
+      "candidate_confusion_matrix": [
+        [
+          215893,
+          2189
+        ],
+        [
+          4352,
+          32590
+        ]
+      ]
+    },
+    "student_test": {
+      "summary": {
+        "candidate_accuracy": 0.9631994135121307,
+        "candidate_macro_f1": 0.9245576643994142,
+        "candidate_precision": 0.8933847850055127,
+        "candidate_recall": 0.8488816719920381,
+        "candidate_log_loss": 0.09157555537656005,
+        "candidate_confusion_matrix": [
+          [
+            109924,
+            1934
+          ],
+          [
+            2885,
+            16206
+          ]
+        ],
+        "proxy_top1_accuracy": 0.875678496868476,
+        "proxy_candidate_miss_rate": 0.00360125260960334,
+        "observation_proxy_log_loss": 0.4351753316373055,
+        "mean_trip_proxy_arc_macro_f1": 0.8038359947903914,
+        "mean_trip_route_length_f1": 0.9301874057284675,
+        "mean_trip_ordered_route_lcs_f1": 0.7257964323100483,
+        "mean_trip_direct_arc_continuity": 0.7325857688870614,
+        "model_inference_seconds": 0.6261422790194047,
+        "observations": 19160
+      },
+      "trips": [
+        {
+          "trip": "00000000",
+          "observations": 2503,
+          "model_inference_seconds": 0.06068714200227987,
+          "proxy_candidate_miss_rate": 0.001997602876548142,
+          "observation_proxy_log_loss": 0.21766486212194167,
+          "proxy_label_distance_p95_m": 16.63183407528428,
+          "proxy_top1_accuracy": 0.9468637634838194,
+          "proxy_arc_macro_f1": 0.8066298497376904,
+          "route_length_precision": 0.967122800754477,
+          "route_length_recall": 0.9983192647524922,
+          "route_length_f1": 0.9824734499366061,
+          "ordered_route_lcs_f1": 0.7429805615550756,
+          "direct_arc_continuity": 0.6784452296819788,
+          "predicted_sequence_arcs": 284
+        },
+        {
+          "trip": "00000007",
+          "observations": 1354,
+          "model_inference_seconds": 0.049603692001255695,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.14974427869101126,
+          "proxy_label_distance_p95_m": 26.13818899835199,
+          "proxy_top1_accuracy": 0.9246676514032496,
+          "proxy_arc_macro_f1": 0.9556156253435165,
+          "route_length_precision": 0.9770155954091495,
+          "route_length_recall": 0.9930249569298568,
+          "route_length_f1": 0.984955226834352,
+          "ordered_route_lcs_f1": 0.7267267267267268,
+          "direct_arc_continuity": 0.9808612440191388,
+          "predicted_sequence_arcs": 210
+        },
+        {
+          "trip": "00000009",
+          "observations": 1049,
+          "model_inference_seconds": 0.05099968599824933,
+          "proxy_candidate_miss_rate": 0.0219256434699714,
+          "observation_proxy_log_loss": 0.9665784026877767,
+          "proxy_label_distance_p95_m": 18.13437349665391,
+          "proxy_top1_accuracy": 0.8722592945662536,
+          "proxy_arc_macro_f1": 0.8030435188986258,
+          "route_length_precision": 0.8536459075361279,
+          "route_length_recall": 0.9401557307569304,
+          "route_length_f1": 0.8948147608684199,
+          "ordered_route_lcs_f1": 0.8235294117647058,
+          "direct_arc_continuity": 0.7116704805491991,
+          "predicted_sequence_arcs": 438
+        },
+        {
+          "trip": "00000040",
+          "observations": 2995,
+          "model_inference_seconds": 0.06297337500291178,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.186979528060298,
+          "proxy_label_distance_p95_m": 14.92251128071368,
+          "proxy_top1_accuracy": 0.9315525876460768,
+          "proxy_arc_macro_f1": 0.8444302922882932,
+          "route_length_precision": 0.9363003333874576,
+          "route_length_recall": 0.9951213909482938,
+          "route_length_f1": 0.9648151704686003,
+          "ordered_route_lcs_f1": 0.7509578544061303,
+          "direct_arc_continuity": 0.7526427061310782,
+          "predicted_sequence_arcs": 474
+        },
+        {
+          "trip": "00000052",
+          "observations": 262,
+          "model_inference_seconds": 0.049239023006521165,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.14100828135966187,
+          "proxy_label_distance_p95_m": 12.641000438375205,
+          "proxy_top1_accuracy": 0.9618320610687023,
+          "proxy_arc_macro_f1": 0.8361510284587208,
+          "route_length_precision": 0.9302180891217718,
+          "route_length_recall": 0.9666120823563311,
+          "route_length_f1": 0.9480659446394757,
+          "ordered_route_lcs_f1": 0.8555555555555555,
+          "direct_arc_continuity": 0.8214285714285714,
+          "predicted_sequence_arcs": 85
+        },
+        {
+          "trip": "00000056",
+          "observations": 3958,
+          "model_inference_seconds": 0.09194489299989073,
+          "proxy_candidate_miss_rate": 0.004800404244567963,
+          "observation_proxy_log_loss": 0.4723232549487938,
+          "proxy_label_distance_p95_m": 14.493732399527993,
+          "proxy_top1_accuracy": 0.8989388580090955,
+          "proxy_arc_macro_f1": 0.8329716700141101,
+          "route_length_precision": 0.8523928626026424,
+          "route_length_recall": 0.9679432495157669,
+          "route_length_f1": 0.9065006311735239,
+          "ordered_route_lcs_f1": 0.8088920760129078,
+          "direct_arc_continuity": 0.6887372013651877,
+          "predicted_sequence_arcs": 1466
+        },
+        {
+          "trip": "00000065",
+          "observations": 768,
+          "model_inference_seconds": 0.05125294600293273,
+          "proxy_candidate_miss_rate": 0.0013020833333333333,
+          "observation_proxy_log_loss": 0.38354291082634623,
+          "proxy_label_distance_p95_m": 11.7516849178371,
+          "proxy_top1_accuracy": 0.8997395833333334,
+          "proxy_arc_macro_f1": 0.7620680015044926,
+          "route_length_precision": 0.8674144338441038,
+          "route_length_recall": 0.9777586676578219,
+          "route_length_f1": 0.9192871719755987,
+          "ordered_route_lcs_f1": 0.764179104477612,
+          "direct_arc_continuity": 0.7142857142857143,
+          "predicted_sequence_arcs": 190
+        },
+        {
+          "trip": "00000076",
+          "observations": 1486,
+          "model_inference_seconds": 0.06178448800346814,
+          "proxy_candidate_miss_rate": 0.007402422611036339,
+          "observation_proxy_log_loss": 0.5047695740553854,
+          "proxy_label_distance_p95_m": 18.65275460555969,
+          "proxy_top1_accuracy": 0.9037685060565276,
+          "proxy_arc_macro_f1": 0.724759788473222,
+          "route_length_precision": 0.860031237265818,
+          "route_length_recall": 0.9669587416776271,
+          "route_length_f1": 0.9103659380451926,
+          "ordered_route_lcs_f1": 0.772782503037667,
+          "direct_arc_continuity": 0.6316964285714286,
+          "predicted_sequence_arcs": 449
+        },
+        {
+          "trip": "00000077",
+          "observations": 3911,
+          "model_inference_seconds": 0.09584091199940303,
+          "proxy_candidate_miss_rate": 0.0025568908207619537,
+          "observation_proxy_log_loss": 0.7002357846472519,
+          "proxy_label_distance_p95_m": 18.42401964052835,
+          "proxy_top1_accuracy": 0.7282025057530044,
+          "proxy_arc_macro_f1": 0.6902668098922351,
+          "route_length_precision": 0.746762856703101,
+          "route_length_recall": 0.9957351054674302,
+          "route_length_f1": 0.8534621078720674,
+          "ordered_route_lcs_f1": 0.3278481012658228,
+          "direct_arc_continuity": 0.7254004576659039,
+          "predicted_sequence_arcs": 1312
+        },
+        {
+          "trip": "00000091",
+          "observations": 874,
+          "model_inference_seconds": 0.05181612200249219,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.37388525269102696,
+          "proxy_label_distance_p95_m": 12.481327572462536,
+          "proxy_top1_accuracy": 0.868421052631579,
+          "proxy_arc_macro_f1": 0.7824233632930062,
+          "route_length_precision": 0.897588557595002,
+          "route_length_recall": 0.9803238245800604,
+          "route_length_f1": 0.9371336554708373,
+          "ordered_route_lcs_f1": 0.6845124282982792,
+          "direct_arc_continuity": 0.6206896551724138,
+          "predicted_sequence_arcs": 291
+        }
+      ]
+    }
+  },
+  {
+    "name": "hist_gradient_boosting",
+    "family": "Boosting",
+    "parameters": {
+      "max_iter": 120,
+      "max_leaf_nodes": 15,
+      "learning_rate": 0.1,
+      "l2_regularization": 1.0,
+      "min_samples_leaf": 30
+    },
+    "cv_candidate_macro_f1": 0.9277977241916696,
+    "cv_candidate_macro_f1_std": 0.010446489745032046,
+    "cv_folds": [
+      {
+        "fold": 0,
+        "training_seconds": 1.4847508070015465,
+        "candidate_accuracy": 0.966934776925088,
+        "candidate_macro_f1": 0.9320337947348662,
+        "candidate_precision": 0.8965631196298744,
+        "candidate_recall": 0.8704812834224599,
+        "candidate_log_loss": 0.0850398907118537,
+        "candidate_confusion_matrix": [
+          [
+            54734,
+            939
+          ],
+          [
+            1211,
+            8139
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "training_seconds": 1.2906033399995067,
+        "candidate_accuracy": 0.9710357993131974,
+        "candidate_macro_f1": 0.9379367481821612,
+        "candidate_precision": 0.8905844155844156,
+        "candidate_recall": 0.8946510110893673,
+        "candidate_log_loss": 0.07665164717805277,
+        "candidate_confusion_matrix": [
+          [
+            77535,
+            1348
+          ],
+          [
+            1292,
+            10972
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "training_seconds": 1.2488992660000804,
+        "candidate_accuracy": 0.9557832763469359,
+        "candidate_macro_f1": 0.9134226296579813,
+        "candidate_precision": 0.8810070241324153,
+        "candidate_recall": 0.8264613778705637,
+        "candidate_log_loss": 0.10993535884184188,
+        "candidate_confusion_matrix": [
+          [
+            81815,
+            1711
+          ],
+          [
+            2660,
+            12668
+          ]
+        ]
+      }
+    ],
+    "oof": {
+      "candidate_accuracy": 0.9640778907083255,
+      "candidate_macro_f1": 0.9265371519482968,
+      "candidate_precision": 0.8882522290857254,
+      "candidate_recall": 0.8602403768068865,
+      "candidate_log_loss": 0.09169202295488377,
+      "candidate_confusion_matrix": [
+        [
+          214084,
+          3998
+        ],
+        [
+          5163,
+          31779
+        ]
+      ]
+    },
+    "full_fit_seconds": 1.9465213420044165,
+    "training": {
+      "candidate_accuracy": 0.9705478700043917,
+      "candidate_macro_f1": 0.9400405715659097,
+      "candidate_precision": 0.9068089458988748,
+      "candidate_recall": 0.8879324346272536,
+      "candidate_log_loss": 0.07765265142919874,
+      "candidate_confusion_matrix": [
+        [
+          214711,
+          3371
+        ],
+        [
+          4140,
+          32802
+        ]
+      ]
+    },
+    "student_test": {
+      "summary": {
+        "candidate_accuracy": 0.9634208737752865,
+        "candidate_macro_f1": 0.9268669024813324,
+        "candidate_precision": 0.8708957933502776,
+        "candidate_recall": 0.8794720025142737,
+        "candidate_log_loss": 0.08903114520200947,
+        "candidate_confusion_matrix": [
+          [
+            109369,
+            2489
+          ],
+          [
+            2301,
+            16790
+          ]
+        ],
+        "proxy_top1_accuracy": 0.8763048016701461,
+        "proxy_candidate_miss_rate": 0.00360125260960334,
+        "observation_proxy_log_loss": 0.4110960248520729,
+        "mean_trip_proxy_arc_macro_f1": 0.8139767074420978,
+        "mean_trip_route_length_f1": 0.9318948855081789,
+        "mean_trip_ordered_route_lcs_f1": 0.7328526226238539,
+        "mean_trip_direct_arc_continuity": 0.7397629765495051,
+        "model_inference_seconds": 0.88191644098697,
+        "observations": 19160
+      },
+      "trips": [
+        {
+          "trip": "00000000",
+          "observations": 2503,
+          "model_inference_seconds": 0.08300153599702753,
+          "proxy_candidate_miss_rate": 0.001997602876548142,
+          "observation_proxy_log_loss": 0.19181122776389395,
+          "proxy_label_distance_p95_m": 16.63183407528428,
+          "proxy_top1_accuracy": 0.9484618457850579,
+          "proxy_arc_macro_f1": 0.8223337349245412,
+          "route_length_precision": 0.9686292421500733,
+          "route_length_recall": 0.9983192647524922,
+          "route_length_f1": 0.9832501760443149,
+          "ordered_route_lcs_f1": 0.7478260869565218,
+          "direct_arc_continuity": 0.6857142857142857,
+          "predicted_sequence_arcs": 281
+        },
+        {
+          "trip": "00000007",
+          "observations": 1354,
+          "model_inference_seconds": 0.05511893200309714,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.12371233986110292,
+          "proxy_label_distance_p95_m": 26.13818899835199,
+          "proxy_top1_accuracy": 0.9446085672082718,
+          "proxy_arc_macro_f1": 0.972398582959471,
+          "route_length_precision": 0.9821666823757023,
+          "route_length_recall": 0.9930249569298568,
+          "route_length_f1": 0.9875659739092205,
+          "ordered_route_lcs_f1": 0.7355623100303952,
+          "direct_arc_continuity": 0.9804878048780488,
+          "predicted_sequence_arcs": 206
+        },
+        {
+          "trip": "00000009",
+          "observations": 1049,
+          "model_inference_seconds": 0.05807194099907065,
+          "proxy_candidate_miss_rate": 0.0219256434699714,
+          "observation_proxy_log_loss": 0.9608648337246389,
+          "proxy_label_distance_p95_m": 18.13437349665391,
+          "proxy_top1_accuracy": 0.8760724499523356,
+          "proxy_arc_macro_f1": 0.817959290976118,
+          "route_length_precision": 0.8685066097220219,
+          "route_length_recall": 0.9417603844860151,
+          "route_length_f1": 0.9036513633816606,
+          "ordered_route_lcs_f1": 0.8310185185185185,
+          "direct_arc_continuity": 0.7258064516129032,
+          "predicted_sequence_arcs": 435
+        },
+        {
+          "trip": "00000040",
+          "observations": 2995,
+          "model_inference_seconds": 0.1088103570000385,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.16257830136152468,
+          "proxy_label_distance_p95_m": 14.92251128071368,
+          "proxy_top1_accuracy": 0.928881469115192,
+          "proxy_arc_macro_f1": 0.85871702494896,
+          "route_length_precision": 0.9398320832101643,
+          "route_length_recall": 0.9949728430138595,
+          "route_length_f1": 0.9666167241079091,
+          "ordered_route_lcs_f1": 0.7567567567567568,
+          "direct_arc_continuity": 0.7558886509635975,
+          "predicted_sequence_arcs": 468
+        },
+        {
+          "trip": "00000052",
+          "observations": 262,
+          "model_inference_seconds": 0.019598136001150124,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.09320686114248304,
+          "proxy_label_distance_p95_m": 12.641000438375205,
+          "proxy_top1_accuracy": 0.9618320610687023,
+          "proxy_arc_macro_f1": 0.8434770357847282,
+          "route_length_precision": 0.9303808190634324,
+          "route_length_recall": 0.9690409620162113,
+          "route_length_f1": 0.9493174532664324,
+          "ordered_route_lcs_f1": 0.8571428571428571,
+          "direct_arc_continuity": 0.813953488372093,
+          "predicted_sequence_arcs": 87
+        },
+        {
+          "trip": "00000056",
+          "observations": 3958,
+          "model_inference_seconds": 0.18705323599715484,
+          "proxy_candidate_miss_rate": 0.004800404244567963,
+          "observation_proxy_log_loss": 0.4335252992261342,
+          "proxy_label_distance_p95_m": 14.493732399527993,
+          "proxy_top1_accuracy": 0.903233956543709,
+          "proxy_arc_macro_f1": 0.8492588158828501,
+          "route_length_precision": 0.8678653474568468,
+          "route_length_recall": 0.9663788309298801,
+          "route_length_f1": 0.9144766108703718,
+          "ordered_route_lcs_f1": 0.8193992037640246,
+          "direct_arc_continuity": 0.7018763029881863,
+          "predicted_sequence_arcs": 1440
+        },
+        {
+          "trip": "00000065",
+          "observations": 768,
+          "model_inference_seconds": 0.04409338799450779,
+          "proxy_candidate_miss_rate": 0.0013020833333333333,
+          "observation_proxy_log_loss": 0.3662057442554734,
+          "proxy_label_distance_p95_m": 11.7516849178371,
+          "proxy_top1_accuracy": 0.9010416666666666,
+          "proxy_arc_macro_f1": 0.7659022225848174,
+          "route_length_precision": 0.8418398204425752,
+          "route_length_recall": 0.9774898770476927,
+          "route_length_f1": 0.904607783529754,
+          "ordered_route_lcs_f1": 0.7734138972809668,
+          "direct_arc_continuity": 0.7297297297297297,
+          "predicted_sequence_arcs": 186
+        },
+        {
+          "trip": "00000076",
+          "observations": 1486,
+          "model_inference_seconds": 0.07872955899802037,
+          "proxy_candidate_miss_rate": 0.007402422611036339,
+          "observation_proxy_log_loss": 0.46012250369526947,
+          "proxy_label_distance_p95_m": 18.65275460555969,
+          "proxy_top1_accuracy": 0.9098250336473755,
+          "proxy_arc_macro_f1": 0.7404852988124784,
+          "route_length_precision": 0.8749784407595974,
+          "route_length_recall": 0.9681669936320763,
+          "route_length_f1": 0.9192169328327509,
+          "ordered_route_lcs_f1": 0.7872078720787208,
+          "direct_arc_continuity": 0.6484018264840182,
+          "predicted_sequence_arcs": 439
+        },
+        {
+          "trip": "00000077",
+          "observations": 3911,
+          "model_inference_seconds": 0.18906158399477135,
+          "proxy_candidate_miss_rate": 0.0025568908207619537,
+          "observation_proxy_log_loss": 0.6985190560060531,
+          "proxy_label_distance_p95_m": 18.42401964052835,
+          "proxy_top1_accuracy": 0.7169521861416518,
+          "proxy_arc_macro_f1": 0.6913390177982285,
+          "route_length_precision": 0.7466273957753763,
+          "route_length_recall": 0.9957351054674302,
+          "route_length_f1": 0.8533736328083025,
+          "ordered_route_lcs_f1": 0.3368010403120936,
+          "direct_arc_continuity": 0.7241922773837668,
+          "predicted_sequence_arcs": 1270
+        },
+        {
+          "trip": "00000091",
+          "observations": 874,
+          "model_inference_seconds": 0.05837777200213168,
+          "proxy_candidate_miss_rate": 0.0,
+          "observation_proxy_log_loss": 0.3397153199890474,
+          "proxy_label_distance_p95_m": 12.481327572462536,
+          "proxy_top1_accuracy": 0.8707093821510298,
+          "proxy_arc_macro_f1": 0.7778960497487859,
+          "route_length_precision": 0.89834852562127,
+          "route_length_recall": 0.9788479205730911,
+          "route_length_f1": 0.9368722043310715,
+          "ordered_route_lcs_f1": 0.6833976833976834,
+          "direct_arc_continuity": 0.631578947368421,
+          "predicted_sequence_arcs": 286
+        }
+      ]
+    }
+  }
+]

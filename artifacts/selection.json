@@ -1,0 +1,5 @@
+{
+  "chosen_family": "hist_gradient_boosting",
+  "rule": "maximum mean grouped CV candidate Macro F1",
+  "student_test_used_in_selection": false
+}

@@ -1,0 +1,24 @@
+{
+  "created_utc": "2026-11-18T06:36:42.480903+00:00",
+  "sha256": {
+    "artifacts/models/final.joblib": "cf4cc8e003c02cf577f4df365971756f4ccfc1c79c64824f30b1197bf6457ca0",
+    "configs/baseline.json": "cab8021ab00937653583aa47ef878e2a2fd3af0a289e09651252466b92b52266",
+    "pathsnap/__init__.py": "df804e21463ec5c7ea0d9e049b3cf6206ab32c64806e7be4b05cb25c77b49f06",
+    "pathsnap/api.py": "30c977771f23f821fdc22c0b7013929d2d907a51a4121857eb3f8bd7be443227",
+    "pathsnap/cli.py": "180d14da8e8c8b85257985177042e0b85b55de7b9375c02cefa6a4ac0388ce0d",
+    "pathsnap/data.py": "e2f876a86a691c8efe3b63b66cceb73447f9ad3a5d2f18c9b01dda42bcbb2940",
+    "pathsnap/decoder.py": "3dc8e9f5badfcde302240ca0f7d1bc215afe5270299b039a12794f538d736b94",
+    "pathsnap/evaluation.py": "e3e0589959100491c32e23e4f1649072ccf6a176e6e8a330395aad87c4957a8f",
+    "pathsnap/experiments.py": "59c2c32afe94d4a58ac35fd17c4fd37c0371e328a9bfe13566dd6c3a9d181d7c",
+    "pathsnap/features.py": "430a3358c837391b51d610057e03203a5ce3ecff381da4aee1ba14f9da824562",
+    "pathsnap/geometry.py": "daf8fbbccb274619f0c4c38b3f8ce0f699429cc60efe5da78b28e501ebd236bb",
+    "pathsnap/maps.py": "8781f92a1a4bde44b15e61bd2166bdb017c4152cc7d9e524a7fc0a77dcd262e0",
+    "pathsnap/metrics.py": "65d0b6e819074baca2e4a0a57adf950046b99363d6985793aa49985755787943",
+    "pathsnap/models.py": "4ac7ff38bbbbb7cae7abc92c0fc615ef4e7302a7b6a4fba754da0f8966be2007",
+    "pathsnap/pipeline.py": "c41100ed0be2016a6ecdd0d149b3ed6e4b1c791843d17ecc0cb43e62a327a495",
+    "pathsnap/prepare.py": "a2b8c2ad338748fa09d37ed90be26801abab5ac617efd1355aa7d1f611c4b23b",
+    "pathsnap/reference.py": "5bd87ed3179859cc5d48449343248fe94cb345e4b293e2fcb204892f040cf15e",
+    "pathsnap/reporting.py": "f8fd85f09eab3bde4aee92882750442978d54adb7ada30d1ef45b4d2ca73f354"
+  },
+  "notes": "Original decoder search retained in decoder_initial.json and decoder_search.json. Final route assembly includes directed loops for backwards projection on the same arc. All pointwise predictions are unchanged by that reconstruction correction."
+}

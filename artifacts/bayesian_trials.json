@@ -1,0 +1,278 @@
+[
+  {
+    "number": 0,
+    "value": 0.9279728677189478,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.11248974582408097,
+      "max_leaf_nodes": 13,
+      "l2_regularization": 2.857767164880793,
+      "min_samples_leaf": 74
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9320438534991559,
+      0.9382658714872558,
+      0.9136088781704321
+    ],
+    "duration_seconds": 4.975342
+  },
+  {
+    "number": 1,
+    "value": 0.9281620305973485,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.09313502763516189,
+      "max_leaf_nodes": 18,
+      "l2_regularization": 0.7076150635016203,
+      "min_samples_leaf": 70
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9321181166295001,
+      0.9393568086555539,
+      0.9130111665069913
+    ],
+    "duration_seconds": 5.192161
+  },
+  {
+    "number": 2,
+    "value": 0.9267378424531758,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.12563574306899444,
+      "max_leaf_nodes": 29,
+      "l2_regularization": 0.048286038650914104,
+      "min_samples_leaf": 28
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9309887930378398,
+      0.938232755080626,
+      0.9109919792410615
+    ],
+    "duration_seconds": 6.006589
+  },
+  {
+    "number": 3,
+    "value": 0.9269236580929544,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.10623750066249785,
+      "max_leaf_nodes": 7,
+      "l2_regularization": 2.709911115529594,
+      "min_samples_leaf": 37
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9285576616269524,
+      0.9380404295476887,
+      0.9141728831042224
+    ],
+    "duration_seconds": 3.927136
+  },
+  {
+    "number": 4,
+    "value": 0.9279961327635805,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.026502837810721505,
+      "max_leaf_nodes": 23,
+      "l2_regularization": 0.03858288186230929,
+      "min_samples_leaf": 99
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9321861309900283,
+      0.9381470146857718,
+      0.9136552526149415
+    ],
+    "duration_seconds": 5.959546
+  },
+  {
+    "number": 5,
+    "value": 0.9290111170558205,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.04133060169773538,
+      "max_leaf_nodes": 18,
+      "l2_regularization": 0.3429515827499987,
+      "min_samples_leaf": 60
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.932341857488117,
+      0.93822733774927,
+      0.9164641559300746
+    ],
+    "duration_seconds": 7.719639
+  },
+  {
+    "number": 6,
+    "value": 0.9285160811343091,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.03070992500691119,
+      "max_leaf_nodes": 24,
+      "l2_regularization": 0.23117683797276367,
+      "min_samples_leaf": 53
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9324049355201144,
+      0.9385065524181122,
+      0.9146367554647002
+    ],
+    "duration_seconds": 5.926655
+  },
+  {
+    "number": 7,
+    "value": 0.9283730941177074,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.05149492928624925,
+      "max_leaf_nodes": 31,
+      "l2_regularization": 9.89972295789441,
+      "min_samples_leaf": 17
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9325945489634182,
+      0.9389110784817479,
+      0.9136136549079559
+    ],
+    "duration_seconds": 6.806961
+  },
+  {
+    "number": 8,
+    "value": 0.926289313319788,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.19968916888020097,
+      "max_leaf_nodes": 8,
+      "l2_regularization": 0.011785219272629306,
+      "min_samples_leaf": 99
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9287083123482556,
+      0.9365714137014973,
+      0.9135882139096112
+    ],
+    "duration_seconds": 5.860739
+  },
+  {
+    "number": 9,
+    "value": 0.9286367062432234,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.053580538559054584,
+      "max_leaf_nodes": 16,
+      "l2_regularization": 0.23736536846531636,
+      "min_samples_leaf": 58
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.93204275270298,
+      0.9384278056650157,
+      0.9154395603616741
+    ],
+    "duration_seconds": 5.045606
+  },
+  {
+    "number": 10,
+    "value": 0.9285447706550406,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.0504543466815192,
+      "max_leaf_nodes": 23,
+      "l2_regularization": 0.3381731991587194,
+      "min_samples_leaf": 82
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.9326106405634007,
+      0.9384417643430579,
+      0.9145819070586628
+    ],
+    "duration_seconds": 5.760495
+  },
+  {
+    "number": 11,
+    "value": 0.9287701160006372,
+    "state": "COMPLETE",
+    "parameters": {
+      "learning_rate": 0.04504326394697913,
+      "max_leaf_nodes": 16,
+      "l2_regularization": 0.13256894337919656,
+      "min_samples_leaf": 52
+    },
+    "distributions": {
+      "learning_rate": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.025, \"high\": 0.2, \"log\": true}}",
+      "max_leaf_nodes": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 7, \"high\": 31}}",
+      "l2_regularization": "{\"name\": \"FloatDistribution\", \"attributes\": {\"step\": null, \"low\": 0.01, \"high\": 10.0, \"log\": true}}",
+      "min_samples_leaf": "{\"name\": \"IntDistribution\", \"attributes\": {\"log\": false, \"step\": 1, \"low\": 15, \"high\": 100}}"
+    },
+    "fold_macro_f1": [
+      0.932156690646333,
+      0.9384539419473099,
+      0.9156997154082686
+    ],
+    "duration_seconds": 6.400548
+  }
+]

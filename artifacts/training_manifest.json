@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-11-18T05:56:27.770224+00:00",
+  "config": {
+    "seed": 357,
+    "candidate_count": 8,
+    "candidate_radius_m": 100.0,
+    "index_spacing_m": 30.0,
+    "training_stride": 5,
+    "training_label_max_distance_m": 75.0,
+    "cv_folds": 3,
+    "bayesian_trials": 12,
+    "decoder": {
+      "beta_m": 25.0,
+      "max_speed_mps": 55.0,
+      "gap_reset_s": 60.0,
+      "routing_slack_m": 100.0
+    }
+  },
+  "candidate_training_rows": 255024,
+  "positive_rows": 36942,
+  "training_trips_with_usable_rows": 80,
+  "feature_names": [
+    "distance_m",
+    "log_distance",
+    "distance_above_nearest_m",
+    "heading_cos",
+    "abs_heading_cos",
+    "length_m",
+    "log_length",
+    "fraction",
+    "speed_mps",
+    "log_previous_gap_s",
+    "source_indegree",
+    "target_outdegree",
+    "stationary"
+  ],
+  "python_version": "3.12.16",
+  "sklearn_version": "1.7.2",
+  "numpy_version": "2.3.5",
+  "optuna_version": "4.9.0",
+  "selection_objective": "mean training-trip grouped-CV binary candidate Macro F1",
+  "pointwise_label_warning": "Monotone geometric reference alignment creates proxy labels, not official per-point ground truth."
+}
