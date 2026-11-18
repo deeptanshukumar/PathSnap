@@ -4,6 +4,8 @@ Team PT-088's ML hackathon system for matching noisy GPS observations to directe
 
 **Start here:** [Chiranth's Mac handoff](docs/CHIRANTH_HANDOFF.md), [technical report](reports/PathSnap_Technical_Report.pdf), [presentation](reports/PathSnap_Presentation_Final.pptx), [viva preparation](docs/VIVA.md), [current state](docs/PROJECT_STATE.md), [decisions](docs/DECISIONS.md).
 
+**Viva preparation:** [20-page study PDF](reports/PathSnap_Viva_Study_Guide.pdf) with 154 short Q&As, including Chiranth's trace UI and all-model metrics. [Deliverables audit](docs/DELIVERABLES_AUDIT.md) lists remaining submission gaps.
+
 ## Implemented and measured
 
 - Validated raw loading, metre-based segment projection, spatial candidate indexing and 13 route-independent features.

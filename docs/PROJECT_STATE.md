@@ -12,7 +12,7 @@ Team PT-088: Chiranth R (PES1UG24AM354), Darshan S Govekar (PES1UG24AM355), Daru
 | Bayesian tuning | Twelve TPE trials, four startup/eight adaptive, training-trip CV only. Tuned boosting CV candidate Macro F1 0.9290. Trial distributions and scores retained. |
 | Sequential decoding | Directed routing, partial-edge positions, log-space Viterbi, explicit resets and road bridges, including same-arc loops. Decoder search uses development trips only. |
 | API and UI | Real cross-origin browser interaction; all ten development and all ten reserved trips succeeded over actual HTTP. API maps omit reference geometry. |
-| Correctness checks | 12 tests passed: geometry, candidate lookup, grouping, brute-force Viterbi equivalence, reference separation, same-arc loops, API validation/CORS and evaluation-mode isolation. |
+| Correctness checks | 13 tests passed: geometry, candidate lookup, grouping, brute-force Viterbi equivalence, reference separation, same-arc loops, API validation/CORS and evaluation-mode isolation. |
 | Deliverables | 18-page PDF and 11-slide editable PPTX generated from measured results, visually inspected, and structurally validated. Folium maps, genuine browser screenshots, viva guide and source generators are included. |
 
 Python 3.12.16 / NumPy 2.3.5 / SciPy 1.16.3 / scikit-learn 1.7.2 on Linux CPU were exercised. `.venv` is isolated. macOS ML execution and physical Mac-to-Linux networking have not been executed here. Kaggle was authorised but not needed for the measured workload.
@@ -53,3 +53,7 @@ No evaluator results selected or modified features, labels convention, model wei
 3. Review the report and practise `docs/VIVA.md`, retaining the AI disclosure. Bhuvan's novelty remains pending and must not use reserved results for selection.
 
 See `docs/DECISIONS.md` for important choices and the corrected same-arc-loop metric history. Keep the source, results and concise state here; do not add overlapping context files.
+
+## Deliverables audit and viva study guide
+
+Latest code at `3d05683` was checked against all five organiser PDFs. `docs/DELIVERABLES_AUDIT.md` records complete, partial and missing items. Core predictor/scorer hashes still match; 13 local tests pass. The live API still needs restart for the new trace endpoints, and genuine two-laptop/terminal evidence plus current report screenshots remain open. `reports/PathSnap_Viva_Study_Guide.pdf` adds 154 short Q&As, required-question coverage, model metrics and Chiranth's full report-only reserved comparison. It is rehearsal material, separate from the single technical submission report.
