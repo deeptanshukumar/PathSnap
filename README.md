@@ -2,7 +2,7 @@
 
 Team PT-088's ML hackathon system for matching noisy GPS observations to directed road networks. The Linux laptop hosts the model/API; Chiranth's Mac runs the static evaluator UI.
 
-**Start here:** [technical report](reports/PathSnap_Technical_Report.pdf), [presentation](reports/PathSnap_Presentation_Final.pptx), [viva preparation](docs/VIVA.md), [current state](docs/PROJECT_STATE.md), [decisions](docs/DECISIONS.md).
+**Start here:** [Chiranth's Mac handoff](docs/CHIRANTH_HANDOFF.md), [technical report](reports/PathSnap_Technical_Report.pdf), [presentation](reports/PathSnap_Presentation_Final.pptx), [viva preparation](docs/VIVA.md), [current state](docs/PROJECT_STATE.md), [decisions](docs/DECISIONS.md).
 
 ## Implemented and measured
 
