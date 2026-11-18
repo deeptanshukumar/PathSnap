@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PathSnap · Model trace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600&display=swap">
+  <style>
+    /* PathSnap model trace: what the server computed for the latest request, stage by stage and point by point. */
+    :root{
+      --paper:#f3f4f0; --surface:#ffffff; --sunk:#f0f2ee;
+      --ink:#13211d; --ink-2:#47554f; --ink-3:#5b6863;
+      --line:#e2e6e0; --line-2:#cdd4cc;
+      --route:#0a7c66; --route-ink:#075d4d; --route-wash:#e3f0ea;
+      --gps:#2f74d0; --cls:#9b4fb0; --cls-wash:#f3e9f6; --reset:#d14b3c;
+      --gold:#dab367; --gold-ink:#7a5a10; --gold-wash:#f7efdc;
+      --sans:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
+      --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+      --ease:cubic-bezier(.16,1,.3,1);
+      color-scheme:light;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 var(--sans);font-feature-settings:"tnum" 1;-webkit-font-smoothing:antialiased}
+    ::selection{background:#bfe0d3}
+    *{scrollbar-color:var(--line-2) transparent;scrollbar-width:thin}
+    button,input,select{font:inherit;color:inherit}
+    button{cursor:pointer}
+    :focus-visible{outline:2px solid var(--route);outline-offset:2px;border-radius:6px}
+    [hidden]{display:none!important}
+    .mono{font-family:var(--mono)}
+
+    header{position:sticky;top:0;z-index:10;height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;border-bottom:1px solid var(--line);background:var(--surface)}
+    .brand{display:flex;gap:10px;align-items:center;font-size:17px;font-weight:600;letter-spacing:-.02em}
+    .brand svg{width:26px;height:26px}
+    .brand small{font-weight:400;color:var(--ink-3);font-size:14px}
+    .live{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-2)}
+    .dot{width:8px;height:8px;border-radius:50%;background:#aab2ad}
+    .dot.ready{background:var(--route);box-shadow:0 0 0 3px var(--route-wash)}
+    .dot.busy{background:#d9a93c;animation:pulse 1.2s ease-in-out infinite}
+    .dot.error{background:var(--reset)}
+    @keyframes pulse{50%{opacity:.35}}
+    .badge{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:500;background:var(--sunk);color:var(--ink-2)}
+    .badge.eval{background:var(--gold-wash);color:var(--gold-ink)}
+    .badge.dev{background:var(--route-wash);color:var(--route-ink)}
+
+    main{max-width:1440px;margin:0 auto;padding:24px 24px 48px;display:flex;flex-direction:column;gap:28px}
+    .head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+    h1{font-size:26px;font-weight:500;letter-spacing:-.03em;margin:0;text-wrap:balance}
+    .head p{margin:4px 0 0;color:var(--ink-2);max-width:70ch}
+    .clock{font:500 26px var(--mono);letter-spacing:-.04em}
+    h2{font-size:15px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+    .sub{margin:0 0 14px;font-size:13px;color:var(--ink-3)}
+
+    /* Pipeline */
+    .pipe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .st{padding:16px 16px 18px;border-right:1px solid var(--line);position:relative;min-width:0;transition:background .4s var(--ease)}
+    .st:last-child{border-right:0}
+    .st .n{display:flex;align-items:center;justify-content:space-between;font:12px var(--mono);color:var(--ink-3);margin-bottom:10px}
+    .st .n b{font-weight:500;color:var(--ink-3)}
+    .st h3{font-size:14px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em}
+    .st .big{font:500 22px/1.1 var(--mono);letter-spacing:-.03em;margin:0 0 6px;transition:opacity .3s}
+    .st ul{list-style:none;margin:0;padding:0;font-size:12px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px}
+    .st ul b{font-family:var(--mono);font-weight:500;color:var(--ink)}
+    .st::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--route);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+    .st.done::after{transform:scaleX(1)}
+    .st.wait .big,.st.wait ul{opacity:.35}
+    .st.running{background:linear-gradient(180deg,var(--route-wash),var(--surface) 70%)}
+
+    /* Explainer */
+    .explain{display:grid;grid-template-columns:minmax(320px,440px) minmax(0,1fr);gap:16px}
+    .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+    .plot{padding:14px;display:flex;flex-direction:column;gap:10px}
+    .plot svg{width:100%;aspect-ratio:1;background:var(--sunk);border-radius:8px;display:block}
+    .plotkey{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2)}
+    .plotkey span{display:inline-flex;align-items:center;gap:6px}
+    .plotkey i{display:inline-block;width:16px;height:3px;border-radius:2px}
+    .controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:500;border:1px solid var(--line-2);background:var(--surface);transition:background .15s}
+    .btn:hover:not(:disabled){background:var(--sunk)}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .btn.dark:hover:not(:disabled){background:#223a33}
+    input[type=range]{flex:1;min-width:160px;accent-color:var(--route)}
+    select{border:1px solid var(--line-2);border-radius:8px;padding:6px 8px;background:#fff;font-size:13px}
+    .ptinfo{font:13px var(--mono);color:var(--ink-2);white-space:nowrap}
+    .calc{padding:16px 18px;min-width:0;display:flex;flex-direction:column;gap:14px}
+    .verdict{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:500}
+    .pill.agree{background:var(--route-wash);color:var(--route-ink)}
+    .pill.override{background:var(--cls-wash);color:var(--cls)}
+    .pill.reset{background:#f9e3df;color:var(--reset)}
+    .tablewrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{font-weight:500;font-size:12px;color:var(--ink-3);text-align:right;padding:0 0 8px 12px;white-space:nowrap}
+    th:first-child,td:first-child{text-align:left;padding-left:0}
+    td{padding:7px 0 7px 12px;border-top:1px solid var(--line);text-align:right;font:13px var(--mono);white-space:nowrap}
+    tr.vit td{background:var(--route-wash)}
+    tr.vit td:first-child{box-shadow:inset 3px 0 0 var(--route)}
+    tr.cls td:first-child{color:var(--cls)}
+    .probbar{display:inline-block;width:54px;height:6px;border-radius:3px;background:var(--line);vertical-align:middle;margin-right:8px;overflow:hidden}
+    .probbar span{display:block;height:100%;background:var(--ink-2);border-radius:3px}
+    tr.vit .probbar span{background:var(--route)}
+    .tags{display:inline-flex;gap:4px;margin-left:6px}
+    .tag{font:10px var(--sans);font-weight:600;letter-spacing:.02em;padding:1px 5px;border-radius:4px}
+    .tag.v{background:var(--route);color:#fff}
+    .tag.c{background:var(--cls);color:#fff}
+    .formula{font:13px/1.7 var(--mono);background:var(--sunk);border-radius:8px;padding:12px 14px;color:var(--ink-2);overflow-x:auto;white-space:nowrap}
+    .formula b{color:var(--ink);font-weight:500}
+    .formula .muted{color:var(--ink-3)}
+
+    .two{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+    .card{padding:16px 18px;min-width:0}
+    td.best{font-weight:600}
+    td.best::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--route);margin-left:6px;vertical-align:2px}
+    td.na{color:#a3ada7}
+    .note{font-size:12px;color:var(--ink-3);margin:12px 0 0;line-height:1.6}
+    .empty{padding:28px;text-align:center;color:var(--ink-3);font-size:13px}
+
+    @media (max-width:1180px){.pipe{grid-template-columns:repeat(3,minmax(0,1fr))}.st:nth-child(3){border-right:0}.st:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+    @media (max-width:980px){.explain,.two{grid-template-columns:1fr}}
+    @media (max-width:640px){
+      header{padding:0 14px} main{padding:18px 14px 40px}
+      .brand small,.live .lt{display:none}
+      .pipe{grid-template-columns:1fr 1fr}.st:nth-child(3){border-right:1px solid var(--line)}.st:nth-child(2n){border-right:0}.st:nth-child(-n+4){border-bottom:1px solid var(--line)}
+    }
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s!important;animation:none!important}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#13211d"/><path d="M10 29L17 12L24 28L31 11" stroke="#e9f3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="12" r="3" fill="#dab367"/></svg>
+    PathSnap <small>Model trace</small>
+  </div>
+  <div class="live" role="status" aria-live="polite"><i class="dot" id="dot"></i><span class="lt" id="liveText">Waiting for the main screen</span><span class="badge" id="modeBadge">Not connected</span></div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1 id="title">Select a trip on the main screen</h1>
+      <p id="lede">This tab follows the main PathSnap screen. When a trip is reconstructed, it shows each stage Laptop 1 ran and the numbers it computed.</p>
+    </div>
+    <div class="clock" id="clock" aria-label="Elapsed time"></div>
+  </div>
+
+  <section aria-labelledby="pipeH">
+    <h2 id="pipeH">Pipeline</h2>
+    <p class="sub">Each stage ran on Laptop 1 for this request. Times are the server’s own measurements.</p>
+    <div class="pipe" id="pipe"></div>
+  </section>
+
+  <section aria-labelledby="exH">
+    <h2 id="exH">Inside one GPS point</h2>
+    <p class="sub">Step through the trip. For each point the classifier scores nearby road segments, then Viterbi picks the one that keeps the route connected.</p>
+    <div class="explain">
+      <div class="panel plot">
+        <svg id="plot" viewBox="-130 -130 260 260" role="img" aria-label="Candidate road segments around the selected GPS point"></svg>
+        <div class="plotkey">
+          <span><i style="background:var(--route)"></i>Viterbi pick</span>
+          <span><i style="background:var(--cls)"></i>Classifier pick</span>
+          <span><i style="background:#9aa59f"></i>Other candidates</span>
+          <span><i style="background:var(--gps);height:8px;width:8px;border-radius:50%"></i>GPS points</span>
+        </div>
+        <div class="controls">
+          <button class="btn dark" id="play" type="button" disabled>Play</button>
+          <input type="range" id="scrub" min="0" max="0" value="0" disabled aria-label="GPS point">
+        </div>
+        <div class="controls">
+          <span class="ptinfo" id="ptInfo">point — / —</span>
+          <select id="speed" aria-label="Playback speed"><option value="8">8 pts/s</option><option value="30" selected>30 pts/s</option><option value="120">120 pts/s</option></select>
+          <button class="btn" id="nextOverride" type="button" disabled>Next Viterbi override</button>
+        </div>
+      </div>
+      <div class="panel calc" id="calc">
+        <div class="empty">Point-level calculations appear after the first reconstruction.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div class="panel card">
+      <h2>Reference scores</h2>
+      <p class="sub">Computed on Laptop 1 after prediction. The dot marks the best value in each row.</p>
+      <div id="scores"><div class="empty">No result yet.</div></div>
+      <p class="note">Pointwise labels are inferred from an ordered reference route; they are a proxy, not official per-GPS ground truth. Reference geometry remains on the server.</p>
+    </div>
+    <div class="panel card">
+      <h2>Session log</h2>
+      <p class="sub">Match these request IDs with the PATHSNAP lines in Laptop 1’s terminal.</p>
+      <div class="tablewrap" id="log"><div class="empty">No requests yet.</div></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const S = { session: null, record: null, trace: null, i: 0, playing: false, raf: null, last: 0, carry: 0, explainTimer: null, clock: null, explainCache: new Map() };
+  function h(tag, props = {}, ...kids) {
+    const node = document.createElementNS(props.svg ? 'http://www.w3.org/2000/svg' : 'http://www.w3.org/1999/xhtml', tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === 'svg' || v == null || v === false) continue;
+      if (k === 'class') node.setAttribute('class', v); else if (k === 'text') node.textContent = v; else node.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids.flat()) if (kid != null) node.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+    return node;
+  }
+  const s = (tag, props = {}, ...kids) => h(tag, { ...props, svg: true }, ...kids);
+  const pct = v => (typeof v === 'number' && isFinite(v)) ? (100 * v).toFixed(1) + '%' : '—';
+  const fx = (v, d = 2) => (typeof v === 'number' && isFinite(v)) ? v.toFixed(d) : '—';
+  const secs = v => (typeof v === 'number' && isFinite(v)) ? (v < 10 ? v.toFixed(2) : v.toFixed(1)) + ' s' : '—';
+  const n = v => (typeof v === 'number') ? v.toLocaleString() : '—';
+
+  // ---------- pipeline cards ----------
+  const STAGES = [
+    { key: 'input', title: 'Read trip', big: t => n(t.input.observations) + ' pts', rows: t => [['Duration', secs(t.input.duration_s)], ['Median step', secs(t.input.median_step_s)], ['Gaps > 60 s', n(t.input.gaps_over_60s)], ['Road arcs', n(t.input.road_arcs)]] },
+    { key: 'projection', title: 'Project to metres', big: t => t.projection.extent_km.map(v => v.toFixed(1)).join(' × ') + ' km', rows: t => [['Method', 'local equirectangular'], ['Origin', t.projection.origin_lonlat.map(v => v.toFixed(3)).join(', ')]] },
+    { key: 'candidates', title: 'Candidate search', time: x => x.timings.candidate_preparation_seconds, big: t => n(t.candidates.pairs) + ' pairs', rows: t => [['Radius', t.candidates.radius_m + ' m, ≤ ' + t.candidates.max_per_point + ' per point'], ['Per point', fx(t.candidates.mean_per_point, 1)], ['Nearest road', fx(t.candidates.nearest_median_m, 1) + ' m median'], ['Fallbacks', n(t.candidates.fallback_points)]] },
+    { key: 'classifier', title: 'Classifier', time: x => x.timings.model_seconds, big: t => pct(t.classifier.mean_top_probability), rows: t => [['', 'mean top P(match)'], ['Features', t.classifier.features.length + ' per pair'], ['Top ≥ 0.5', n(t.classifier.points_top_above_half) + ' points']] },
+    { key: 'viterbi', title: 'Viterbi decoding', time: x => x.timings.decoding_and_bridging_seconds, big: t => n(t.viterbi.changed_from_classifier) + ' overrides', rows: t => [['β', t.viterbi.beta_m + ' m'], ['Resets', n(t.viterbi.resets)], ['Reset on gap', '> ' + t.viterbi.gap_reset_s + ' s'], ['Speed bound', t.viterbi.max_speed_mps + ' m/s']] },
+    { key: 'route', title: 'Route + scoring', big: t => fx(t.route.length_km, 1) + ' km', rows: (t, r) => [['Route arcs', n(t.route.arcs)], ['Pieces', n(t.route.pieces)], ['Server total', secs(r && r.seconds)]] },
+  ];
+  function renderPipe(state) {
+    const t = S.trace && S.trace.stages;
+    $('pipe').replaceChildren(...STAGES.map((st, idx) => {
+      const timing = t && st.time ? secs(st.time(t)) : '';
+      const card = h('div', { class: 'st ' + state, 'data-i': idx },
+        h('div', { class: 'n' }, h('b', { text: String(idx + 1).padStart(2, '0') }), h('span', { text: timing })),
+        h('h3', { text: st.title }),
+        h('p', { class: 'big', text: t ? st.big(t) : '—' }),
+        h('ul', {}, (t ? st.rows(t, S.record) : [['', state === 'running' ? 'Running on Laptop 1…' : 'Waiting for a request']]).map(([k, v]) => h('li', {}, k ? k + ' ' : '', h('b', { text: v })))));
+      return card;
+    }));
+  }
+  function revealPipe() {
+    renderPipe('wait');
+    const cards = [...document.querySelectorAll('.st')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    cards.forEach((card, i) => setTimeout(() => { card.classList.remove('wait'); card.classList.add('done'); }, reduce ? 0 : 140 * i));
+  }
+
+  // ---------- point explainer ----------
+  function plotPoint(i) {
+    const tr = S.trace, P = tr.points, svg = $('plot');
+    const [cx, cy] = P.xy[i];
+    const X = x => x - cx, Y = y => -(y - cy);
+    const kids = [];
+    // light grid
+    for (let g = -100; g <= 100; g += 50) {
+      kids.push(s('line', { x1: g, y1: -130, x2: g, y2: 130, stroke: '#e1e6df', 'stroke-width': .6 }));
+      kids.push(s('line', { x1: -130, y1: g, x2: 130, y2: g, stroke: '#e1e6df', 'stroke-width': .6 }));
+    }
+    kids.push(s('text', { x: -124, y: 124, 'font-size': 8, fill: '#7d8882', 'font-family': 'Geist Mono, monospace', text: '50 m grid' }));
+    const arcs = P.arc[i], vit = P.viterbi_pick[i], cls = P.classifier_pick[i];
+    const order = arcs.map((a, k) => k).filter(k => arcs[k] >= 0).sort((a, b) => (a === vit) - (b === vit) || (a === cls) - (b === cls));
+    for (const k of order) {
+      const seg = tr.segments_xy[arcs[k]]; if (!seg) continue;
+      const [x0, y0, x1, y1] = seg;
+      const isV = k === vit, isC = k === cls;
+      const color = isV ? '#0a7c66' : isC ? '#9b4fb0' : '#9aa59f';
+      kids.push(s('line', { x1: X(x0), y1: Y(y0), x2: X(x1), y2: Y(y1), stroke: color, 'stroke-width': isV ? 4 : isC ? 3 : 1.6, 'stroke-linecap': 'round', 'stroke-dasharray': isC && !isV ? '4 4' : null, opacity: isV || isC ? 1 : .8 }));
+      // direction tick at 70% along the directed arc
+      const mx = x0 + .7 * (x1 - x0), my = y0 + .7 * (y1 - y0), len = Math.hypot(x1 - x0, y1 - y0) || 1, ux = (x1 - x0) / len, uy = (y1 - y0) / len;
+      kids.push(s('path', { d: `M${X(mx - 5 * ux + 3 * uy)} ${Y(my - 5 * uy - 3 * ux)} L${X(mx)} ${Y(my)} L${X(mx - 5 * ux - 3 * uy)} ${Y(my - 5 * uy + 3 * ux)}`, fill: 'none', stroke: color, 'stroke-width': 1.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    }
+    // GPS trail
+    const lo = Math.max(0, i - 20), hi = Math.min(P.xy.length - 1, i + 20);
+    for (let j = lo; j <= hi; j++) if (j !== i) {
+      const [x, y] = P.xy[j];
+      kids.push(s('circle', { cx: X(x), cy: Y(y), r: 1.8, fill: '#2f74d0', opacity: j < i ? .55 : .22 }));
+    }
+    kids.push(s('circle', { cx: 0, cy: 0, r: 7, fill: '#2f74d0', opacity: .18 }));
+    kids.push(s('circle', { cx: 0, cy: 0, r: 3.6, fill: '#2f74d0', stroke: '#fff', 'stroke-width': 1.4 }));
+    svg.replaceChildren(...kids);
+  }
+
+  function renderCalc(i, ex) {
+    const P = S.trace.points, arcs = P.arc[i], vit = P.viterbi_pick[i], cls = P.classifier_pick[i];
+    const reset = P.reset_before[i] === 1;
+    const verdict = h('div', { class: 'verdict' },
+      h('strong', { text: 'Point ' + i.toLocaleString() }), h('span', { class: 'mono', style: 'color:var(--ink-3)', text: 't = ' + P.t[i] + ' s' }),
+      reset ? h('span', { class: 'pill reset', text: i === 0 ? 'Route starts here' : 'Decoder reset before this point' }) : null,
+      vit === cls ? h('span', { class: 'pill agree', text: 'Classifier and Viterbi agree' }) : h('span', { class: 'pill override', text: 'Viterbi overrides the classifier' }));
+    const exRows = ex ? new Map(ex.candidates.map(r => [r.candidate, r])) : null;
+    const showTr = ex && ex.transition && !ex.transition.reset;
+    const head = h('tr', {}, h('th', { text: 'Candidate arc' }), h('th', { text: 'Distance' }), h('th', { text: 'Heading cos' }), h('th', { text: 'P(match)' }), h('th', { text: 'Emission' }),
+      showTr ? h('th', { text: 'Route dist.' }) : null, showTr ? h('th', { text: 'log transition' }) : null);
+    const ks = arcs.map((a, k) => k).filter(k => arcs[k] >= 0).sort((a, b) => P.probability[i][b] - P.probability[i][a]);
+    const rows = ks.map(k => {
+      const r = exRows && exRows.get(k);
+      const p = P.probability[i][k];
+      return h('tr', { class: (k === vit ? 'vit ' : '') + (k === cls ? 'cls' : '') },
+        h('td', {}, String(arcs[k]), h('span', { class: 'tags' }, k === vit ? h('span', { class: 'tag v', text: 'VITERBI' }) : null, k === cls ? h('span', { class: 'tag c', text: 'CLASSIFIER' }) : null)),
+        h('td', { text: fx(P.distance_m[i][k], 1) + ' m' }),
+        h('td', { text: fx(P.heading_cos[i][k], 2) }),
+        h('td', {}, h('span', { class: 'probbar' }, h('span', { style: `width:${Math.round(100 * p)}%` })), fx(p, 3)),
+        h('td', { text: fx(P.emission[i][k], 3) }),
+        showTr ? h('td', { text: r && r.route_distance_m != null ? fx(r.route_distance_m, 1) + ' m' : 'unreachable' }) : null,
+        showTr ? h('td', { text: r && r.log_transition != null ? fx(r.log_transition, 3) : '−∞' }) : null);
+    });
+    const table = h('div', { class: 'tablewrap' }, h('table', {}, h('thead', {}, head), h('tbody', {}, rows)));
+
+    let formula;
+    if (!ex) formula = h('div', { class: 'formula' }, h('span', { class: 'muted', text: S.playing ? 'Pause to fetch this point’s transition terms from Laptop 1.' : 'Fetching transition terms from Laptop 1…' }));
+    else if (ex.transition.reset) formula = h('div', { class: 'formula' }, 'No transition into this point: ', h('b', { text: ex.transition.reason }), '. Viterbi starts a new route piece from the emission scores alone.');
+    else {
+      const tr = ex.transition, v = exRows.get(vit);
+      const lines = [
+        h('div', {}, 'emission(c) = P(match | c) / Σ P(match)  ', h('span', { class: 'muted', text: '→ normalised over this point’s ' + ks.length + ' candidates' })),
+        h('div', {}, 'GPS moved ', h('b', { text: fx(tr.gps_displacement_m, 1) + ' m' }), ' in ', h('b', { text: fx(tr.dt_s, 0) + ' s' }), ' from arc ', h('b', { text: String(tr.previous_arc) }), h('span', { class: 'muted', text: '  (search bound ' + fx(tr.limit_m, 0) + ' m)' })),
+        v && v.log_transition != null ? h('div', {}, 'log transition = −|route − GPS| / β = −|', h('b', { text: fx(v.route_distance_m, 1) }), ' − ', h('b', { text: fx(tr.gps_displacement_m, 1) }), '| / ', h('b', { text: String(tr.beta_m) }), ' = ', h('b', { text: fx(v.log_transition, 3) })) : null,
+        v ? h('div', {}, 'step score = log emission + log transition = ', h('b', { text: fx(v.log_emission, 3) }), ' + ', h('b', { text: fx(v.log_transition, 3) }), ' = ', h('b', { text: fx((v.log_emission || 0) + (v.log_transition || 0), 3) }), h('span', { class: 'muted', text: '  (Viterbi adds this to the best path so far)' })) : null,
+      ];
+      formula = h('div', { class: 'formula' }, lines);
+    }
+    $('calc').replaceChildren(verdict, table, formula);
+  }
+
+  async function fetchExplain(i) {
+    const rec = S.record; if (!rec || !rec.api) return null;
+    const key = rec.request_id + ':' + i;
+    if (S.explainCache.has(key)) return S.explainCache.get(key);
+    try {
+      const r = await fetch(`${rec.api}/explain/${rec.request_id}/${i}`, { signal: AbortSignal.timeout(15000) });
+      if (!r.ok) return null;
+      const body = await r.json(); S.explainCache.set(key, body); return body;
+    } catch { return null; }
+  }
+  function show(i, fetchDetail = true) {
+    if (!S.trace) return;
+    S.i = i; $('scrub').value = i;
+    $('ptInfo').textContent = 'point ' + i.toLocaleString() + ' / ' + (S.trace.points.t.length - 1).toLocaleString();
+    plotPoint(i);
+    const key = S.record.request_id + ':' + i;
+    renderCalc(i, S.explainCache.get(key) || null);
+    clearTimeout(S.explainTimer);
+    if (fetchDetail && !S.playing) S.explainTimer = setTimeout(async () => { const ex = await fetchExplain(i); if (ex && S.i === i) renderCalc(i, ex); }, 180);
+  }
+  function frame(ts) {
+    if (!S.playing) return;
+    const rate = +$('speed').value;
+    if (S.last) S.carry += (ts - S.last) / 1000 * rate;
+    S.last = ts;
+    const step = Math.floor(S.carry);
+    if (step > 0) {
+      S.carry -= step;
+      const next = S.i + step, last = S.trace.points.t.length - 1;
+      if (next >= last) { show(last, false); setPlaying(false); return; }
+      show(next, false);
+    }
+    S.raf = requestAnimationFrame(frame);
+  }
+  function setPlaying(on) {
+    S.playing = on; $('play').textContent = on ? 'Pause' : 'Play';
+    cancelAnimationFrame(S.raf); S.last = 0; S.carry = 0;
+    if (on) { if (S.i >= S.trace.points.t.length - 1) S.i = 0; S.raf = requestAnimationFrame(frame); }
+    else show(S.i, true);
+  }
+
+  // ---------- tables ----------
+  function renderScores(rec) {
+    const m = rec && rec.metrics;
+    if (!m) { $('scores').replaceChildren(h('div', { class: 'empty', text: rec ? 'Reference scoring is unavailable for this trip on the server.' : 'No result yet.' })); return; }
+    const c = m.classifier, v = m.hmm, b = m.bridged_route;
+    const rows = [['Proxy pointwise accuracy', c.proxy_top1_accuracy, v.proxy_top1_accuracy, null], ['Route overlap F1', c.route_length_f1, v.route_length_f1, b.route_length_f1], ['Ordered route LCS F1', c.ordered_route_lcs_f1, v.ordered_route_lcs_f1, b.ordered_route_lcs_f1], ['Direct arc continuity', c.direct_arc_continuity, v.direct_arc_continuity, b.direct_arc_continuity]];
+    $('scores').replaceChildren(h('div', { class: 'tablewrap' }, h('table', {},
+      h('thead', {}, h('tr', {}, h('th', { text: 'Metric' }), h('th', { text: 'Classifier only' }), h('th', { text: 'Viterbi' }), h('th', { text: 'With bridges' }))),
+      h('tbody', {}, rows.map(([name, ...vals]) => {
+        const nums = vals.filter(x => typeof x === 'number'), best = Math.max(...nums);
+        return h('tr', {}, h('td', { style: 'font-family:var(--sans)', text: name }), vals.map(x => typeof x !== 'number' ? h('td', { class: 'na', text: '—' }) : h('td', { class: nums.length > 1 && Math.abs(x - best) < 1e-9 ? 'best' : null, text: pct(x) })));
+      })))));
+  }
+  function renderLog(history) {
+    if (!history || !history.length) { $('log').replaceChildren(h('div', { class: 'empty', text: 'No requests yet.' })); return; }
+    $('log').replaceChildren(h('table', {},
+      h('thead', {}, h('tr', {}, h('th', { text: 'Time' }), h('th', { text: 'Trip' }), h('th', { text: 'Request' }), h('th', { text: 'Viterbi acc.' }), h('th', { text: 'Server' }))),
+      h('tbody', {}, history.map(r => h('tr', {}, h('td', { text: new Date(r.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) }), h('td', { text: r.trip_id }), h('td', { text: r.request_id }), h('td', { text: r.metrics ? pct(r.metrics.hmm.proxy_top1_accuracy) : '—' }), h('td', { text: secs(r.seconds) }))))));
+  }
+
+  // ---------- session sync ----------
+  function setLive(kind, text) { $('dot').className = 'dot' + (kind ? ' ' + kind : ''); $('liveText').textContent = text; }
+  function setMode(mode) {
+    const b = $('modeBadge');
+    if (mode === 'evaluation') { b.textContent = 'Reserved trips · Evaluation mode'; b.className = 'badge eval'; }
+    else if (mode === 'development') { b.textContent = 'Student-test · Development mode'; b.className = 'badge dev'; }
+    else { b.textContent = 'Not connected'; b.className = 'badge'; }
+  }
+  function startClock(since) {
+    clearInterval(S.clock);
+    const tick = () => { $('clock').textContent = ((Date.now() - since) / 1000).toFixed(1) + ' s'; };
+    tick(); S.clock = setInterval(tick, 100);
+  }
+  function stopClock(text = '') { clearInterval(S.clock); S.clock = null; $('clock').textContent = text; }
+
+  async function loadRecord(rec) {
+    S.record = rec; S.trace = null; setPlaying(false);
+    $('title').textContent = 'Trip ' + rec.trip_id;
+    $('lede').textContent = 'Request ' + rec.request_id + ' · ' + rec.observations.toLocaleString() + ' GPS points · ' + rec.model.replaceAll('_', ' ') + (rec.tuned ? ' (Bayesian tuned)' : '') + '.';
+    renderScores(rec);
+    if (!rec.trace_url) { renderPipe('wait'); $('calc').replaceChildren(h('div', { class: 'empty', text: 'This server version does not publish model traces. Update the API on Laptop 1 to see stage and point calculations.' })); return; }
+    try {
+      const r = await fetch(rec.api + rec.trace_url, { signal: AbortSignal.timeout(60000) });
+      if (!r.ok) throw new Error(r.status === 404 ? 'The trace for this request has expired on the server. Reconstruct the trip again.' : 'Server answered ' + r.status);
+      S.trace = await r.json();
+    } catch (e) { renderPipe('wait'); $('calc').replaceChildren(h('div', { class: 'empty', text: e.message })); return; }
+    revealPipe();
+    const N = S.trace.points.t.length;
+    $('scrub').max = N - 1; for (const id of ['scrub', 'play', 'nextOverride']) $(id).disabled = false;
+    show(0, true);
+    // Replay the decoded trip once so viewers can watch the calculation move along the route.
+    setTimeout(() => { if (S.trace && S.record === rec && !matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(true); }, 1000);
+  }
+
+  function apply(event, session) {
+    S.session = session;
+    setMode(session.mode);
+    renderLog(session.history);
+    if (session.running) {
+      setLive('busy', 'Laptop 1 is matching trip ' + session.running.trip_id);
+      $('title').textContent = 'Matching trip ' + session.running.trip_id + '…';
+      $('lede').textContent = 'The server is reading the trip, searching candidates, scoring them and decoding the route. Results appear the moment it replies.';
+      startClock(session.running.started); setPlaying(false); renderPipe('running');
+      return;
+    }
+    if (event && event.type === 'error') { stopClock(''); setLive('error', 'Last request failed'); $('title').textContent = 'Trip ' + event.trip_id + ' did not finish'; $('lede').textContent = event.message; renderPipe('wait'); return; }
+    setLive(session.mode ? 'ready' : '', session.mode ? 'Following main screen · ' + (session.api ? new URL(session.api).host : '') : 'Waiting for the main screen');
+    const latest = session.history && session.history[0];
+    if (latest && (!S.record || S.record.request_id !== latest.request_id)) {
+      stopClock(secs(latest.http_seconds));
+      loadRecord(latest);
+    }
+  }
+  if ('BroadcastChannel' in window) new BroadcastChannel('pathsnap').onmessage = e => apply(e.data, e.data.session);
+  addEventListener('storage', e => { if (e.key === 'pathsnapSession' && e.newValue && !('BroadcastChannel' in window)) apply(null, JSON.parse(e.newValue)); });
+
+  $('play').addEventListener('click', () => setPlaying(!S.playing));
+  $('scrub').addEventListener('input', () => { if (S.playing) setPlaying(false); show(+$('scrub').value, true); });
+  $('nextOverride').addEventListener('click', () => {
+    if (!S.trace) return; if (S.playing) setPlaying(false);
+    const P = S.trace.points, N = P.t.length;
+    for (let k = 1; k <= N; k++) { const j = (S.i + k) % N; if (P.viterbi_pick[j] !== P.classifier_pick[j]) { show(j, true); return; } }
+  });
+  addEventListener('keydown', e => {
+    if (!S.trace || e.target.matches('input,select,button')) return;
+    if (e.key === 'ArrowRight') show(Math.min(S.i + 1, S.trace.points.t.length - 1));
+    else if (e.key === 'ArrowLeft') show(Math.max(S.i - 1, 0));
+    else if (e.key === ' ') { e.preventDefault(); setPlaying(!S.playing); }
+  });
+
+  renderPipe('wait');
+  try { const saved = JSON.parse(localStorage.getItem('pathsnapSession') || 'null'); if (saved) apply(null, { ...saved, running: null }); } catch {}
+})();
+</script>
+</body>
+</html>

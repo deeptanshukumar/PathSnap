@@ -70,3 +70,22 @@ def test_evaluator_mode_never_substitutes_student_test(api_setup):
         create_app(root, artifacts, "evaluation")
     with pytest.raises(FileNotFoundError):
         create_app(root, artifacts, "evaluation", root / "missing_evaluator_folder")
+
+
+def test_trace_and_explain_are_read_only_and_reference_free(api_setup):
+    root, artifacts = api_setup
+    with TestClient(create_app(root, artifacts)) as client:
+        body = client.post("/match", json={"trip_id": "00000000"}).json()
+        trace = client.get(body["trace_url"])
+        assert trace.status_code == 200
+        data = trace.json()
+        assert len(data["map"]["gps"]) == 3 and data["map"]["route"]
+        assert len(data["points"]["viterbi_pick"]) == 3
+        assert "reference" not in json.dumps(data)
+        # The trace mirrors the decoded result rather than recomputing it.
+        picks = [data["points"]["arc"][i][k] for i, k in enumerate(data["points"]["viterbi_pick"])]
+        assert picks == body["predicted_arc_ids"]
+        point = client.get(f"/explain/{body['request_id']}/1").json()
+        assert point["i"] == 1 and point["candidates"]
+        assert client.get(f"/explain/{body['request_id']}/99").status_code == 422
+        assert client.get("/trace/unknown").status_code == 404

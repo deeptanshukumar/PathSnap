@@ -56,6 +56,10 @@ The ten reserved IDs are:
 
 Each selection sends only its trip ID. The Linux API performs live candidate scoring, Viterbi decoding, route reconstruction and separate reference scoring. Reference labels and reference geometry stay on the server.
 
+### Model trace screen
+
+Click **Model trace** in the top-right of the UI (or open `http://localhost:8010/details.html`) in a second tab. It follows the main tab: when a trip runs it shows each pipeline stage with the server's measured numbers, then replays the trip point by point with candidates, probabilities and Viterbi transition terms. It needs the Linux API to run the `chiranth/ui-polish` code (`git fetch && git checkout chiranth/ui-polish`, then restart the server). An older API still works with the main screen, which then shows the server-rendered Folium map.
+
 ## 3. Complete the real two-laptop evidence
 
 - Capture your Mac's working UI, including the evaluation-mode badge, selected trip, results and request ID.

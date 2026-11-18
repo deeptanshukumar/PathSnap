@@ -1,6 +1,7 @@
 """FastAPI boundary: prediction first, reference-only server scoring second."""
 
 from collections import OrderedDict
+from dataclasses import asdict
 from datetime import datetime, timezone
 import json
 import logging
@@ -19,6 +20,7 @@ from .data import trip_directories
 from .evaluation import score_prediction
 from .maps import make_map
 from .pipeline import Pipeline
+from .trace import build_trace, explain_point
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -47,6 +49,11 @@ def create_app(data_root: Path | None, artifacts: Path, mode: str = "development
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=False,
                        allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
     maps: OrderedDict[str, str] = OrderedDict()
+    # Read-only UI explanations of finished predictions; bounded like maps.
+    traces: OrderedDict[str, dict] = OrderedDict()
+    # The trace reports the decoder settings actually used by this pipeline instance.
+    trace_config = {**pipeline.config, "decoder": asdict(pipeline.decoder_config)}
+    predictions: OrderedDict[str, object] = OrderedDict()
     inference_lock = Lock()
     ui_root = Path(__file__).resolve().parent.parent / "ui"
     if ui_root.exists():
@@ -87,6 +94,12 @@ def create_app(data_root: Path | None, artifacts: Path, mode: str = "development
             maps[request_id] = map_html
             if len(maps) > 32:
                 maps.popitem(last=False)
+            traces[request_id] = build_trace(prediction, trace_config, pipeline.bundle["model_name"],
+                                             pipeline.bundle["is_tuned"])
+            predictions[request_id] = prediction
+            for store, limit in ((traces, 32), (predictions, 8)):
+                while len(store) > limit:
+                    store.popitem(last=False)
         event = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "request_id": request_id,
                  "trip_id": request.trip_id, "mode": mode, "observations": len(prediction.network.gps),
                  "status": "success", "seconds": round(perf_counter() - start, 4)}
@@ -96,12 +109,29 @@ def create_app(data_root: Path | None, artifacts: Path, mode: str = "development
                 "route_pieces": prediction.route_pieces,
                 "breaks": [{"observation": key, "reason": value} for key, value in prediction.decoded.break_reasons.items()],
                 "candidate_fallback_observations": int(prediction.candidates.fallback.sum()),
-                "metrics": metrics, "timings": prediction.timings, "map_url": f"/maps/{request_id}"}
+                "metrics": metrics, "timings": prediction.timings, "map_url": f"/maps/{request_id}",
+                "trace_url": f"/trace/{request_id}"}
 
     @app.get("/maps/{request_id}", response_class=HTMLResponse)
     def route_map(request_id: str):
         if request_id not in maps:
             raise HTTPException(status_code=404, detail="Map expired; run matching again")
         return maps[request_id]
+
+    @app.get("/trace/{request_id}")
+    def trace(request_id: str):
+        if request_id not in traces:
+            raise HTTPException(status_code=404, detail="Trace expired; run matching again")
+        return traces[request_id]
+
+    @app.get("/explain/{request_id}/{observation}")
+    def explain(request_id: str, observation: int):
+        if request_id not in predictions:
+            raise HTTPException(status_code=404, detail="Explanation expired; run matching again")
+        try:
+            with inference_lock:
+                return explain_point(predictions[request_id], trace_config, observation)
+        except ValueError as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
 
     return app
