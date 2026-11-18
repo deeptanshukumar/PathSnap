@@ -31,7 +31,7 @@ class MatchRequest(BaseModel):
 
 
 def create_app(data_root: Path | None, artifacts: Path, mode: str = "development",
-               evaluation_root: Path | None = None) -> FastAPI:
+               evaluation_root: Path | None = None, variant: str = "default") -> FastAPI:
     if mode == "evaluation":
         if evaluation_root is None:
             raise ValueError("Evaluation mode requires --evaluation-root with ten reserved trips")
@@ -44,7 +44,14 @@ def create_app(data_root: Path | None, artifacts: Path, mode: str = "development
     if len(folders) != 10:
         raise ValueError(f"{mode} mode requires exactly ten trip directories, found {len(folders)}")
     allowed = {folder.name: folder for folder in folders}
-    pipeline = Pipeline(artifacts / "models/final.joblib")
+    if variant == "improved":
+        # Opt-in variant with trajectory-context features; the default stays the reported model.
+        from .improved import ImprovedPipeline
+        pipeline = ImprovedPipeline(artifacts / "improved/model.joblib")
+    elif variant == "default":
+        pipeline = Pipeline(artifacts / "models/final.joblib")
+    else:
+        raise ValueError(f"Unknown variant: {variant}")
     app = FastAPI(title="PathSnap", version="0.1.0")
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=False,
                        allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
@@ -66,7 +73,8 @@ def create_app(data_root: Path | None, artifacts: Path, mode: str = "development
     @app.get("/health")
     def health():
         return {"status": "ready", "mode": mode, "trip_count": len(allowed),
-                "model": pipeline.bundle["model_name"], "tuned": pipeline.bundle["is_tuned"]}
+                "model": pipeline.bundle["model_name"], "tuned": pipeline.bundle["is_tuned"],
+                "variant": variant}
 
     @app.get("/trips")
     def trips():
@@ -104,7 +112,7 @@ def create_app(data_root: Path | None, artifacts: Path, mode: str = "development
                  "trip_id": request.trip_id, "mode": mode, "observations": len(prediction.network.gps),
                  "status": "success", "seconds": round(perf_counter() - start, 4)}
         logger.info("PATHSNAP %s", json.dumps(event))
-        return {**event, "model": pipeline.bundle["model_name"], "tuned": pipeline.bundle["is_tuned"],
+        return {**event, "model": pipeline.bundle["model_name"], "tuned": pipeline.bundle["is_tuned"], "variant": variant,
                 "predicted_arc_ids": prediction.decoded.arc_ids.tolist(),
                 "route_pieces": prediction.route_pieces,
                 "breaks": [{"observation": key, "reason": value} for key, value in prediction.decoded.break_reasons.items()],

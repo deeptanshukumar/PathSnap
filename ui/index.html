@@ -396,7 +396,7 @@
     const data = await fetchJson('/trips', {}, 12000);
     state.mode = data.mode; state.health = health; state.trip = null;
     renderTrips(data.trips); setModeBadge(data.mode);
-    $('modelLine').textContent = data.notice + ' · ' + health.model.replaceAll('_', ' ') + (health.tuned ? ', Bayesian tuned' : '');
+    $('modelLine').textContent = data.notice + ' · ' + health.model.replaceAll('_', ' ') + (health.tuned ? ', Bayesian tuned' : '') + (health.variant === 'improved' ? ' · improved variant (opt-in)' : '');
     $('idleText').textContent = 'Choose one of the ' + data.trips.length + ' trips, then reconstruct its route.';
     return data;
   }

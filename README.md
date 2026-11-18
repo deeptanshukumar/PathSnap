@@ -136,6 +136,23 @@ Training selects original observation indices divisible by five and applies a fi
 
 The optional deck builder is `scripts/build_presentation.mjs`. It uses Codex's Artifact Tool 2.8.134 runtime and presentation-skill validators, supplied through `RUNTIME_NODE_MODULES`, `RUNTIME_PYTHON` and `ARTIFACT_SKILL_DIR`. These are optional artifact-authoring dependencies, not application requirements. Set `PRESENTATION_OUTPUT` to a new filename when rebuilding. Native chart values are rounded to six decimal places for Office interoperability; full result precision remains in JSON. The deck includes editable charts/tables and source notes.
 
+## Opt-in improved variant
+
+A separate variant adds 17 trajectory-context features per candidate arc: how well the arc fits the neighbouring GPS points within a gap-free run, the arc heading against ±5-point motion, and along-arc progress against GPS travel. It uses the same inputs (`.track`, `.nodes`, `.arcs`), the same candidates and the same decoder, re-tuned with the same 12-trial TPE search on grouped CV. The decoder weight was chosen on student-test only. The default server, the frozen predictor files and `final.joblib` are unchanged.
+
+```bash
+python scripts/train_improved.py --data-root "$PATHSNAP_DATA_ROOT"     # needs the prepared cache
+python scripts/evaluate_improved.py --trips "$PATHSNAP_DATA_ROOT/student_test" --label student_test
+python -m pathsnap.cli serve --mode evaluation --evaluation-root data/evaluator_test --variant improved --host 0.0.0.0
+```
+
+| Classifier only | Train F1 | CV macro F1 | Student-test top-1 | Evaluator top-1 (report-only) |
+|---|---:|---:|---:|---:|
+| Default (served) | 0.9333 | 0.9292 | 87.46% | 88.44% |
+| Improved variant | 0.9524 | 0.9396 | 89.81% | 92.19% |
+
+Viterbi top-1 moves from 85.42% to 86.08% (student test) and from 77.78% to 79.36% (evaluator). Reconstructed-route F1 is about the same: 0.9570 to 0.9573 on student test, 0.9250 to 0.9212 on evaluator. The evaluator trips were scored once, after every setting was fixed. Records are in `artifacts/improved/`.
+
 ## Evidence for the final demo
 
 With the API running:
