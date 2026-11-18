@@ -133,6 +133,7 @@
     table.cmp .sd{color:var(--ink-3);font-size:12px}
     table.cmp tr.win td{background:var(--route-wash)}
     table.cmp tr.win td:first-child{box-shadow:inset 3px 0 0 var(--route);font-weight:600}
+    .compare .evh{font-size:15px;font-weight:600;margin:28px 0 6px}
     @media (max-width:980px){.compare .cmpgrid{grid-template-columns:1fr}}
     @media (max-width:1180px){.pipe{grid-template-columns:repeat(3,minmax(0,1fr))}.st:nth-child(3){border-right:0}.st:nth-child(-n+3){border-bottom:1px solid var(--line)}}
     @media (max-width:980px){.two{grid-template-columns:1fr}}
@@ -219,6 +220,16 @@
       </table>
     </div>
     <p class="note">Top-1 is classifier-only (no Viterbi) against proxy labels inferred from the ordered reference route. The highlighted row is the model the API serves.</p>
+
+    <h3 class="evh">Reserved evaluator trips</h3>
+    <p class="sub">Final-partition results on the ten reserved trips (19,674 GPS observations), recorded in <span class="mono">artifacts/evaluator_model_comparison.json</span> by <span class="mono">scripts/evaluate_reserved_models.py</span>. Every family was fitted on the 80 training trips with its recorded settings and scored through the same inference path and decoder. This is a report only: the served model was chosen on grouped CV before these trips were opened, and nothing here changes it.</p>
+    <div class="tablewrap">
+      <table class="cmp">
+        <thead><tr><th>Model</th><th>Classifier top-1 (proxy)</th><th>Classifier route F1</th><th>Viterbi top-1 (proxy)</th><th>Reconstructed route F1</th><th>Route precision</th><th>Route recall</th><th>Direct continuity</th><th>Model scoring (10 trips)</th></tr></thead>
+        <tbody><tr><td>Logistic regression</td><td>83.69%</td><td>0.8855</td><td>74.91%</td><td>0.9259</td><td>0.8829</td><td>0.9921</td><td>0.9977</td><td>0.01 s</td></tr><tr><td>Gaussian Naive Bayes</td><td>85.38%</td><td>0.8998</td><td>75.52%</td><td>0.9295</td><td>0.8892</td><td>0.9921</td><td>0.9978</td><td>0.02 s</td></tr><tr><td>Decision tree</td><td>86.93%</td><td>0.9095</td><td>77.06%</td><td>0.9177</td><td>0.8700</td><td>0.9893</td><td>0.9976</td><td>0.01 s</td></tr><tr><td>Random forest</td><td>88.07%</td><td>0.9109</td><td>77.79%</td><td>0.9234</td><td>0.8791</td><td>0.9915</td><td>0.9976</td><td>0.19 s</td></tr><tr><td>Hist gradient boosting</td><td>87.95%</td><td>0.9178</td><td>77.90%</td><td>0.9238</td><td>0.8787</td><td>0.9917</td><td>0.9975</td><td>0.09 s</td></tr><tr class="win"><td>Hist gradient boosting, tuned</td><td>88.44%</td><td>0.9160</td><td>77.78%</td><td>0.9250</td><td>0.8810</td><td>0.9917</td><td>0.9976</td><td>0.09 s</td></tr></tbody>
+      </table>
+    </div>
+    <p class="note">Top-1 values are pooled over observations against proxy labels inferred from the ordered reference route; route F1, precision, recall and continuity are means over the ten trips against the reference route itself. The Viterbi decoder settings were tuned on development data with the boosting model and are shared by every family. Viterbi top-1 is below classifier top-1 for all models because the decoder optimises route continuity, not pointwise agreement.</p>
   </section>
 </main>
 

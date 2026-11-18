@@ -30,7 +30,7 @@ Bridge metrics include intermediate routed arcs. HMM-state direct continuity bef
 
 ## Final-evaluation boundary
 
-The initial package omitted reserved trips. The user later supplied `evaluator_test.zip`. Commit **a61ce50** froze the predictor/scorer before archive access; `artifacts/evaluation_freeze.json` records weights, settings and source hashes. All ten reserved trips (19,674 observations) ran through the unchanged evaluation-mode API. Results/request IDs are in `evaluator_results.json/.csv`; archive SHA256 and IDs are in `evaluator_manifest.json`.
+The initial package omitted reserved trips. The user later supplied `evaluator_test.zip`. Commit **a61ce50** froze the predictor/scorer before archive access; `artifacts/evaluation_freeze.json` records weights, settings and source hashes. All ten reserved trips (19,674 observations) ran through the unchanged evaluation-mode API. Results/request IDs are in `evaluator_results.json/.csv`; archive SHA256 and IDs are in `evaluator_manifest.json`. A later report-only run (`scripts/evaluate_reserved_models.py`, `artifacts/evaluator_model_comparison.json`) scored all five model families on the same reserved trips and is shown on the model trace page; the tuned boosting row reproduces the frozen results exactly and no selection changed.
 
 No evaluator results selected or modified features, labels convention, model weights/family, decoder parameters, thresholds or search space. Report/UI authoring can be updated without changing the frozen predictor/scorer.
 
