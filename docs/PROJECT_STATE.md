@@ -30,9 +30,15 @@ Bridge metrics include intermediate routed arcs. HMM-state direct continuity bef
 
 ## Final-evaluation boundary
 
-The initial package omitted reserved trips. The user later supplied `evaluator_test.zip`. Commit **a61ce50** froze the predictor/scorer before archive access; `artifacts/evaluation_freeze.json` records weights, settings and source hashes. All ten reserved trips (19,674 observations) ran through the unchanged evaluation-mode API. Results/request IDs are in `evaluator_results.json/.csv`; archive SHA256 and IDs are in `evaluator_manifest.json`.
+The initial package omitted reserved trips. The user later supplied `evaluator_test.zip`. Commit **a61ce50** froze the predictor/scorer before archive access; `artifacts/evaluation_freeze.json` records weights, settings and source hashes. All ten reserved trips (19,674 observations) ran through the unchanged evaluation-mode API. Results/request IDs are in `evaluator_results.json/.csv`; archive SHA256 and IDs are in `evaluator_manifest.json`. A later report-only run (`scripts/evaluate_reserved_models.py`, `artifacts/evaluator_model_comparison.json`) scored all five model families on the same reserved trips and is shown on the model trace page; the tuned boosting row reproduces the frozen results exactly and no selection changed.
 
 No evaluator results selected or modified features, labels convention, model weights/family, decoder parameters, thresholds or search space. Report/UI authoring can be updated without changing the frozen predictor/scorer.
+
+## UI update (branch `chiranth/ui-polish`, 18 November 2026)
+
+- `ui/index.html`: map-first evaluator screen. Leaflet draws the reconstructed route with toggles for raw GPS, classifier-only picks and resets; falls back to the server's Folium map if the API lacks `/trace`.
+- `ui/details.html` ("Model trace"): separate tab that follows the main screen via BroadcastChannel. Shows each pipeline stage with server-measured numbers and a point-by-point replay of candidates, P(match), emissions and Viterbi transition terms.
+- Verified on macOS (Python 3.13, same pinned NumPy/SciPy/scikit-learn) against a local development-mode API in Chrome; 13 tests pass. The Linux API must pull this branch and restart to serve `/trace`.
 
 ## Current demonstration
 

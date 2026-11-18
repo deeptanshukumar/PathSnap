@@ -1,43 +1,505 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PathSnap · Route reconstruction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <style>
-    :root{--ink:#163d35;--muted:#66766d;--paper:#f4f5ef;--line:#dde3d9;--green:#087f6a;--gold:#dab367}
-    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px system-ui,-apple-system,sans-serif}button,input,select{font:inherit}button{cursor:pointer}header{height:84px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 38px;background:#fcfcf7}.brand{display:flex;gap:12px;align-items:center;font-size:24px;font-weight:750;letter-spacing:-1px}.brand svg{width:33px;height:33px}.topnote{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}.status{display:flex;align-items:center;gap:8px;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#a6ada7}.dot.ready{background:var(--green)}main{padding:30px 38px;max-width:1800px;margin:auto}.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:1.7px;font-weight:650;color:var(--green)}h1{font-size:34px;letter-spacing:-1.3px;font-weight:550;margin:8px 0 8px}p{color:var(--muted);line-height:1.5;margin:0}.intro{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.badge{padding:8px 12px;background:#e6eee5;border-radius:5px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:22px}.panel{background:#fcfcf8;border:1px solid var(--line);border-radius:12px;overflow:hidden}.controls{padding:23px}.sectionlabel{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:0 0 14px}.field{display:block;font-size:12px;font-weight:600;margin:16px 0 7px}input,select{width:100%;border:1px solid #cdd7cd;border-radius:6px;padding:11px 10px;background:#fff;color:var(--ink);font-size:13px}input:focus,select:focus{outline:2px solid #b5dace;outline-offset:1px}.connect{width:100%;margin-top:10px;padding:9px;border:1px solid #bdcfc2;background:transparent;border-radius:6px;color:var(--ink);font-size:12px}.run{background:var(--green);border:0;color:white;padding:13px 16px;border-radius:6px;width:100%;margin-top:22px;font-weight:600}.run:disabled{opacity:.45;cursor:default}.hint{font-size:11px;line-height:1.55;color:var(--muted);margin-top:12px}.divider{border:0;border-top:1px solid var(--line);margin:23px 0}.steps{display:flex;flex-direction:column;gap:14px;font-size:12px}.step{display:flex;gap:11px;align-items:center}.number{width:22px;height:22px;border:1px solid #d8e2d7;border-radius:50%;display:grid;place-items:center;font-size:10px;color:var(--green)}.maphead{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 21px;border-bottom:1px solid var(--line);font-size:13px;font-weight:600}.legend{display:flex;gap:16px;font-size:11px;color:var(--muted);font-weight:400}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}.mapbody{height:530px;position:relative;background:#eaf0e5}.placeholder{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at 45% 40%,#fafbf3 0%,#e5ede2 75%)}.placeholder svg{width:100px;height:100px;margin-bottom:13px}.placeholder h2{font-weight:500;font-size:23px;letter-spacing:-.7px;margin:0 0 9px}.placeholder p{font-size:13px}.placeholder small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#748575;margin-top:30px}iframe{height:100%;width:100%;border:0;display:none}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:17px}.metric{padding:19px 20px;background:#fcfcf8;border:1px solid var(--line);border-radius:9px}.metric .label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}.metric strong{display:block;font-size:26px;letter-spacing:-.8px;font-weight:550;margin:7px 0 3px}.metric small{font-size:10px;color:var(--muted)}.message{padding:12px 0 0;font-size:12px;color:var(--muted);line-height:1.6;min-height:32px}.message.error{color:#b54032}.resultdetail{margin-top:15px;padding:16px 20px;background:#e9eee4;border-radius:8px;font-size:12px;color:var(--muted);line-height:1.7;display:none}.resultdetail b{color:var(--ink)}footer{margin-top:25px;display:flex;justify-content:space-between;color:#889387;font-size:10px;letter-spacing:.6px}.loading{animation:pulse 1.3s infinite}@keyframes pulse{50%{opacity:.4}}@media(max-width:1000px){header{padding:0 18px}.topnote{display:none}main{padding:24px 18px}.layout{grid-template-columns:270px 1fr}.metrics{grid-template-columns:repeat(2,1fr)}.legend{display:none}}@media(max-width:720px){.intro{display:block}.badge{display:inline-block;margin-top:16px}.layout{grid-template-columns:1fr}.mapbody{height:420px}h1{font-size:28px}}
+    /* PathSnap evaluator screen. Map-first: the route is the hero; controls stay quiet. */
+    :root{
+      --paper:#f3f4f0; --surface:#ffffff; --sunk:#f0f2ee;
+      --ink:#13211d; --ink-2:#47554f; --ink-3:#5b6863;
+      --line:#e2e6e0; --line-2:#cdd4cc;
+      --route:#0a7c66; --route-ink:#075d4d; --route-wash:#e3f0ea;
+      --gps:#2f74d0; --cls:#9b4fb0; --reset:#d14b3c;
+      --gold-ink:#7a5a10; --gold-wash:#f7efdc;
+      --sans:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
+      --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+      --shadow:0 1px 2px rgba(19,33,29,.06),0 8px 24px -8px rgba(19,33,29,.18);
+      --ease:cubic-bezier(.16,1,.3,1);
+      color-scheme:light;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 var(--sans);font-feature-settings:"tnum" 1;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+    ::selection{background:#bfe0d3;color:var(--ink)}
+    *{scrollbar-color:var(--line-2) transparent;scrollbar-width:thin}
+    button,input{font:inherit;color:inherit}
+    button,a,label{cursor:pointer}
+    :focus-visible{outline:2px solid var(--route);outline-offset:2px;border-radius:6px}
+    svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    [hidden]{display:none!important}
+
+    header{height:56px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px;border-bottom:1px solid var(--line);background:var(--surface)}
+    .brand{display:flex;gap:10px;align-items:center;font-size:17px;font-weight:600;letter-spacing:-.02em}
+    .brand svg{width:26px;height:26px}
+    .right{display:flex;align-items:center;gap:10px}
+    .status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
+    .status .host{font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+    .dot{width:8px;height:8px;border-radius:50%;background:#aab2ad;flex:none}
+    .dot.ready{background:var(--route);box-shadow:0 0 0 3px var(--route-wash)}
+    .dot.busy{background:#d9a93c;animation:pulse 1.2s ease-in-out infinite}
+    .dot.error{background:var(--reset)}
+    @keyframes pulse{50%{opacity:.35}}
+    .badge{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:500;background:var(--sunk);color:var(--ink-2);white-space:nowrap}
+    .badge.eval{background:var(--gold-wash);color:var(--gold-ink)}
+    .badge.dev{background:var(--route-wash);color:var(--route-ink)}
+    .link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid var(--line-2);background:var(--surface);transition:background .15s}
+    .link:hover{background:var(--sunk)}
+
+    main{flex:1;min-height:0;display:grid;grid-template-columns:272px minmax(0,1fr)}
+    .rail{border-right:1px solid var(--line);background:var(--surface);padding:20px;display:flex;flex-direction:column;gap:22px;overflow:auto}
+    .label{font-size:12px;font-weight:500;color:var(--ink-3);display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+    .label b{font-weight:500;color:var(--ink-3)}
+    input[type=url]{width:100%;border:1px solid var(--line-2);border-radius:8px;padding:9px 10px;background:#fff;font:13px var(--mono);color:var(--ink)}
+    input[type=url]::placeholder{color:#68746e}
+    input[type=url]:focus{outline:2px solid var(--route);outline-offset:0;border-color:transparent}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:500;border:1px solid var(--line-2);background:var(--surface);transition:background .15s,border-color .15s,transform .1s}
+    .btn:hover:not(:disabled){background:var(--sunk)}
+    .btn:active:not(:disabled){transform:translateY(1px)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btn.primary{background:var(--ink);border-color:var(--ink);color:#fff;padding:12px 16px;font-size:14px;font-weight:500}
+    .btn.primary:hover:not(:disabled){background:#223a33}
+    .btn.primary:disabled{background:#b9c2bd;border-color:#b9c2bd;opacity:1}
+    .wide{width:100%}
+    .stack{display:flex;flex-direction:column;gap:8px}
+    .hint{font-size:12px;line-height:1.5;color:var(--ink-3);margin:0}
+    .hint.error{color:var(--reset)}
+    .connected{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;border-radius:8px;background:var(--sunk)}
+    .connected span{font:12px var(--mono);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .connected button{border:0;background:none;padding:0;font-size:12px;font-weight:500;color:var(--route-ink)}
+    .connected button:hover{text-decoration:underline;text-underline-offset:3px}
+
+    fieldset{border:0;margin:0;padding:0;min-width:0}
+    legend{padding:0;width:100%}
+    .trips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+    .trip{position:relative;display:block}
+    .trip input{position:absolute;opacity:0;inset:0;margin:0}
+    .trip > span{display:flex;align-items:center;justify-content:space-between;padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:#fff;font:14px var(--mono);transition:border-color .15s,background .15s,color .15s}
+    .trip em{font-style:normal;color:#8a958f}
+    .trip > span > span{display:inline}
+    .trip b{font-weight:500}
+    .trip i{width:5px;height:5px;border-radius:50%}
+    .trip.done i{background:var(--route)}
+    .trip input:hover + span{border-color:var(--line-2)}
+    .trip input:checked + span{border-color:var(--ink);background:var(--ink);color:#fff}
+    .trip input:checked + span em{color:#93a39c}
+    .trip input:checked + span i{background:#7fd1b9}
+    .trip input:focus-visible + span{outline:2px solid var(--route);outline-offset:2px}
+    .trip input:disabled + span{opacity:.5}
+    .empty{font-size:13px;color:var(--ink-3);padding:16px;border:1px dashed var(--line-2);border-radius:8px;text-align:center}
+    .foot{margin-top:auto;font-size:12px;color:var(--ink-3);line-height:1.5}
+
+    .stage{position:relative;min-height:0;background:#eef0ec}
+    #map,#legacy{position:absolute;inset:0}
+    #legacy{width:100%;height:100%;border:0}
+    .leaflet-container{background:#eef0ec;font:12px var(--sans)}
+    .leaflet-tile-pane{filter:grayscale(1) contrast(.86) brightness(1.08)}
+    .leaflet-control-attribution{font-size:10px;background:rgba(255,255,255,.85)!important}
+    .leaflet-bar a{color:var(--ink)!important}
+    .leaflet-bar{border:1px solid var(--line-2)!important;box-shadow:var(--shadow)!important;border-radius:8px!important;overflow:hidden}
+
+    .layers{position:absolute;top:14px;right:14px;z-index:500;display:flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+    .layer{position:relative;display:block}
+    .layer input{position:absolute;opacity:0;inset:0;margin:0}
+    .layer span{display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:7px;font-size:12px;font-weight:500;color:var(--ink-3);transition:background .15s,color .15s}
+    .layer i{width:10px;height:10px;border-radius:50%;border:2px solid currentColor;flex:none;transition:background .15s}
+    .layer input:checked + span{background:var(--sunk);color:var(--ink)}
+    .layer input:checked + span i{background:var(--c);border-color:var(--c)}
+    .layer input:focus-visible + span{outline:2px solid var(--route);outline-offset:1px}
+    .layer input:disabled + span{opacity:.45}
+
+    .result{position:absolute;left:14px;bottom:28px;z-index:500;width:min(420px,calc(100% - 28px));background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px 16px 12px;transform:translateY(8px);opacity:0;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+    .result.on{transform:none;opacity:1}
+    .rhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .rhead h1{font-size:15px;font-weight:600;margin:0;letter-spacing:-.01em}
+    .rid{display:inline-flex;align-items:center;gap:4px;font:12px var(--mono);color:var(--ink-2);background:var(--sunk);border-radius:6px;padding:2px 3px 2px 8px}
+    .rid button{border:0;background:none;padding:3px;border-radius:4px;display:grid;color:var(--ink-3)}
+    .rid button:hover{background:var(--line);color:var(--ink)}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
+    .stats dt{font-size:11px;color:var(--ink-3)}
+    .stats dd{margin:2px 0 0;font:500 22px/1.15 var(--mono);letter-spacing:-.03em}
+    .stats dd small{display:block;font:11px var(--sans);letter-spacing:0;color:var(--ink-3);margin-top:2px}
+    .proxy{font-size:11px;color:var(--ink-3);margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);line-height:1.5}
+
+    .veil{position:absolute;inset:0;z-index:600;display:grid;place-items:center;text-align:center;padding:24px;background:rgba(243,244,240,.86);backdrop-filter:blur(6px) saturate(.9);-webkit-backdrop-filter:blur(6px) saturate(.9);transition:opacity .4s var(--ease),visibility 0s linear 0s}
+    .veil.gone{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s var(--ease),visibility 0s linear .4s}
+    .veil .box{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:360px}
+    .veil h2{font-size:19px;font-weight:500;letter-spacing:-.02em;margin:0;text-wrap:balance}
+    .veil p{margin:0;color:var(--ink-2);font-size:13.5px}
+    .clock{font:500 34px var(--mono);letter-spacing:-.04em}
+    .veil.err h2{color:var(--reset)}
+    .art{width:84px;height:84px}
+    .track{position:relative;width:180px;height:2px;border-radius:2px;background:var(--line-2);overflow:hidden}
+    .track::after{content:"";position:absolute;inset:0;width:40%;background:var(--route);border-radius:2px;animation:slide 1.1s var(--ease) infinite}
+    @keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+    .message{position:absolute;left:14px;top:14px;z-index:550;max-width:min(380px,calc(100% - 560px));font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;box-shadow:var(--shadow);color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .message:empty{display:none}
+    .message.ok{color:var(--route-ink)}
+    .message.error{color:var(--reset)}
+
+    @media (max-width:900px){
+      body{height:auto;display:block}
+      header{padding:0 14px}
+      .status .host,.link .t{display:none}
+      main{grid-template-columns:1fr}
+      .rail{border-right:0;border-bottom:1px solid var(--line)}
+      .trips{grid-template-columns:repeat(5,minmax(0,1fr))}
+      .trip span{justify-content:center}
+      .trip em,.trip i{display:none}
+      .stage{height:78vh;min-height:520px}
+      .foot{display:none}
+      .message{display:none}
+    }
+    @media (max-width:560px){
+      .status span:not(.host){display:none}
+      .trips{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .trip em{display:inline}
+      .layers{left:14px;right:auto;top:auto;bottom:14px;flex-wrap:wrap}
+      .result{bottom:auto;top:14px}
+      .stats dd{font-size:19px}
+    }
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s!important;animation:none!important}}
   </style>
 </head>
 <body>
-<header><div class="brand"><svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#087f6a"/><path d="M10 29L17 12L24 28L31 11" stroke="#eef6e9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="12" r="3" fill="#dab367"/></svg>PathSnap</div><span class="topnote">Machine learning · Road intelligence</span><div class="status"><i class="dot" id="dot"></i><span id="connectionStatus">API not connected</span></div></header>
-<main>
-  <div class="intro"><div><span class="eyebrow">From GPS noise to connected roads</span><h1>Every journey has a path.</h1><p>Reconstruct a vehicle’s route with learned candidates and network-aware decoding.</p></div><span class="badge" id="modeBadge">Team PT-088 · PES University</span></div>
-  <div class="layout">
-    <aside class="panel controls"><div class="sectionlabel">Reconstruction workspace</div>
-      <label class="field" for="apiUrl">Model server · Laptop 1</label><input id="apiUrl" type="url" placeholder="http://192.168.x.x:8000" aria-label="API server URL"><button class="connect" id="connect">Connect to API ↗</button>
-      <hr class="divider"><label class="field" for="tripSelect">Choose a trip</label><select id="tripSelect" disabled><option>Connect to load ten trips</option></select>
-      <p class="hint" id="partitionNotice">Trip options come directly from the active server partition.</p>
-      <button class="run" id="run" disabled>Reconstruct route →</button>
-      <p class="hint">The selected trip ID goes to the model server. Matching and reference scoring happen there.</p>
-      <hr class="divider"><div class="sectionlabel">The prediction pipeline</div><div class="steps"><div class="step"><span class="number">01</span> Project GPS into metre coordinates</div><div class="step"><span class="number">02</span> Score nearby directed road segments</div><div class="step"><span class="number">03</span> Decode a route with Viterbi</div><div class="step"><span class="number">04</span> Inspect the route and server metrics</div></div>
-    </aside>
-    <section><div class="panel"><div class="maphead"><span id="mapTitle">Route explorer</span><div class="legend"><span><i style="background:#327fca"></i>GPS</span><span><i style="background:#087f6a"></i>Predicted route</span><span><i style="background:#d15243"></i>Gap / reset</span></div></div><div class="mapbody"><div class="placeholder" id="placeholder"><div><svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="45" stroke="#cbd9c8" stroke-dasharray="3 5"/><path d="M24 70L40 31L59 64L78 26" stroke="#087f6a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="70" r="6" fill="#087f6a"/><circle cx="78" cy="26" r="6" fill="#dab367"/></svg><h2>A clearer picture of the journey.</h2><p>Connect to the server, choose a trip,<br>and bring its road route into focus.</p><small>Live inference · Folium map</small></div></div><iframe id="map" title="Interactive predicted route map"></iframe></div></div>
-      <div class="metrics"><div class="metric"><span class="label">Proxy pointwise accuracy</span><strong id="accuracy">—</strong><small>HMM · inferred reference alignment</small></div><div class="metric"><span class="label">Reference route overlap F1</span><strong id="overlap">—</strong><small>Length weighted · bridged route</small></div><div class="metric"><span class="label">GPS observations</span><strong id="observations">—</strong><small>One prediction per observation</small></div><div class="metric"><span class="label">Server response</span><strong id="latency">—</strong><small>Prediction, scoring and map</small></div></div>
-      <div class="message" id="message" role="status">Ready when your model server is.</div><div class="resultdetail" id="detail"></div>
-    </section>
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#13211d"/><path d="M10 29L17 12L24 28L31 11" stroke="#e9f3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="12" r="3" fill="#dab367"/></svg>
+    PathSnap
   </div>
-  <footer><span>PATHSNAP / PT-088 / 2026</span><span>Classifier → Directed network → Viterbi</span></footer>
+  <div class="right">
+    <div class="status" role="status" aria-live="polite"><i class="dot" id="dot"></i><span id="statusText">API not connected</span><span class="host" id="statusHost"></span></div>
+    <span class="badge" id="modeBadge">Not connected</span>
+    <a class="link" id="detailsLink" href="details.html" target="pathsnap-details" rel="noopener" title="Open the model trace in another tab">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15l3.5-4 3 2.5L19 8"/></svg><span class="t">Model trace</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <aside class="rail" aria-label="Controls">
+    <section>
+      <div id="serverForm" class="stack">
+        <label class="label" for="apiUrl">Model server · Laptop 1</label>
+        <input id="apiUrl" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="http://10.20.x.x:8000">
+        <button class="btn wide" id="connect" type="button"><span id="connectLabel">Connect to API</span></button>
+        <p class="hint" id="connectHint">Laptop 1’s LAN address. On this Mac, 127.0.0.1 is the Mac itself.</p>
+      </div>
+      <div id="serverDone" hidden>
+        <div class="label">Model server · Laptop 1</div>
+        <div class="connected"><span id="serverHost"></span><button type="button" id="change">Change</button></div>
+      </div>
+    </section>
+
+    <section>
+      <fieldset id="tripField" disabled>
+        <legend class="label">Choose a trip <b id="tripCount"></b></legend>
+        <div id="tripGrid"><div class="empty">Connect to load ten trips</div></div>
+      </fieldset>
+    </section>
+
+    <section class="stack">
+      <button class="btn primary wide" id="run" type="button" disabled><span id="runLabel">Reconstruct route</span></button>
+      <p class="hint">Only the trip ID is sent. Matching and scoring run on Laptop 1.</p>
+    </section>
+
+    <p class="foot" id="modelLine">Classifier → directed road network → Viterbi</p>
+  </aside>
+
+  <section class="stage" aria-label="Map">
+    <div id="map" role="region" aria-label="Interactive route map"></div>
+    <iframe id="legacy" title="Server-rendered route map" hidden></iframe>
+
+    <div class="layers" id="layers" role="group" aria-label="Map layers">
+      <label class="layer" style="--c:var(--route)"><input type="checkbox" id="lyRoute" checked disabled><span><i></i>Reconstructed route</span></label>
+      <label class="layer" style="--c:var(--gps)"><input type="checkbox" id="lyGps" checked disabled><span><i></i>Raw GPS</span></label>
+      <label class="layer" style="--c:var(--cls)"><input type="checkbox" id="lyCls" disabled><span><i></i>Classifier only</span></label>
+      <label class="layer" style="--c:var(--reset)"><input type="checkbox" id="lyReset" checked disabled><span><i></i>Resets</span></label>
+    </div>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+
+    <article class="result" id="result" aria-label="Result" hidden>
+      <div class="rhead">
+        <h1 id="resultTitle">Trip</h1>
+        <span class="rid" title="Match this ID with the PATHSNAP line in Laptop 1’s terminal">request <span id="ridText"></span>
+          <button type="button" id="copyRid" aria-label="Copy request ID" title="Copy request ID"><svg class="i" viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></button>
+        </span>
+      </div>
+      <dl class="stats">
+        <div><dt>Proxy accuracy</dt><dd id="accuracy">—</dd></div>
+        <div><dt>Route overlap F1</dt><dd id="overlap">—</dd></div>
+        <div><dt>GPS points</dt><dd id="observations">—</dd></div>
+      </dl>
+      <p class="proxy">Accuracy uses labels inferred from the ordered reference route, not official per-GPS ground truth. Reference geometry stays on the server.</p>
+    </article>
+
+    <div class="veil" id="veil">
+      <div class="box" id="vIdle">
+        <svg class="art" viewBox="0 0 100 100" fill="none" aria-hidden="true"><g fill="#2f74d0" opacity=".5"><circle cx="19" cy="66" r="2.4"/><circle cx="29" cy="49" r="2.4"/><circle cx="36" cy="27" r="2.4"/><circle cx="51" cy="54" r="2.4"/><circle cx="61" cy="70" r="2.4"/><circle cx="70" cy="44" r="2.4"/><circle cx="82" cy="29" r="2.4"/></g><path d="M22 70L39 31L58 65L78 26" stroke="#0a7c66" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="70" r="5.5" fill="#13211d"/><circle cx="78" cy="26" r="5.5" fill="#dab367"/></svg>
+        <h2>Every journey has a path.</h2>
+        <p id="idleText">Connect to the model server and choose a trip.</p>
+      </div>
+      <div class="box" id="vBusy" hidden>
+        <div class="clock" id="clock">0.0 s</div>
+        <div class="track" aria-hidden="true"></div>
+        <h2 id="busyTitle">Matching trip</h2>
+        <p id="busyText">Laptop 1 is scoring candidates and decoding the route.</p>
+      </div>
+      <div class="box" id="vError" hidden>
+        <h2>That request did not finish</h2>
+        <p id="errorText"></p>
+        <button class="btn" type="button" id="retry">Try again</button>
+      </div>
+    </div>
+  </section>
 </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-const el=id=>document.getElementById(id);let api='';let busy=false;
-el('apiUrl').value=localStorage.getItem('pathsnapApi')||(location.port==='8000'?location.origin:'http://127.0.0.1:8000');
-function message(text,error=false){el('message').textContent=text;el('message').className='message'+(error?' error':'');}
-function clearResults(){el('map').src='about:blank';el('map').style.display='none';el('placeholder').style.display='grid';el('mapTitle').textContent='Route explorer';for(const id of ['accuracy','overlap','observations','latency'])el(id).textContent='—';el('detail').style.display='none';}
-function setReady(ready){el('dot').className='dot'+(ready?' ready':'');el('tripSelect').disabled=!ready;el('run').disabled=!ready;}
-async function fetchJson(path,options={}){const response=await fetch(api+path,{...options,signal:AbortSignal.timeout(180000)});let body;try{body=await response.json();}catch{throw new Error('Server returned an invalid response. Check the API URL.');}if(!response.ok)throw new Error(typeof body.detail==='string'?body.detail:JSON.stringify(body.detail));return body;}
-el('connect').addEventListener('click',async()=>{if(busy)return;api=el('apiUrl').value.trim().replace(/\/$/,'');try{const url=new URL(api);if(!['http:','https:'].includes(url.protocol))throw new Error('Use an http:// or https:// server URL.');message('Connecting to the model server…');const data=await fetchJson('/trips');el('tripSelect').replaceChildren(...data.trips.map(t=>{const option=document.createElement('option');option.value=t.trip_id;option.textContent='Trip '+t.trip_id;return option;}));setReady(true);clearResults();el('connectionStatus').textContent='Model server connected';el('partitionNotice').textContent=data.notice;el('modeBadge').textContent=data.mode==='development'?'Student-test · Development mode':'Reserved trips · Evaluation mode';localStorage.setItem('pathsnapApi',api);message('Connected. Select any of the ten trips to run live inference.');}catch(error){setReady(false);el('connectionStatus').textContent='Connection failed';message(error.message+' On the Mac, enter Laptop 1’s LAN IP address.',true);}});
-el('run').addEventListener('click',async()=>{if(busy)return;busy=true;el('run').disabled=true;el('connect').disabled=true;el('tripSelect').disabled=true;el('apiUrl').disabled=true;el('run').textContent='Reconstructing…';el('run').classList.add('loading');message('The server is scoring candidates, decoding the road route and calculating metrics…');try{const data=await fetchJson('/match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trip_id:el('tripSelect').value})});el('mapTitle').textContent='Trip '+data.trip_id+' · reconstructed route';el('placeholder').style.display='none';el('map').style.display='block';el('map').src=api+data.map_url;const metrics=data.metrics;el('accuracy').textContent=metrics?(100*metrics.hmm.proxy_top1_accuracy).toFixed(1)+'%':'N/A';el('overlap').textContent=metrics?(100*metrics.bridged_route.route_length_f1).toFixed(1)+'%':'N/A';el('observations').textContent=data.observations.toLocaleString();el('latency').textContent=data.seconds.toFixed(2)+' s';const detail=el('detail');detail.style.display='block';detail.replaceChildren();const text=document.createElement('span');text.textContent='Model: '+data.model+(data.tuned?' (Bayesian tuned)':' (baseline)')+' · Explicit route resets: '+data.breaks.length+' · Candidate fallbacks: '+data.candidate_fallback_observations+(metrics?' · Classifier-only proxy accuracy: '+(100*metrics.classifier.proxy_top1_accuracy).toFixed(1)+'%':' · Reference scoring unavailable');detail.append(text,document.createElement('br'));const note=document.createElement('span');note.textContent='Pointwise labels are inferred from an ordered reference route; they are a proxy, not official per-GPS ground truth. Reference geometry remains on the server.';detail.append(note);message('Completed · Request '+data.request_id+' · Match this request ID with the receiving laptop’s API log.');}catch(error){message(error.message,true);}finally{busy=false;el('run').disabled=false;el('connect').disabled=false;el('tripSelect').disabled=false;el('apiUrl').disabled=false;el('run').textContent='Reconstruct route →';el('run').classList.remove('loading');}});
-if(location.port==='8000')el('connect').click();
+(() => {
+  const $ = id => document.getElementById(id);
+  const state = { api: '', mode: null, health: null, trip: null, busy: false, history: [], running: null, timer: null, lastAction: null, layers: {} };
+  const channel = 'BroadcastChannel' in window ? new BroadcastChannel('pathsnap') : null;
+  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  function h(tag, props = {}, ...kids) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (v == null || v === false) continue;
+      if (k === 'class') node.className = v; else if (k === 'text') node.textContent = v; else node.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids.flat()) if (kid != null) node.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+    return node;
+  }
+  const pct = v => (typeof v === 'number' && isFinite(v)) ? (100 * v).toFixed(1) + '%' : '—';
+  const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+
+  // ---------- shared session with the model-trace tab ----------
+  function publish(type, extra = {}) {
+    const session = { api: state.api, mode: state.mode, health: state.health, history: state.history.slice(0, 30), running: state.running, updated: Date.now() };
+    store.set('pathsnapSession', JSON.stringify(session));
+    if (channel) channel.postMessage({ type, session, ...extra });
+  }
+
+  // ---------- map ----------
+  const map = L.map('map', { zoomControl: true, preferCanvas: true, attributionControl: true }).setView([20, 0], 2);
+  map.zoomControl.setPosition('bottomright');
+  // OpenStreetMap tiles (same source as the server's Folium maps), desaturated in CSS so the route leads.
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+  const canvas = L.canvas({ padding: 0.4 });
+
+  function clearLayers() { for (const layer of Object.values(state.layers)) map.removeLayer(layer); state.layers = {}; }
+  function drawTrace(trace) {
+    clearLayers();
+    const m = trace.map, route = css('--route'), gps = css('--gps'), cls = css('--cls'), reset = css('--reset'), ink = css('--ink');
+    const routeGroup = L.layerGroup([
+      L.layerGroup(m.route.map(line => L.polyline(line, { renderer: canvas, color: '#ffffff', weight: 8, opacity: .9, lineCap: 'round', lineJoin: 'round', interactive: false }))),
+      L.layerGroup(m.route.map(line => L.polyline(line, { renderer: canvas, color: route, weight: 4, opacity: 1, lineCap: 'round', lineJoin: 'round' }).bindTooltip('Reconstructed route', { sticky: true }))),
+    ]);
+    const step = Math.max(1, Math.ceil(m.gps.length / 6000));
+    const gpsPoints = [];
+    for (let i = 0; i < m.gps.length; i += step) gpsPoints.push(L.circleMarker(m.gps[i], { renderer: canvas, radius: 3, weight: 1, color: '#ffffff', opacity: .9, fillColor: gps, fillOpacity: .95 }).bindTooltip(`GPS ${i} · t ${trace.points.t[i]} s`));
+    const clsGroup = L.layerGroup(m.classifier.map(seg => L.polyline(seg, { renderer: canvas, color: cls, weight: 3, opacity: .85, dashArray: '2 5', lineCap: 'round' })));
+    const resetGroup = L.layerGroup(m.resets.map(r => L.circleMarker(r.latlon, { renderer: canvas, radius: 7, weight: 2, color: reset, fillColor: '#fff', fillOpacity: 1 }).bindTooltip(`Reset at point ${r.i}: ${r.reason}`)));
+    const ends = L.layerGroup([
+      L.circleMarker(m.start, { renderer: canvas, radius: 6, weight: 3, color: '#fff', fillColor: ink, fillOpacity: 1 }).bindTooltip('Start'),
+      L.circleMarker(m.finish, { renderer: canvas, radius: 6, weight: 3, color: '#fff', fillColor: '#dab367', fillOpacity: 1 }).bindTooltip('Finish'),
+    ]);
+    state.layers = { cls: clsGroup, route: routeGroup, gps: L.layerGroup(gpsPoints), reset: resetGroup, ends };
+    syncLayers();
+    map.addLayer(ends);
+    const bounds = L.latLngBounds(m.gps);
+    map.fitBounds(bounds, { paddingTopLeft: [40, 70], paddingBottomRight: [40, 40], animate: false });
+  }
+  function syncLayers() {
+    const want = { route: $('lyRoute').checked, gps: $('lyGps').checked, cls: $('lyCls').checked, reset: $('lyReset').checked };
+    // Draw order: classifier picks, reconstructed route, raw GPS overlaid on the route, resets on top.
+    for (const key of ['cls', 'route', 'gps', 'reset']) {
+      const layer = state.layers[key]; if (!layer) continue;
+      map.removeLayer(layer); if (want[key]) map.addLayer(layer);
+    }
+    if (state.layers.ends) { map.removeLayer(state.layers.ends); map.addLayer(state.layers.ends); }
+  }
+  for (const id of ['lyRoute', 'lyGps', 'lyCls', 'lyReset']) $(id).addEventListener('change', syncLayers);
+  function setLayerControls(enabled) { for (const id of ['lyRoute', 'lyGps', 'lyCls', 'lyReset']) $(id).disabled = !enabled; }
+
+  // ---------- UI state ----------
+  function message(text, kind = '') { $('message').textContent = text; $('message').className = 'message' + (kind ? ' ' + kind : ''); }
+  function veil(which) {
+    for (const id of ['vIdle', 'vBusy', 'vError']) $(id).hidden = id !== which;
+    $('veil').classList.toggle('gone', which === null);
+    $('veil').classList.toggle('err', which === 'vError');
+  }
+  function startClock() {
+    const t0 = performance.now();
+    $('clock').textContent = '0.0 s';
+    state.timer = setInterval(() => { $('clock').textContent = ((performance.now() - t0) / 1000).toFixed(1) + ' s'; }, 100);
+    return t0;
+  }
+  function stopClock() { clearInterval(state.timer); state.timer = null; }
+  function setStatus(kind, text, host = '') {
+    $('dot').className = 'dot' + (kind ? ' ' + kind : '');
+    $('statusText').textContent = text; $('statusHost').textContent = host;
+  }
+  function setModeBadge(mode) {
+    const b = $('modeBadge');
+    if (mode === 'evaluation') { b.textContent = 'Reserved trips · Evaluation mode'; b.className = 'badge eval'; }
+    else if (mode === 'development') { b.textContent = 'Student-test · Development mode'; b.className = 'badge dev'; }
+    else { b.textContent = 'Not connected'; b.className = 'badge'; }
+  }
+  function updateRun() {
+    $('run').disabled = !(state.mode && state.trip && !state.busy);
+    $('runLabel').textContent = state.busy ? 'Reconstructing…' : (state.mode && !state.trip ? 'Select a trip' : 'Reconstruct route');
+  }
+  function lock(locked) { $('connect').disabled = locked; $('apiUrl').disabled = locked; $('change').disabled = locked; $('tripField').disabled = locked || !state.mode; }
+  function markDone() { document.querySelectorAll('.trip').forEach(el => el.classList.toggle('done', state.history.some(r => r.trip_id === el.dataset.trip))); }
+
+  async function fetchJson(path, options = {}, timeoutMs = 180000) {
+    let response;
+    try { response = await fetch(state.api + path, { ...options, signal: AbortSignal.timeout(timeoutMs) }); }
+    catch (error) {
+      if (error && error.name === 'TimeoutError') throw new Error(`No answer from ${state.api} after ${Math.round(timeoutMs / 1000)} s. Check that Laptop 1 is awake and the API is running.`);
+      throw new Error(`Could not reach ${state.api}. Check the API is running on Laptop 1 and both laptops share a network, then open ${state.api}/health here.`);
+    }
+    let body;
+    try { body = await response.json(); } catch { throw new Error(`${state.api}${path} did not return JSON. Check the address points to the PathSnap API (port 8000).`); }
+    if (!response.ok) throw Object.assign(new Error(`Server answered ${response.status}: ${typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail)}`), { status: response.status });
+    return body;
+  }
+
+  function renderTrips(trips) {
+    const grid = h('div', { class: 'trips', role: 'radiogroup', 'aria-label': 'Trips' });
+    for (const t of trips) {
+      const id = String(t.trip_id);
+      let lead = id.match(/^0*/)[0]; if (lead.length === id.length) lead = id.slice(0, -1);
+      const input = h('input', { type: 'radio', name: 'trip', value: id, 'aria-label': 'Trip ' + id });
+      input.addEventListener('change', () => { state.trip = id; updateRun(); });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+      grid.append(h('label', { class: 'trip', 'data-trip': id }, input, h('span', {}, h('span', {}, h('em', { text: lead }), h('b', { text: id.slice(lead.length) })), h('i', { 'aria-hidden': 'true' }))));
+    }
+    $('tripGrid').replaceChildren(grid);
+    $('tripCount').textContent = trips.length + ' trips';
+    markDone();
+  }
+
+  async function connect() {
+    if (state.busy) return;
+    const raw = $('apiUrl').value.trim().replace(/\/+$/, '');
+    let url;
+    try { url = new URL(raw); if (!['http:', 'https:'].includes(url.protocol)) throw 0; }
+    catch { $('connectHint').textContent = 'Enter a full address such as http://10.20.206.56:8000.'; $('connectHint').className = 'hint error'; $('apiUrl').focus(); return; }
+    state.api = url.origin; state.lastAction = connect; state.busy = true; lock(true);
+    $('connectLabel').textContent = 'Connecting…';
+    setStatus('busy', 'Connecting', url.host);
+    try {
+      const health = await fetchJson('/health', {}, 12000);
+      const data = await fetchJson('/trips', {}, 12000);
+      state.mode = data.mode; state.health = health; state.trip = null;
+      renderTrips(data.trips); setModeBadge(data.mode);
+      setStatus('ready', 'Connected', url.host);
+      $('serverHost').textContent = url.host; $('serverForm').hidden = true; $('serverDone').hidden = false;
+      $('modelLine').textContent = data.notice + ' · ' + health.model.replaceAll('_', ' ') + (health.tuned ? ', Bayesian tuned' : '');
+      $('idleText').textContent = 'Choose one of the ' + data.trips.length + ' trips, then reconstruct its route.';
+      store.set('pathsnapApi', state.api);
+      message('');
+      publish('connected');
+    } catch (error) {
+      state.mode = null; setModeBadge(null); setStatus('error', 'Connection failed', url.host);
+      $('connectHint').textContent = error.message; $('connectHint').className = 'hint error';
+    } finally {
+      state.busy = false; lock(false); $('connectLabel').textContent = 'Connect to API'; updateRun();
+    }
+  }
+
+  function showResult(data) {
+    const m = data.metrics;
+    $('resultTitle').textContent = 'Trip ' + data.trip_id;
+    $('ridText').textContent = data.request_id;
+    $('accuracy').replaceChildren(m ? pct(m.hmm.proxy_top1_accuracy) : 'N/A', h('small', { text: m ? 'Viterbi · classifier ' + pct(m.classifier.proxy_top1_accuracy) : 'no reference on server' }));
+    $('overlap').replaceChildren(m ? pct(m.bridged_route.route_length_f1) : 'N/A', h('small', { text: 'length weighted' }));
+    $('observations').replaceChildren(data.observations.toLocaleString(), h('small', { text: data.seconds.toFixed(2) + ' s on server' }));
+    $('result').hidden = false; requestAnimationFrame(() => $('result').classList.add('on'));
+  }
+
+  async function showMap(data) {
+    $('busyTitle').textContent = 'Drawing the route';
+    $('busyText').textContent = 'Fetching route geometry and GPS points from Laptop 1.';
+    try {
+      if (!data.trace_url) throw Object.assign(new Error('no trace'), { status: 404 });
+      const trace = await fetchJson(data.trace_url, {}, 60000);
+      $('legacy').hidden = true; $('legacy').src = 'about:blank';
+      drawTrace(trace); setLayerControls(true); veil(null);
+    } catch (error) {
+      if (error.status !== 404) throw error;
+      // Older servers have no /trace: fall back to the server-rendered Folium map.
+      setLayerControls(false); clearLayers();
+      $('legacy').hidden = false;
+      $('legacy').onload = () => veil(null);
+      $('legacy').src = state.api + data.map_url;
+      setTimeout(() => veil(null), 8000);
+    }
+  }
+
+  async function run() {
+    if (state.busy || !state.mode || !state.trip) return;
+    const trip = state.trip;
+    state.busy = true; state.lastAction = run; lock(true); updateRun();
+    $('result').classList.remove('on');
+    $('busyTitle').textContent = 'Matching trip ' + trip;
+    $('busyText').textContent = 'Laptop 1 is scoring candidates and decoding the route.';
+    veil('vBusy'); message('');
+    setStatus('busy', 'Request running', new URL(state.api).host);
+    state.running = { trip_id: trip, started: Date.now() };
+    publish('start');
+    const t0 = startClock();
+    try {
+      const data = await fetchJson('/match', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ trip_id: trip }) });
+      stopClock();
+      const { predicted_arc_ids, route_pieces, ...rest } = data;
+      const record = { ...rest, route_piece_count: route_pieces.length, http_seconds: (performance.now() - t0) / 1000, received_at: new Date().toISOString(), api: state.api };
+      state.history.unshift(record); state.running = null;
+      publish('result', { record });
+      showResult(data); markDone();
+      await showMap(data);
+      setStatus('ready', 'Connected', new URL(state.api).host);
+      message('');
+      if (window.innerWidth < 900) document.querySelector('.stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (error) {
+      stopClock(); state.running = null;
+      veil('vError'); $('errorText').textContent = error.message;
+      setStatus('error', 'Last request failed', new URL(state.api).host);
+      publish('error', { message: error.message, trip_id: trip });
+    } finally {
+      state.busy = false; lock(false); updateRun();
+    }
+  }
+
+  $('connect').addEventListener('click', connect);
+  $('apiUrl').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); connect(); } });
+  $('apiUrl').addEventListener('input', () => { $('connectHint').className = 'hint'; });
+  $('change').addEventListener('click', () => { $('serverForm').hidden = false; $('serverDone').hidden = true; $('apiUrl').focus(); $('apiUrl').select(); });
+  $('run').addEventListener('click', run);
+  $('retry').addEventListener('click', () => state.lastAction && state.lastAction());
+  $('copyRid').addEventListener('click', async () => {
+    const text = $('ridText').textContent;
+    try { await navigator.clipboard.writeText(text); message('Copied request ID ' + text, 'ok'); }
+    catch { const r = document.createRange(); r.selectNodeContents($('ridText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); message('Request ID selected · press ⌘C'); }
+  });
+  if (location.port === '8000') $('detailsLink').href = '/static/details.html';
+
+  const fromQuery = new URLSearchParams(location.search).get('api');
+  $('apiUrl').value = fromQuery || store.get('pathsnapApi') || (location.port === '8000' ? location.origin : '');
+  veil('vIdle'); updateRun();
+  if (location.port === '8000' || fromQuery) connect();
+})();
 </script>
 </body>
 </html>
