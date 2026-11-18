@@ -306,7 +306,7 @@
     ]);
     const step = Math.max(1, Math.ceil(m.gps.length / 6000));
     const gpsPoints = [];
-    for (let i = 0; i < m.gps.length; i += step) gpsPoints.push(L.circleMarker(m.gps[i], { renderer: canvas, radius: 2.6, weight: 0, fillColor: gps, fillOpacity: .6 }).bindTooltip(`GPS ${i} · t ${trace.points.t[i]} s`));
+    for (let i = 0; i < m.gps.length; i += step) gpsPoints.push(L.circleMarker(m.gps[i], { renderer: canvas, radius: 3, weight: 1, color: '#ffffff', opacity: .9, fillColor: gps, fillOpacity: .95 }).bindTooltip(`GPS ${i} · t ${trace.points.t[i]} s`));
     const clsGroup = L.layerGroup(m.classifier.map(seg => L.polyline(seg, { renderer: canvas, color: cls, weight: 3, opacity: .85, dashArray: '2 5', lineCap: 'round' })));
     const resetGroup = L.layerGroup(m.resets.map(r => L.circleMarker(r.latlon, { renderer: canvas, radius: 7, weight: 2, color: reset, fillColor: '#fff', fillOpacity: 1 }).bindTooltip(`Reset at point ${r.i}: ${r.reason}`)));
     const ends = L.layerGroup([
@@ -321,8 +321,8 @@
   }
   function syncLayers() {
     const want = { route: $('lyRoute').checked, gps: $('lyGps').checked, cls: $('lyCls').checked, reset: $('lyReset').checked };
-    // Draw order: raw GPS underneath, classifier picks, reconstructed route, resets on top.
-    for (const key of ['gps', 'cls', 'route', 'reset']) {
+    // Draw order: classifier picks, reconstructed route, raw GPS overlaid on the route, resets on top.
+    for (const key of ['cls', 'route', 'gps', 'reset']) {
       const layer = state.layers[key]; if (!layer) continue;
       map.removeLayer(layer); if (want[key]) map.addLayer(layer);
     }
