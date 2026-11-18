@@ -34,6 +34,12 @@ The initial package omitted reserved trips. The user later supplied `evaluator_t
 
 No evaluator results selected or modified features, labels convention, model weights/family, decoder parameters, thresholds or search space. Report/UI authoring can be updated without changing the frozen predictor/scorer.
 
+## UI update (branch `chiranth/ui-polish`, 18 November 2026)
+
+- `ui/index.html`: map-first evaluator screen. Leaflet draws the reconstructed route with toggles for raw GPS, classifier-only picks and resets; falls back to the server's Folium map if the API lacks `/trace`.
+- `ui/details.html` ("Model trace"): separate tab that follows the main screen via BroadcastChannel. Shows each pipeline stage with server-measured numbers and a point-by-point replay of candidates, P(match), emissions and Viterbi transition terms.
+- Verified on macOS (Python 3.13, same pinned NumPy/SciPy/scikit-learn) against a local development-mode API in Chrome; 13 tests pass. The Linux API must pull this branch and restart to serve `/trace`.
+
 ## Current demonstration
 
 - API: port 8000, evaluation mode, ignored local `data/evaluator_test/`.
