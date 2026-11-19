@@ -4,7 +4,26 @@ Map matching for noisy GPS trajectories using machine learning and directed HMM/
 
 Built for the PES University ML hackathon by team PT-088. The model server and browser UI can run on separate laptops; GPU compute is not required.
 
-[Technical report](reports/PathSnap_Technical_Report.pdf) · [Presentation](reports/PathSnap_Presentation_Final.pptx) · [Viva study guide](reports/PathSnap_Viva_Study_Guide.pdf) · [Deliverables audit](docs/DELIVERABLES_AUDIT.md) · [Project state](docs/PROJECT_STATE.md) · [Design decisions](docs/DECISIONS.md)
+**[Final technical report (submission PDF)](reports/PathSnap_Final_Report.pdf)** · [Presentation](reports/supporting/PathSnap_Presentation_Final.pptx) · [Viva study guide](reports/supporting/PathSnap_Viva_Study_Guide.pdf) · [Deliverables audit](docs/DELIVERABLES_AUDIT.md) · [Project state](docs/PROJECT_STATE.md) · [Design decisions](docs/DECISIONS.md)
+
+## Submission deliverables
+
+| Deliverable | Where it is |
+|---|---|
+| Consolidated technical report (PDF) | [`reports/PathSnap_Final_Report.pdf`](reports/PathSnap_Final_Report.pdf): answers every question in the organiser PDFs, section by section, with a requirement traceability appendix. Rebuild with `python scripts/build_final_report.py` (reads only `artifacts/`, no raw data needed). |
+| Data processing and EDA | `pathsnap/data.py`, `geometry.py`, `prepare.py`, `reference.py`; results in `artifacts/inventory.json` |
+| Feature engineering | `pathsnap/features.py` (served), `pathsnap/improved.py` (opt-in variant) |
+| Model training and comparison | `pathsnap/models.py`, `experiments.py`; results in `artifacts/model_comparison.*`, `folds.json` |
+| Bayesian optimisation | `pathsnap/experiments.py`; `artifacts/bayesian_trials.*`, `tuning.json` |
+| HMM / Viterbi | `pathsnap/decoder.py`, `pipeline.py`, `scripts/tune_decoder.py`; `artifacts/decoder_*.json` |
+| Evaluation, metrics and plots | `pathsnap/metrics.py`, `evaluation.py`, `scripts/report_figures.py`; figures in `reports/figures/`, `reports/plots/` |
+| API and UI | `pathsnap/api.py`, `trace.py`, `cli.py`; `ui/index.html`, `ui/details.html` |
+| Folium maps | `pathsnap/maps.py`; `reports/maps/*.html` |
+| Model weights and configuration | `artifacts/models/final.joblib`, `artifacts/final_model.json`, `configs/baseline.json` |
+| Evidence and logs | `reports/evidence/`, `artifacts/logs/`, `artifacts/evaluator_results.*` |
+| Rehearsal material (not for submission) | `reports/supporting/`; the earlier 18-page development report is kept in `reports/archive/` |
+
+Python modules stay in one `pathsnap/` package because `artifacts/evaluation_freeze.json` records hashes of these exact paths.
 
 ## Features
 
@@ -12,8 +31,8 @@ Built for the PES University ML hackathon by team PT-088. The model server and b
 - Five algorithms on the same three trip-grouped CV folds; 12 Optuna TPE trials for histogram gradient boosting.
 - Directed shortest-path transitions, segmented Viterbi decoding, road bridges and explicit outage/disconnection resets.
 - FastAPI inference, a map-first Leaflet UI, interactive Folium maps and a separate Model trace page with candidate probabilities and transition explanations.
-- Recorded experiments, model comparisons, a consolidated technical report, presentation and a 154-question viva study guide.
-- 13 passing correctness/API tests and recorded HTTP evaluation of all ten development and all ten reserved trips.
+- Recorded experiments, model comparisons, a 44-page consolidated technical report, presentation and a 154-question viva study guide.
+- 17 passing correctness/API tests and recorded HTTP evaluation of all ten development and all ten reserved trips.
 
 ```text
 GPS + directed road network -> candidates -> 13 features -> classifier scores
@@ -32,7 +51,7 @@ The reconstructed route includes intermediate shortest-path arcs; HMM-state cont
 
 The separately frozen reserved evaluation completed all ten trips (19,674 GPS observations): classifier proxy accuracy 88.44%, HMM proxy accuracy 77.78%, reconstructed-route overlap F1 0.9250. These results did not select or change any setting; see [final-partition records](artifacts/evaluator_results.json) and [the pre-evaluation freeze](artifacts/evaluation_freeze.json).
 
-**Verification limits:** physical two-laptop networking and the receiving-terminal screenshot remain unverified. The technical report needs current UI screenshots, and the API must be restarted after pulling endpoint changes. See the [deliverables audit](docs/DELIVERABLES_AUDIT.md). The baseline uses established methods; no scientific novelty is claimed.
+**Verification limits:** physical two-laptop networking and the receiving-terminal screenshot remain unverified. The final report inserts `reports/evidence/api_terminal.png`, `ui_current.png` and `ui_trace.png` automatically once those genuine screenshots are saved; restart the API after pulling endpoint changes. See the [deliverables audit](docs/DELIVERABLES_AUDIT.md). The baseline uses established methods; no scientific novelty is claimed.
 
 ## Setup: Linux or macOS
 
@@ -126,8 +145,9 @@ python -m pathsnap.cli train --data-root "$PATHSNAP_DATA_ROOT"
 python scripts/tune_decoder.py --data-root "$PATHSNAP_DATA_ROOT"
 python -m pathsnap.cli evaluate --data-root "$PATHSNAP_DATA_ROOT"
 python scripts/export_results.py
-python -m pathsnap.cli report --data-root "$PATHSNAP_DATA_ROOT"
 python -m pytest -q
+python scripts/build_final_report.py        # final report from artifacts/
+python -m pathsnap.cli report --data-root "$PATHSNAP_DATA_ROOT"   # optional: earlier development report (writes reports/PathSnap_Technical_Report.pdf)
 ```
 
 Training overwrites experiment outputs and the final model. `train` restores baseline decoder settings; run `tune_decoder.py` and `evaluate` afterward to reproduce the chosen decoder. Restart any running API after updating its model. The six-setting decoder search uses permitted student-test development data; its reported performance is not an untouched test estimate.
@@ -163,7 +183,7 @@ python scripts/smoke_api.py --url http://127.0.0.1:8000
 
 This exercises all ten active trips and saves genuine HTTP summaries to `reports/evidence/api_smoke.json`. Development evidence is already recorded. A final evaluator smoke run is final evaluation: retain it separately and do not tune afterward.
 
-During the physical two-laptop demo, capture the working UI and the receiving API terminal showing the corresponding `PATHSNAP` request ID. Save the real terminal screenshot as `reports/evidence/api_terminal.png`, then rerun `report`. Existing screenshots establish local cross-origin browser operation only.
+During the physical two-laptop demo, capture the working UI and the receiving API terminal showing the corresponding `PATHSNAP` request ID. Save the real terminal screenshot as `reports/evidence/api_terminal.png` (and current UI screenshots as `ui_current.png`, `ui_trace.png`), then rerun `python scripts/build_final_report.py`. Existing screenshots establish local cross-origin browser operation only.
 
 ## Repository map
 
@@ -174,10 +194,12 @@ During the physical two-laptop demo, capture the working UI and the receiving AP
 | `models.py`, `experiments.py`, `metrics.py` | Five-model registry, grouped CV/TPE, explicit metrics |
 | `decoder.py`, `pipeline.py`, `evaluation.py` | Viterbi, route reconstruction, prediction/scoring boundary |
 | `api.py`, `trace.py`, `ui/` | Model server, observation explanations and portable browser interface |
-| `reporting.py`, `scripts/` | Actual-result plots, PDF, decoder search, HTTP evidence and deck source |
+| `scripts/build_final_report.py`, `scripts/final_report/`, `scripts/report_figures.py` | Final report and its figures, generated from `artifacts/` only |
+| `reporting.py`, other `scripts/` | Earlier development report, decoder search, HTTP evidence, variant training, deck and study-guide sources |
 | `configs/`, `artifacts/` | Reproducible configuration, hashes, folds, trials, metrics, final model |
-| `reports/`, `docs/` | Consolidated report, deck, actual maps/screenshots, concise project context and viva |
+| `reports/` | Final report PDF, `figures/`, `plots/`, `maps/` (Folium HTML), `evidence/` (screenshots, HTTP), `supporting/` (deck, viva guide), `archive/` |
+| `docs/` | Project state, decisions, deliverables audit and viva prompts |
 
 Extend candidate features in `features.py` with an updated feature schema; add models through `models.py`; add decoder variants through `DecoderConfig`. Such changes require fresh grouped experiments and artifact regeneration. Keep evaluator data isolated and preserve the measured baseline for ablations.
 
-AI assistance: Codex helped inspect materials, implement and test the system, execute experiments and draft explanations. All reported metrics come from actual runs. Team members must review and understand the work and meet the organisers' disclosure requirements. See the report for references and limitations.
+AI assistance: Codex helped inspect materials, implement and test the system, execute experiments and draft explanations. Claude compiled the final consolidated report from the recorded artifacts. All reported metrics come from actual runs. Team members must review and understand the work and meet the organisers' disclosure requirements. See the report for references and limitations.
