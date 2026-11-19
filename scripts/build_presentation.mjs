@@ -7,7 +7,7 @@ import { pathToFileURL } from 'node:url';
 
 const workspace = process.cwd();
 const build = path.join(workspace, '.build/presentation');
-const output = path.join(workspace, process.env.PRESENTATION_OUTPUT || 'reports/PathSnap_Presentation_Final.pptx');
+const output = path.join(workspace, process.env.PRESENTATION_OUTPUT || 'reports/supporting/PathSnap_Presentation_Final.pptx');
 await fs.mkdir(build, {recursive:true});
 let artifact;
 if (process.env.RUNTIME_NODE_MODULES) {

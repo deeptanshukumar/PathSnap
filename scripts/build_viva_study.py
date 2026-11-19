@@ -258,7 +258,7 @@ page('15. Official-question coverage and last rehearsal')
 table([['Official requirement / questions','Where answered'],['Deliverables.pdf 2.2: preprocessing, patterns and chosen features','D-EDA1, D-EDA2; DATA1-DATA10; FEAT1-FEAT8'],['Deliverables.pdf 3.2, for EVERY model: A1/A2/B5/B6/C7/C8/C9','Each of the five model pages has all seven explicit IDs, plus a follow-up.'],['Deliverables.pdf 4: six Bayesian questions and tuned/untuned metrics','D-BO1 through D-BO6; BO7-BO8; comparison table'],['Deliverables.pdf 5: six HMM questions and measured comparison','D-HMM1 through D-HMM6; HMM7-HMM9; VIT1-VIT7; results'],['Deliverables.pdf 6: colours, labels, extent, comparison, layer controls','D-MAP1 through D-MAP5; API/Folium page'],['Main / Models guidelines: two-laptop flow, metrics, independence','API1-API5; MET1-MET10; SEL1-SEL5; INT1-INT10'],['Dataset / Assessment PDFs: quality, shapes, geography, leakage, viva','DATA / FEAT / LAB / VAL / INT pages'],['Chiranth\'s pushed code and later metrics','CHI1-CHI13 and the full six-variant reserved tables']],[245,245])
 p('<b>Rehearsal in pairs:</b> one person asks a random question ID; the other gives a 20-second answer and points to its code/artifact. Swap roles. Everyone should explain one observation from GPS to candidate features, model score, Viterbi choice and server result.')
 p('<b>Do not memorise only a good number.</b> Explain why 0.9290 is a CV candidate F1, why 77.78% is reserved HMM proxy accuracy, and why 0.9250 is a mean route-overlap F1. They answer different questions.')
-p('<b>Project sources:</b> the five supplied organiser PDFs; AGENTS.md; docs/DELIVERABLES_AUDIT.md; source modules; the recorded JSON artifacts. Repository snapshot reviewed: main at 3d05683. The required submission PDF is reports/PathSnap_Technical_Report.pdf.',True)
+p('<b>Project sources:</b> the five supplied organiser PDFs; AGENTS.md; docs/DELIVERABLES_AUDIT.md; source modules; the recorded JSON artifacts. Repository snapshot reviewed: main at 3d05683. The required submission PDF is reports/PathSnap_Final_Report.pdf.',True)
 p('Primary technical references checked: scikit-learn 1.7.2 cross-validation and model-evaluation documentation; Optuna TPE reference; Newson and Krumm (2009), Hidden Markov Map Matching Through Noise and Sparseness. These explain established methods; all project numbers come from our own artifact files.',True)
 for label,url in [('Grouped CV','https://scikit-learn.org/1.7/modules/cross_validation.html'),('Metric definitions','https://scikit-learn.org/1.7/modules/model_evaluation.html'),('TPE','https://optuna.readthedocs.io/en/v4.6.0/reference/samplers/generated/optuna.samplers.TPESampler.html'),('Map matching paper','https://www.microsoft.com/en-us/research/publication/hidden-markov-map-matching-noise-sparseness/')]:
  p(escape(label+': '+url),True)
@@ -266,7 +266,7 @@ for label,url in [('Grouped CV','https://scikit-learn.org/1.7/modules/cross_vali
 required=['D-EDA1','D-EDA2']+[f'D-BO{i}' for i in range(1,7)]+[f'D-HMM{i}' for i in range(1,7)]+[f'D-MAP{i}' for i in range(1,6)]
 required += [m['name']+'-'+q for m in MODELS for q in ['A1','A2','B5','B6','C7','C8','C9']]
 assert set(required)<=set(ids)
-output=ROOT/'reports/PathSnap_Viva_Study_Guide.pdf'
+output=ROOT/'reports/supporting/PathSnap_Viva_Study_Guide.pdf'
 def footer(canvas,doc):
  canvas.saveState();canvas.setFont('Helvetica',8);canvas.setFillColor(colors.HexColor('#6a7b70'))
  canvas.drawString(43,24,'PathSnap | PT-088 | Viva preparation, not a submission report')
